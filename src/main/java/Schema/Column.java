@@ -67,5 +67,4 @@ public class Column {
         this.isNullable = isNullable;
     }
 
-
 }

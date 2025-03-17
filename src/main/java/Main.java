@@ -1,4 +1,5 @@
 import Schema.Meta;
+import compare.OutputFileComparator;
 import db.ConnectDB;
 import sql.Impl.MysqlSQLGenerator;
 import url.Impl.MysqlURLconfigGenerator;
@@ -49,7 +50,8 @@ public class Main {
             promptGenerator(URL, meta, mysqlSQLGenerator.generateCreateSql());
         }
 
-        System.getProperty("user.dir");
+        String currentDir = System.getProperty("user.dir");
+        System.out.println("Current working directory: " + currentDir);
         //String inputFilePath = "testRewriteFile/Input/input.txt";
         String outputFilePath = "testRewriteFile/Output/output.txt";
 
@@ -67,6 +69,9 @@ public class Main {
 
         ExecuteJavaCodeFromFile ejf = new ExecuteJavaCodeFromFile();
         ejf.executeFile(outputFilePath);
+
+        //对比逻辑
+        OutputFileComparator.compare();
     }
 
     public static String promptGenerator(String URL, Meta meta, String createTableSQL) {
@@ -110,4 +115,7 @@ public class Main {
             }
         }
     }
+
+
+
 }

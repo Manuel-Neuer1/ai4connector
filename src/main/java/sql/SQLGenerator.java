@@ -33,8 +33,6 @@ public abstract class SQLGenerator {
 
     public abstract Object generateSelectSql();
 
-
-
     protected String getRandomValue(String[] values) {
         int randomIndex = r.nextInt(values.length);
         return values[randomIndex];

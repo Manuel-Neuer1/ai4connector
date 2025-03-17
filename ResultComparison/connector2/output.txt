@@ -71,10 +71,6 @@ java.sql.SQLException: Operation not allowed after ResultSet closed
 java.sql.SQLException: Operation not allowed after ResultSet closed
 false
 java.sql.SQLException: Operation not allowed after ResultSet closed
-java.sql.SQLSyntaxErrorException: SAVEPOINT a96ce8ab_9593_4763_9d9b_2cb6fcb07dc8 does not exist
+java.sql.SQLSyntaxErrorException: SAVEPOINT d886bc5c_f42d_4b2a_99c3_13dc21d7503a does not exist
 java.sql.SQLException: Operation not allowed after ResultSet closed
 com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-Entered isIgnorableSavepointError with:
-Line1: java.sql.SQLSyntaxErrorException: SAVEPOINT a96ce8ab_9593_4763_9d9b_2cb6fcb07dc8 does not exist
-Line2: java.sql.SQLSyntaxErrorException: SAVEPOINT d886bc5c_f42d_4b2a_99c3_13dc21d7503a does not exist
-Comparison result: true

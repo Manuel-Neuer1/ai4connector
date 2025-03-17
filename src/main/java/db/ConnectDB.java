@@ -42,5 +42,4 @@ public class ConnectDB {
     }
 
     public int getDbId() { return dbId; }
-
 }

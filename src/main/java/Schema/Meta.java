@@ -55,7 +55,6 @@ public class Meta {
 
     }
 
-
 //    public boolean isAvailable() {
 //        return this.con != null && this.db != null && this.table != null;
 //    }
