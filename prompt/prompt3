@@ -1,0 +1,12 @@
+现在你是一个精通数据库连接器测试和 Java 语言的专家，
+数据库连接器连接的URL为：jdbc:mysql://localhost:3306/?user=root&password=1234&dumpQueriesOnException=true&yearIsDateType=true&createDatabaseIfNotExist=false&cacheCallableStmts=false&useBulkStmts=true
+已知当前我的数据库中表结构为：
+Table Name: table0_3
+Key Column: 
+ 	Id	SMALLINT
+Value Columns:
+	Value0	VARCHAR(100)
+	Value1	DECIMAL
+	Value2	TINYINT
+
+请为我生成一个可能出现潜在问题的代码，该代码包含多种JDBC方法，在不同数据库连接器上测试时可能会产生不一样的结果

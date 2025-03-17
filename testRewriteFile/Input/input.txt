@@ -1,0 +1,38 @@
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test26?user=root&password=123456&useServerPrepStmts=true&allowMultiQueries=true&rewriteBatchedStatements=true&tinyInt1isBit=false&cacheCallableStmts=true&useBulkStmts=false");
+stmt = con.createStatement(1004, 1008, 2);
+con.setTransactionIsolation(2);
+stmt.executeLargeUpdate("CREATE TABLE table26_0(id VARCHAR(5) PRIMARY KEY,value TEXT(5));", 1);
+stmt.getLargeUpdateCount();
+stmt.getResultSetConcurrency();
+rs = stmt.getGeneratedKeys();
+stmt.getResultSetType();
+rs.next();
+rs.next();
+rs.isLast();
+
+rs.updateObject(1, -1);
+
+rs.setFetchDirection(1000);
+rs.isFirst();
+rs.cancelRowUpdates();
+
+System.out.println(e);
+con.setAutoCommit(true);
+rs.updateObject(1, 1229271104);
+
+rs.isAfterLast();
+
+rs.updateRow();
+
+con.getNetworkTimeout();
+rs.beforeFirst();
+rs.next();
+rs.isAfterLast();
+
+rs.updateObject(1, -1);
+

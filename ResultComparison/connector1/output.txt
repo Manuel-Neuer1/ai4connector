@@ -1,0 +1,77 @@
+0
+0
+[0]
+java.sql.SQLException: Can't call commit when autocommit=true
+0
+67108864
+[0, 0, 0]
+1000
+0
+false
+ERROR:
+java.sql.SQLFeatureNotSupportedException
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+false
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+false
+java.sql.SQLException: Can't call commit when autocommit=true
+false
+1007
+false
+1003
+false
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+1003
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+1003
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+java.sql.SQLException: Can't call commit when autocommit=true
+2
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+java.sql.SQLException: Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.
+false
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+false
+-1
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+java.sql.SQLException: Operation not allowed after ResultSet closed
+ERROR:
+java.sql.SQLException: Operation not allowed after ResultSet closed
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+java.sql.SQLNonTransientConnectionException: Can't call rollback when autocommit=true
+ERROR:
+java.sql.SQLException: Operation not allowed after ResultSet closed
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+2
+1
+true
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+java.sql.SQLException: Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.
+ERROR:
+java.sql.SQLFeatureNotSupportedException
+false
+false
+java.sql.SQLNonTransientConnectionException: Can't call rollback when autocommit=true
+false
+java.sql.SQLException: Operation not allowed after ResultSet closed
+java.sql.SQLException: Operation not allowed after ResultSet closed
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+1003
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+1007
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+1
+2
+java.sql.SQLException: Operation not allowed after ResultSet closed
+1007
+java.sql.SQLException: Operation not allowed after ResultSet closed
+0
+java.sql.SQLException: Operation not allowed after ResultSet closed
+false
+java.sql.SQLException: Operation not allowed after ResultSet closed
+here
+java.sql.SQLSyntaxErrorException: SAVEPOINT 83c7a479_7826_4f73_ae26_d9a5596f539e does not exist
+java.sql.SQLException: Operation not allowed after ResultSet closed
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
