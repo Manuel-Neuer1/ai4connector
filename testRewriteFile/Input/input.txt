@@ -1,38 +1,110 @@
-Connection con = null;
-Statement stmt = null;
-ResultSet rs = null;
-Savepoint sp = null;
+        Connection con = null;
+        Statement stmt = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Savepoint sp = null;
 
-con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test26?user=root&password=123456&useServerPrepStmts=true&allowMultiQueries=true&rewriteBatchedStatements=true&tinyInt1isBit=false&cacheCallableStmts=true&useBulkStmts=false");
-stmt = con.createStatement(1004, 1008, 2);
-con.setTransactionIsolation(2);
-stmt.executeLargeUpdate("CREATE TABLE table26_0(id VARCHAR(5) PRIMARY KEY,value TEXT(5));", 1);
-stmt.getLargeUpdateCount();
-stmt.getResultSetConcurrency();
-rs = stmt.getGeneratedKeys();
-stmt.getResultSetType();
-rs.next();
-rs.next();
-rs.isLast();
+con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test18?user=root&password=1234");
+stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+        con.setAutoCommit(false); // 开启事务模式
+        stmt.executeUpdate("DROP TABLE table18_0;");
+        stmt.executeLargeUpdate("CREATE TABLE IF NOT EXISTS table18_0 (Id CHAR(10) PRIMARY KEY, Value0 TEXT(100), Value1 BOOLEAN, Value2 INT);", 1);
 
-rs.updateObject(1, -1);
+        // 1. 创建数据
+        stmt.executeUpdate("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('0001', 'Hello', true, 99999)");
+        stmt.executeUpdate("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('0002', REPEAT('A', 100), false, -2147483648)");
+        stmt.executeUpdate("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('0003', NULL, true, 2147483647)");
 
-rs.setFetchDirection(1000);
-rs.isFirst();
-rs.cancelRowUpdates();
+        // 2. 事务测试
+        sp = con.setSavepoint("Savepoint1");
+        stmt.executeUpdate("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('0004', 'TestA', false, 123456)");
+        con.rollback(sp);  // 回滚到 Savepoint1
+        sp = con.setSavepoint("Savepoint2");
+        stmt.executeUpdate("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('0005', 'TestB', true, 987654)");
+        con.commit();  // 提交事务
 
-System.out.println(e);
-con.setAutoCommit(true);
-rs.updateObject(1, 1229271104);
+        // 3. 批处理
+        stmt.addBatch("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('1001', 'BatchData1', false, 1)");
+        stmt.addBatch("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('1002', 'BatchData2', true, 2)");
+        stmt.addBatch("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('1003', 'BatchData3', false, 3)");
+        stmt.executeBatch();
 
-rs.isAfterLast();
+        // 4. PreparedStatement（极端数据）
+        pstmt = con.prepareStatement("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES (?, ?, ?, ?)");
+        pstmt.setString(1, "2001");
+        pstmt.setString(2, "最大值" + "A".repeat(100));  // 超长 TEXT
+        pstmt.setBoolean(3, true);
+        pstmt.setInt(4, Integer.MAX_VALUE);
+        pstmt.executeUpdate();
 
-rs.updateRow();
+        pstmt.setString(1, "2002");
+        pstmt.setNull(2, Types.VARCHAR);
+        pstmt.setBoolean(3, false);
+        pstmt.setInt(4, Integer.MIN_VALUE);
+        pstmt.executeUpdate();
+        pstmt.close();
 
-con.getNetworkTimeout();
-rs.beforeFirst();
-rs.next();
-rs.isAfterLast();
+        // 5. ResultSet 遍历测试
+        rs = stmt.executeQuery("SELECT * FROM table18_0");
+        while (rs.next()) {
+            String id = rs.getString("Id");
+            String value0 = rs.getString("Value0");
+            boolean value1 = rs.getBoolean("Value1");
+            int value2 = rs.getInt("Value2");
+        }
+        rs.close();
 
-rs.updateObject(1, -1);
+        // 6. ResultSet 游标测试
+        rs = stmt.executeQuery("SELECT * FROM table18_0");
+        if (rs.absolute(3)) {
+            rs.getString("Id");
+            rs.getString("Value0");
+            rs.getBoolean("Value1");
+            rs.getInt("Value2");
+        }
+        rs.close();
+
+        // 7. 数据更新
+        stmt.executeUpdate("UPDATE table18_0 SET Value0 = 'UpdatedData' WHERE Id = '0001'");
+
+        // 8. 事务回滚测试
+        sp = con.setSavepoint("Savepoint3");
+        stmt.executeUpdate("DELETE FROM table18_0 WHERE Id = '0001'");
+        con.rollback(sp);  // 确保数据仍然存在
+
+        // 9. NULL 处理
+        pstmt = con.prepareStatement("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES (?, ?, ?, ?)");
+        pstmt.setString(1, "3001");
+        pstmt.setNull(2, Types.VARCHAR);
+        pstmt.setNull(3, Types.BOOLEAN);
+        pstmt.setNull(4, Types.INTEGER);
+        pstmt.executeUpdate();
+        pstmt.close();
+
+
+
+        // 11. 大数据量插入
+        for (int i = 4001; i <= 4050; i++) {
+            stmt.executeUpdate("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('" + i + "', 'BigData', " + (i % 2 == 0) + ", " + (i * 2) + ")");
+        }
+
+        // 12. 大文本数据
+        pstmt = con.prepareStatement("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES (?, ?, ?, ?)");
+        pstmt.setString(1, "5001");
+        pstmt.setString(2, "B".repeat(100)); // 最大长度 TEXT
+        pstmt.setBoolean(3, true);
+        pstmt.setInt(4, 5050);
+        pstmt.executeUpdate();
+        pstmt.close();
+
+        // 13. 触发布尔类型转换问题
+        stmt.executeUpdate("INSERT INTO table18_0 (Id, Value0, Value1, Value2) VALUES ('6001', 'BoolTest', 2, 1234)");
+
+        // 14. TIMESTAMP 插入
+        stmt.executeUpdate("ALTER TABLE table18_0 ADD COLUMN TimeStampColumn TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
+        stmt.executeUpdate("INSERT INTO table18_0 (Id, Value0, Value1, Value2, TimeStampColumn) VALUES ('7001', 'TimestampTest', true, 777, NOW())");
+
+        con.commit();
+        stmt.close();
+        con.close();
 

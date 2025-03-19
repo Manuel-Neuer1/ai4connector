@@ -1,0 +1,284 @@
+        final int MAX_CYCLES = 5;
+        final String LONG_STR = "A".repeat(1000);
+        Connection conn = null;
+        try {
+            // ========== 连接阶段 ==========
+            System.out.println("Connecting to database...");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test18?user=root&password=1234");
+            System.out.println("Connection established: " + conn.isValid(1));
+            // ========== 连接配置 ==========
+            for (int i = 0; i < MAX_CYCLES; i++) {
+                boolean autoCommit = i % 2 == 0;
+                conn.setAutoCommit(autoCommit);
+                System.out.println("setAutoCommit(" + autoCommit + ")");
+                boolean readOnly = i % 3 == 0;
+                conn.setReadOnly(readOnly);
+                System.out.println("setReadOnly(" + readOnly + ")");
+                int isolation = i % 4 == 0 ? Connection.TRANSACTION_READ_COMMITTED
+                                          : Connection.TRANSACTION_REPEATABLE_READ;
+                conn.setTransactionIsolation(isolation);
+                System.out.println("setTransactionIsolation(" + isolation + ")");
+                int timeout = i % 2 == 0 ? 0 : Integer.MAX_VALUE;
+                conn.setNetworkTimeout(Executors.newCachedThreadPool(), timeout);
+                System.out.println("setNetworkTimeout(" + timeout + ")");
+            }
+            // ========== 表结构操作 ==========
+            Statement stmt1 = conn.createStatement();
+            Statement stmt2 = conn.createStatement(
+                ResultSet.TYPE_FORWARD_ONLY,
+                ResultSet.CONCUR_READ_ONLY);
+            try {
+                System.out.println("Dropping table: " + stmt2.execute("DROP TABLE IF EXISTS table18_0"));
+            } catch (SQLException e) {
+                System.out.println("Drop table failed: " + e.getMessage());
+            }
+            try {
+                boolean createResult = stmt2.execute(
+                    "CREATE TABLE table18_0 (" +
+                    "  Id DOUBLE PRIMARY KEY, " +
+                    "  Value0 VARCHAR(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin, " +
+                    "  Value1 VARCHAR(5) DEFAULT NULL, " +
+                    "  Value2 DECIMAL(30,5) NOT NULL" +
+                    ")");
+                System.out.println("Create table result: " + createResult);
+            } catch (SQLException e) {
+                System.out.println("Create table failed: " + e.getMessage());
+            }
+            // ========== 准备语句 ==========
+            PreparedStatement pstmt1 = null, pstmt2 = null, pstmt3 = null;
+            try {
+                pstmt1 = conn.prepareStatement("INSERT INTO table18_0 VALUES (?, ?, ?, ?)");
+                pstmt2 = conn.prepareStatement(
+                    "SELECT * FROM table18_0 WHERE Value0 LIKE ?",
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+                pstmt3 = conn.prepareStatement(
+                    "UPDATE table18_0 SET Value2=? WHERE Id=?",
+                    Statement.RETURN_GENERATED_KEYS);
+            } catch (SQLException e) {
+                System.out.println("Prepare statement failed: " + e.getMessage());
+            }
+            // ========== 主测试循环 ==========
+            for (int cycle = 0; cycle < MAX_CYCLES * 2; cycle++) {
+                Savepoint sp = null;
+                try {
+                    sp = conn.setSavepoint("SP_" + cycle);
+                    System.out.println("Savepoint created: " + sp.getSavepointName());
+                } catch (SQLException e) {
+                    System.out.println("Create savepoint failed: " + e.getMessage());
+                }
+                // ===== 批量操作 =====
+                for (int i = 0; i < 100; i++) {
+                    try {
+                        pstmt1.setDouble(1, i * Math.PI);
+                        pstmt1.setString(2, i % 10 == 0 ? LONG_STR : null);
+                        pstmt1.setObject(3, i % 2 == 0 ? "TEXT" : null, Types.VARCHAR);
+                        try {
+                            pstmt1.setBigDecimal(4, new BigDecimal("1E+10000"));
+                        } catch (SQLException ex) {
+                            System.out.println("setBigDecimal failed: " + ex.getMessage());
+                        }
+                        pstmt1.addBatch();
+
+                        stmt1.addBatch("UPDATE table18_0 SET Value1='X' WHERE Id=" + i);
+                    } catch (SQLException e) {
+                        System.out.println("Batch setup failed: " + e.getMessage());
+                    }
+                }
+                try {
+                    int[] batchResults = pstmt1.executeBatch();
+                    System.out.println("PreparedStatement batch executed, results length: " + batchResults.length);
+                } catch (SQLException e) {
+                    System.out.println("PreparedStatement batch failed: " + e.getMessage());
+                }
+                try {
+                    int[] stmtBatchResults = stmt1.executeBatch();
+                    System.out.println("Statement batch executed, results length: " + stmtBatchResults.length);
+                } catch (SQLException e) {
+                    System.out.println("Statement batch failed: " + e.getMessage());
+                }
+                try {
+                    conn.commit();
+                    System.out.println("Commit succeeded");
+                } catch (SQLException e) {
+                    System.out.println("Commit failed: " + e.getMessage());
+                }
+
+                // ===== 结果集操作 =====
+                ResultSet rs1 = null;
+                try {
+                    rs1 = stmt1.executeQuery("SELECT * FROM table18_0");
+                    rs1.setFetchSize(cycle % 2 == 0 ? 1 : Integer.MAX_VALUE);
+                    System.out.println("Fetch size set: " + rs1.getFetchSize());
+
+                    rs1.setFetchDirection(cycle % 2 == 0 ? ResultSet.FETCH_FORWARD : ResultSet.FETCH_REVERSE);
+                    System.out.println("Fetch direction: " + rs1.getFetchDirection());
+
+                    while (rs1.next()) {
+                        try {
+                            Object o1 = rs1.getObject(1);
+                            System.out.println("Column 1 value: " + o1);
+
+                            Double id = rs1.getObject("Id", Double.class);
+                            System.out.println("Id as Double: " + id);
+
+                            BigDecimal value2 = rs1.getObject(4, BigDecimal.class);
+                            System.out.println("Value2: " + value2);
+
+                            rs1.updateString(2, cycle % 2 == 0 ? "NEW" : LONG_STR);
+                            System.out.println("Update row: " + rs1.rowUpdated());
+                        } catch (SQLException e) {
+                            System.out.println("ResultSet operation failed: " + e.getMessage());
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.out.println("ResultSet processing failed: " + e.getMessage());
+                } finally {
+                    try {
+                        if (rs1 != null) rs1.close();
+                    } catch (SQLException e) {
+                        System.out.println("ResultSet close failed: " + e.getMessage());
+                    }
+                }
+
+                // ===== 异常测试 =====
+                try {
+                    boolean invalidResult = stmt2.execute("INVALID SQL SYNTAX");
+                    System.out.println("Invalid SQL executed: " + invalidResult);
+                } catch (SQLException ex) {
+                    System.out.println("Invalid SQL failed: " + ex.getMessage());
+                    try {
+                        conn.rollback(sp);
+                        System.out.println("Rollback to savepoint succeeded");
+                    } catch (SQLException e) {
+                        System.out.println("Rollback failed: " + e.getMessage());
+                    }
+
+                    try {
+                        boolean moreResults = stmt2.getMoreResults(Statement.CLOSE_CURRENT_RESULT);
+                        System.out.println("More results: " + moreResults);
+                    } catch (SQLException e) {
+                        System.out.println("getMoreResults failed: " + e.getMessage());
+                    }
+                    try {
+                        int updateCount = stmt2.getUpdateCount();
+                        System.out.println("Update count: " + updateCount);
+                    } catch (SQLException e) {
+                        System.out.println("getUpdateCount failed: " + e.getMessage());
+                    }
+                }
+            }
+            // ========== 高级结果集测试 ==========
+            try (ResultSet rs2 = pstmt2.executeQuery()) {
+                System.out.println("ResultSet type: " + rs2.getType());
+                System.out.println("Concurrency: " + rs2.getConcurrency());
+
+                rs2.beforeFirst();
+                rs2.afterLast();
+                System.out.println("absolute(50): " + rs2.absolute(50));
+                System.out.println("previous: " + rs2.previous());
+                System.out.println("relative(-3): " + rs2.relative(-3));
+                rs2.cancelRowUpdates();
+                System.out.println("rowDeleted: " + rs2.rowDeleted());
+                System.out.println("rowInserted: " + rs2.rowInserted());
+                System.out.println("rowUpdated: " + rs2.rowUpdated());
+                System.out.println("isFirst: " + rs2.isFirst());
+                System.out.println("isLast: " + rs2.isLast());
+                System.out.println("isAfterLast: " + rs2.isAfterLast());
+                System.out.println("isBeforeFirst: " + rs2.isBeforeFirst());
+            } catch (SQLException e) {
+                System.out.println("Advanced ResultSet failed: " + e.getMessage());
+            }
+            // ========== 元数据测试 ==========
+            try {
+                DatabaseMetaData meta = conn.getMetaData();
+                System.out.println("Database product: " + meta.getDatabaseProductName());
+
+                try (ResultSet tables = meta.getTables(null, null, "table18_0", new String[]{"TABLE"})) {
+                    System.out.println("Table metadata rows: " + tables.getRow());
+                }
+
+                try (ResultSet columns = meta.getColumns(null, null, "table18_0", "VALUE%")) {
+                    while (columns.next()) {
+                        System.out.println("Column: " + columns.getString("COLUMN_NAME"));
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("Metadata failed: " + e.getMessage());
+            }
+
+            // ========== 资源压力测试 ==========
+            for (int i = 0; i < 1000; i++) {
+                try {
+                    PreparedStatement tempPstmt = conn.prepareStatement("SELECT Value0 FROM table18_0 WHERE Id=?");
+                    tempPstmt.setDouble(1, i);
+                    ResultSet tempRs = tempPstmt.executeQuery();
+                    if (i % 100 == 0) {
+                        Statement cs = conn.createStatement();
+                        cs.closeOnCompletion();
+                        System.out.println("closeOnCompletion: " + cs.isCloseOnCompletion());
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Resource stress failed: " + e.getMessage());
+                }
+            }
+
+            // ========== 边界值测试 ==========
+            try {
+                stmt1.setMaxFieldSize(Integer.MAX_VALUE);
+                System.out.println("Max field size: " + stmt1.getMaxFieldSize());
+
+                stmt1.setMaxRows(0);
+                System.out.println("Max rows: " + stmt1.getMaxRows());
+
+                stmt1.setQueryTimeout(Integer.MAX_VALUE);
+                System.out.println("Query timeout: " + stmt1.getQueryTimeout());
+
+                pstmt3.setBigDecimal(1, null);
+                pstmt3.setDouble(2, Double.NaN);
+                int updateCount = pstmt3.executeUpdate();
+                System.out.println("Boundary update count: " + updateCount);
+            } catch (SQLException e) {
+                System.out.println("Boundary test failed: " + e.getMessage());
+            }
+
+            // ========== 关闭前操作 ==========
+            try {
+                conn.setAutoCommit(true);
+                conn.setReadOnly(false);
+                conn.setTransactionIsolation(Connection.TRANSACTION_NONE);
+                System.out.println("Final transaction isolation: " + conn.getTransactionIsolation());
+            } catch (SQLException e) {
+                System.out.println("Final setup failed: " + e.getMessage());
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Main process failed: " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                    System.out.println("Connection closed");
+                } catch (SQLException e) {
+                    System.out.println("Close connection failed: " + e.getMessage());
+                }
+
+                try {
+                    System.out.println("isReadOnly after close: " + conn.isReadOnly());
+                } catch (SQLException ignored) {
+                    System.out.println("isReadOnly after close threw exception");
+                }
+
+                try {
+                    conn.commit();
+                } catch (SQLException ignored) {
+                    System.out.println("commit after close threw exception");
+                }
+
+                try {
+                    conn.setSavepoint();
+                } catch (SQLException ignored) {
+                    System.out.println("setSavepoint after close threw exception");
+                }
+            }
+        }

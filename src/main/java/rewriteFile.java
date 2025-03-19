@@ -27,6 +27,7 @@ public class rewriteFile {
         PRINT_METHODS.add("getHoldability");
         PRINT_METHODS.add("getNetworkTimeout");
         PRINT_METHODS.add("executeUpdate");
+        PRINT_METHODS.add("executeLargeUpdate");
         PRINT_METHODS.add("getUpdateCount");
         PRINT_METHODS.add("getMoreResults");
         PRINT_METHODS.add("getLargeUpdateCount");
@@ -38,7 +39,7 @@ public class rewriteFile {
         PRINT_METHODS.add("getResultSetHoldability");
         PRINT_METHODS.add("getMaxRows");
         //rs
-        PRINT_METHODS.add("next");
+        //PRINT_METHODS.add("next");
         PRINT_METHODS.add("previous");
         PRINT_METHODS.add("isFirst");
         PRINT_METHODS.add("isLast");
@@ -98,6 +99,10 @@ public class rewriteFile {
                 rewrittenLines.add(rewrittenLine);
             } else {
                 if(isPrintMethod) {
+                    // 去掉最后的 ; 号（如果有的话）
+                    if (trimmedLine.endsWith(";")) {
+                        trimmedLine = trimmedLine.substring(0, trimmedLine.length() - 1);
+                    }
                     String printStatement = "System.out.println(" + trimmedLine + ");";
                     rewrittenLines.add(printStatement);
                 }else {

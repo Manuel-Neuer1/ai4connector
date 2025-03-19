@@ -53,7 +53,7 @@ public class Main {
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current working directory: " + currentDir);
         //String inputFilePath = "testRewriteFile/Input/input.txt";
-        String outputFilePath = "testRewriteFile/Output/output.txt";
+        String outputFilePath = "testRewriteFile/Output/deepseek1.txt";
 
 //        try{
 //            rewriteFile rf = new rewriteFile(inputFilePath, outputFilePath);
@@ -71,7 +71,7 @@ public class Main {
         ejf.executeFile(outputFilePath);
 
         //对比逻辑
-        OutputFileComparator.compare();
+        //OutputFileComparator.compare();
     }
 
     public static String promptGenerator(String URL, Meta meta, String createTableSQL) {

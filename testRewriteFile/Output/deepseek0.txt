@@ -1,0 +1,158 @@
+
+        final int MAX_CYCLES = 5;
+        final String LONG_STR = "A".repeat(1000);
+        Connection conn = null;
+
+        try {
+            // ========== 连接阶段 ==========
+            // 测试不同getConnection重载
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/test18?user=root&password=1234");
+
+            // ========== 连接配置 ==========
+            for (int i = 0; i < MAX_CYCLES; i++) {
+                conn.setAutoCommit(i % 2 == 0);
+                conn.setReadOnly(i % 3 == 0);
+                conn.setTransactionIsolation(
+                    i % 4 == 0 ? Connection.TRANSACTION_READ_COMMITTED 
+                             : Connection.TRANSACTION_REPEATABLE_READ);
+                conn.setNetworkTimeout(Executors.newCachedThreadPool(), 
+                    i % 2 == 0 ? 0 : Integer.MAX_VALUE);
+            }
+
+            // ========== 语句对象创建 ==========
+            Statement stmt1 = conn.createStatement();
+            Statement stmt2 = conn.createStatement(
+                ResultSet.TYPE_FORWARD_ONLY, 
+                ResultSet.CONCUR_READ_ONLY);
+            Statement stmt3 = conn.createStatement(
+                ResultSet.TYPE_SCROLL_SENSITIVE,
+                ResultSet.CONCUR_UPDATABLE,
+                ResultSet.HOLD_CURSORS_OVER_COMMIT);
+                 stmt2.execute("DROP TABLE IF EXISTS table18_0");
+
+                    // 创建包含非常用参数的表
+                    stmt2.execute(
+                        "CREATE TABLE table18_0 (" +
+                        "  Id DOUBLE PRIMARY KEY, " +
+                        "  Value0 VARCHAR(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin, " +
+                        "  Value1 VARCHAR(5) DEFAULT NULL, " +
+                        "  Value2 DECIMAL(30,5) NOT NULL" +
+                        ") /*ENGINE=InnoDB ROW_FORMAT=DYNAMIC KEY_BLOCK_SIZE=8*/"
+                    );
+
+            PreparedStatement pstmt1 = conn.prepareStatement(
+                "INSERT INTO table18_0 VALUES (?, ?, ?, ?)");
+            PreparedStatement pstmt2 = conn.prepareStatement(
+                "SELECT * FROM table18_0 WHERE Value0 LIKE ?",
+                ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+            PreparedStatement pstmt3 = conn.prepareStatement(
+                "UPDATE table18_0 SET Value2=? WHERE Id=?",
+                Statement.RETURN_GENERATED_KEYS);
+
+            // ========== 混合事务操作 ==========
+            for (int cycle = 0; cycle < MAX_CYCLES * 2; cycle++) {
+                Savepoint sp = conn.setSavepoint("SP_" + cycle);
+                
+                // ===== 批量操作测试 =====
+                for (int i = 0; i < 100; i++) {
+                    // PreparedStatement批处理
+                    pstmt1.setDouble(1, i * Math.PI);
+                    pstmt1.setString(2, i % 10 == 0 ? LONG_STR : null);
+                    pstmt1.setObject(3, i % 2 == 0 ? "TEXT" : null, Types.VARCHAR);
+                    try{
+                        pstmt1.setBigDecimal(4, new BigDecimal("1E+10000"));
+                    } catch (SQLException e) {
+                        System.out.println(e);
+                    }
+                    pstmt1.addBatch();
+
+                    // Statement批处理
+                    stmt1.addBatch("UPDATE table18_0 SET Value1='X' WHERE Id=" + i);
+                }
+                pstmt1.executeBatch();
+                stmt1.executeBatch();
+                conn.commit();
+
+                // ===== 结果集操作 =====
+                ResultSet rs1 = stmt3.executeQuery("SELECT * FROM table18_0");
+                rs1.setFetchSize(cycle % 2 == 0 ? 1 : Integer.MAX_VALUE);
+                rs1.setFetchDirection(
+                    cycle % 2 == 0 ? ResultSet.FETCH_FORWARD : ResultSet.FETCH_REVERSE);
+
+                while (rs1.next()) {
+                    // 测试不同getObject重载
+                    Object o1 = rs1.getObject(1);
+                    Double id = rs1.getObject("Id", Double.class);
+                    BigDecimal value2 = rs1.getObject(4, BigDecimal.class);
+
+                    // 更新操作
+                    rs1.updateString(2, cycle % 2 == 0 ? "NEW" : LONG_STR);
+                    rs1.updateRow();
+                }
+                rs1.close();
+
+                // ===== 异常操作测试 =====
+                try {
+                    stmt2.execute("INVALID SQL SYNTAX");
+                } catch (SQLException ex) {
+                    conn.rollback(sp);
+                    stmt2.getMoreResults(Statement.CLOSE_CURRENT_RESULT);
+                    stmt2.getUpdateCount();
+                }
+            }
+
+            // ========== 高级结果集测试 ==========
+            ResultSet rs2 = pstmt2.executeQuery();
+            rs2.beforeFirst();
+            rs2.afterLast();
+            rs2.absolute(50);
+            rs2.previous();
+            rs2.relative(-3);
+            rs2.cancelRowUpdates();
+            rs2.rowDeleted();
+            rs2.rowInserted();
+            rs2.rowUpdated();
+            rs2.isFirst();
+            rs2.isLast();
+            rs2.isAfterLast();
+            rs2.isBeforeFirst();
+            rs2.close();
+
+
+            // ========== 资源压力测试 ==========
+            for (int i = 0; i < 1000; i++) {
+                PreparedStatement tempPstmt = conn.prepareStatement(
+                    "SELECT Value0 FROM table18_0 WHERE Id=?");
+                tempPstmt.setDouble(1, i);
+                ResultSet tempRs = tempPstmt.executeQuery();
+                // 故意不关闭资源
+                if (i % 100 == 0) {
+                    conn.createStatement().closeOnCompletion();
+                }
+            }
+
+            // ========== 边界值测试 ==========
+            stmt3.setMaxFieldSize(Integer.MAX_VALUE);
+            stmt3.setMaxRows(0);
+            stmt3.setQueryTimeout(Integer.MAX_VALUE);
+            pstmt3.setBigDecimal(1, null);
+            pstmt3.setDouble(2, Double.NaN);
+            pstmt3.executeUpdate();
+
+            // ========== 关闭前极限操作 ==========
+            conn.setAutoCommit(true);
+            conn.setReadOnly(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_NONE);
+
+
+            // ========== 关闭后非法操作 ==========
+        } finally {
+            if (conn != null) {
+                conn.close();
+                // 测试已关闭连接的操作
+                try { conn.isReadOnly(); } catch (SQLException ignored) {}
+                try { conn.commit(); } catch (SQLException ignored) {}
+                try { conn.setSavepoint(); } catch (SQLException ignored) {}
+            }
+        }

@@ -1,11 +1,11 @@
 现在你是一个精通数据库连接器测试和 Java 语言的专家，
-数据库连接器连接的URL为：jdbc:mysql://localhost:3306/?user=root&password=1234&useServerPrepStmts=true&allowMultiQueries=false&rewriteBatchedStatements=true&tinyInt1isBit=true&yearIsDateType=true&createDatabaseIfNotExist=true&useBulkStmts=true
+数据库连接器连接的URL为：jdbc:mysql://localhost:3306/?user=root&password=1234&useServerPrepStmts=false&dumpQueriesOnException=true&tinyInt1isBit=false&yearIsDateType=true&cacheCallableStmts=false&useBulkStmts=true
 已知当前我的数据库中表结构为：
 Table Name: table0_2
 Key Column: 
- 	Id	VARCHAR(100)
+ 	Id	DECIMAL
 Value Columns:
-	Value0	TEXT(5)
-	Value1	FLOAT
+	Value0	CHAR
+	Value1	BIGINT
 
 请为我生成一个可能出现潜在问题的代码，该代码包含多种JDBC方法，在不同数据库连接器上测试时可能会产生不一样的结果
