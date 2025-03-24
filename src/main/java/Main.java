@@ -208,7 +208,10 @@ public class Main {
 
             writer.println("建表语句为：" + createTableSQL);
 
-            writer.println("请为我生成一个可能出现潜在问题的代码，该代码包含多种JDBC方法，在不同数据库连接器上测试时可能会产生不一样的结果");
+            writer.println("代码应多次调用相同的 JDBC 方法，特别是：executeUpdate(), executeLargeUpdate(), getGeneratedKeys(), commit(), rollback(), rollback(sp), addBatch(), executeBatch(), setFetchSize(), 以及上述提供的ResultSet类中的方法等，确保能够反复测试这些方法在不同连接器上的差异。" +
+                    "执行多次事务回滚与提交操作，并多次尝试关闭/重启连接以验证事务管理机制的正确性。\n" +
+                    "测试时需要模拟数据库异常的场景，例如对重复主键的插入、违反外键约束的插入、批量插入等，观察不同数据库连接器的反应。\n " +
+                    "代码需要在不同数据库连接器上测试时可能会产生不一样的结果，确保对可能的差异进行全面测试并报告结果");
 
 
             // 返回文件路径表示成功
