@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Main {
-    static String folderPath = "prompt";
+    static String folderPath = "prompt/testdb";
     static String URL = "jdbc:mysql://localhost:3306/?user=root&password=1234";
     static String oceanbaseURL = "jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234";;
     static int maxColumnCount = 4;
@@ -52,8 +52,9 @@ public class Main {
         URL = URL + urlLast;
         System.out.println(URL);
 
+        folderPath = folderPath + condb.getDbId() + "/";
         /* 测试列、表的逻辑 */
-        //每个数据库db里最多生成10个表用于测试
+        //每个数据库db里最多生成10个表用于测试（因此每个数据库db只生成10个prompt）
         for(int i = 0; i < maxTableCount; i++) {
             assert condb != null;
             Meta meta = new Meta(condb, i);
@@ -89,9 +90,9 @@ public class Main {
 
     public static String promptGenerator(String URL, Meta meta, String createTableSQL) {
         // 确保文件夹路径以斜杠结尾，如果不是则添加
-        if (!folderPath.endsWith(File.separator)) {
-            folderPath += File.separator;
-        }
+//        if (!folderPath.endsWith(File.separator)) {
+//            folderPath += File.separator;
+//        }
         // 创建文件夹（包括必要的父目录）
         File dir = new File(folderPath);
         if (!dir.exists()) {
