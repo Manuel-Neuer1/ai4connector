@@ -23,3 +23,124 @@ setNetworkTimeout(0)
 Dropping table: false
 Create table result: false
 Savepoint created: SP_0
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 1
+Fetch direction: 1000
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_0 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_1
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 2147483647
+ResultSet processing failed: Fetch direction ResultSet.FETCH_REVERSE cannot be set on a ResultSet of type ResultSet.TYPE_FORWARD_ONLY
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_1 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_2
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 1
+Fetch direction: 1000
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_2 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_3
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 2147483647
+ResultSet processing failed: Fetch direction ResultSet.FETCH_REVERSE cannot be set on a ResultSet of type ResultSet.TYPE_FORWARD_ONLY
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_3 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_4
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 1
+Fetch direction: 1000
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_4 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_5
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 2147483647
+ResultSet processing failed: Fetch direction ResultSet.FETCH_REVERSE cannot be set on a ResultSet of type ResultSet.TYPE_FORWARD_ONLY
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_5 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_6
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 1
+Fetch direction: 1000
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_6 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_7
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 2147483647
+ResultSet processing failed: Fetch direction ResultSet.FETCH_REVERSE cannot be set on a ResultSet of type ResultSet.TYPE_FORWARD_ONLY
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_7 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_8
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 1
+Fetch direction: 1000
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_8 does not exist
+More results: false
+Update count: -1
+Savepoint created: SP_9
+PreparedStatement batch failed: Data truncation: Out of range value for column 'Value2' at row 1
+Statement batch executed, results length: 100
+Commit failed: Can't call commit when autocommit=true
+Fetch size set: 2147483647
+ResultSet processing failed: Fetch direction ResultSet.FETCH_REVERSE cannot be set on a ResultSet of type ResultSet.TYPE_FORWARD_ONLY
+Invalid SQL failed: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INVALID SQL SYNTAX' at line 1
+Rollback failed: SAVEPOINT SP_9 does not exist
+More results: false
+Update count: -1
+Advanced ResultSet failed: No value specified for parameter 1
+Database product: MySQL
+Table metadata rows: 0
+Column: Value0
+Column: Value1
+Column: Value2
+closeOnCompletion: true
+closeOnCompletion: true
+closeOnCompletion: true
+closeOnCompletion: true
+closeOnCompletion: true
+closeOnCompletion: true
+closeOnCompletion: true
+closeOnCompletion: true
+closeOnCompletion: true
+closeOnCompletion: true
+Boundary test failed: Can not set max field size > max allowed packet of 67,108,864 bytes.
+Final setup failed: Transaction isolation level NONE not supported by MySQL
+Connection closed
+isReadOnly after close: false
+commit after close threw exception
+setSavepoint after close threw exception
