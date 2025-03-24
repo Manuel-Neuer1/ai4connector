@@ -44,12 +44,14 @@ public class Main {
         } catch (Exception e) {
             System.out.println("数据库连接异常，请检测数据库连接设置！");
             System.out.println(e.getMessage());
+            return;
         }
 
         /* 这里测试生成复杂URL的逻辑 */
         MysqlURLconfigGenerator mysqlURLgen = new MysqlURLconfigGenerator(r);
         String urlLast = (String) mysqlURLgen.generateRandomUrlConfig();
-        URL = URL + urlLast;
+        //URL = URL + urlLast;
+        URL = InsertDB2URL(URL, "testdb" + condb.getDbId()) + urlLast;
         System.out.println(URL);
 
         folderPath = folderPath + condb.getDbId() + "/";
@@ -69,7 +71,7 @@ public class Main {
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current working directory: " + currentDir);
         //String inputFilePath = "testRewriteFile/Input/input.txt";
-        String outputFilePath = "testRewriteFile/Output/deepseek2.txt";
+        String outputFilePath = "testRewriteFile/Output/kimi2.txt";
 
 //        try{
 //            rewriteFile rf = new rewriteFile(inputFilePath, outputFilePath);
@@ -88,6 +90,14 @@ public class Main {
 
         //对比逻辑
         //OutputFileComparator.compare();
+    }
+
+    public static String InsertDB2URL(String URL,String dbName) {
+            // 如果URL中不包含数据库名称，则在URL中添加数据库名称
+            int pos = URL.indexOf("?");
+            String URLFirst = URL.substring(0,pos);
+            String URLLast = URL.substring(pos);
+            return URLFirst + dbName + URLLast;
     }
 
     public static void promptGenerator(String URL, Meta meta, String createTableSQL) {

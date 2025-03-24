@@ -1,0 +1,82 @@
+Connection con = null;
+Statement stmt = null;
+PreparedStatement pstmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+try{
+    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb0?user=root&password=1234&rewriteBatchedStatements=true&useBulkStmts=false");
+    stmt = con.createStatement(1005, 1007, 2);
+    stmt.getQueryTimeout();
+    stmt.executeUpdate("DROP TABLE IF EXISTS table0_2;");
+    stmt.executeLargeUpdate("CREATE TABLE table0_2(Id VARCHAR(5) PRIMARY KEY, Value0 BIGINT, Value1 DECIMAL);", 1);
+    stmt.executeLargeUpdate("INSERT INTO table0_2(Id, Value0, Value1) VALUES('A001', 12789, 123.456);", 2);
+    stmt.getResultSetType();
+    stmt.getGeneratedKeys();
+    stmt.getLargeUpdateCount();
+    rs = stmt.executeQuery("SELECT Id, Value0, Value1 FROM table0_2 WHERE Value0 > 1000000;");
+    con.commit();
+    rs.setFetchDirection(1001);
+    rs.next();
+    con.getAutoCommit();
+    rs = stmt.executeQuery("SELECT Id, Value0, Value1 FROM table0_2 WHERE Value1 BETWEEN 100.000 AND 200.000;");
+    con.commit();
+    rs.next();
+    con.getHoldability();
+
+    pstmt = con.prepareStatement("INSERT INTO table0_2(Id, Value0, Value1) VALUES(?, ?, ?);");
+    pstmt.setString(1, "A002");
+    pstmt.setLong(2, 9874321L);
+    pstmt.setBigDecimal(3, new BigDecimal("987.654"));
+    pstmt.executeUpdate();
+    pstmt.addBatch();
+    pstmt.setString(1, "A003");
+    pstmt.setLong(2, 4890123L);
+    pstmt.setBigDecimal(3, new BigDecimal("456.789"));
+    pstmt.addBatch();
+    pstmt.executeBatch();
+    pstmt.clearBatch();
+    pstmt.setString(1, "A004");
+    pstmt.setLong(2, 782345L);
+    pstmt.setBigDecimal(3, new BigDecimal("789.012"));
+    pstmt.executeUpdate();
+    pstmt.getGeneratedKeys();
+    con.commit();
+
+    stmt.executeUpdate("UPDATE table0_2 SET Value0 = Value0 + 100000 WHERE Id IN ('A001', 'A002');");
+    stmt.executeLargeUpdate("DELETE FROM table0_2 WHERE Value1 < 500.000;", 1);
+    stmt.getLargeUpdateCount();
+    con.rollback();
+    stmt.executeUpdate("UPDATE table0_2 SET Value1 = Value1 * 2 WHERE Id LIKE 'A%';");
+    con.commit();
+
+    rs = stmt.executeQuery("SELECT Id, Value0, Value1 FROM table0_2 WHERE Value0 > (SELECT AVG(Value0) FROM table0_2);");
+    rs.setFetchSize(5);
+    rs.next();
+    rs.getString("Id");
+    rs.getLong("Value0");
+    rs.getBigDecimal("Value1");
+    rs.relative(2);
+    rs.getRow();
+    rs.beforeFirst();
+    rs.next();
+    rs.afterLast();
+    rs.previous();
+    rs.isClosed();
+    con.close();
+    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb0?user=root&password=1234&rewriteBatchedStatements=true&useBulkStmts=false");
+    stmt = con.createStatement(1004, 1008, 1);
+    stmt.executeUpdate("TRUNCATE TABLE table0_2;");
+    stmt.executeLargeUpdate("INSERT INTO table0_2(Id, Value0, Value1) SELECT CONCAT('B', Id), Value0 * 2, Value1 + 100.00 FROM table0_2;", 2);
+    stmt.getGeneratedKeys();
+    con.commit();
+    con.setAutoCommit(false);
+    stmt.executeUpdate("INSERT INTO table0_2(Id, Value0, Value1) VALUES('C001', 555555555, 555.555);");
+    stmt.executeUpdate("INSERT INTO table0_2(Id, Value0, Value1) VALUES('C001', 666666666, 666.666);"); // Duplicate key
+    con.rollback();
+    con.setAutoCommit(true);
+    stmt.executeUpdate("DELETE FROM table0_2 WHERE Id LIKE 'B%' OR Id LIKE 'C%';");
+    con.close();
+} catch(Exception e) {
+    //e.printStackTrace();
+    System.out.println(e.getMessage());
+}
