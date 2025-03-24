@@ -62,15 +62,9 @@ com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result 
 com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
 1007
 com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-1
-2
-java.sql.SQLException: Operation not allowed after ResultSet closed
-1007
-java.sql.SQLException: Operation not allowed after ResultSet closed
-0
-java.sql.SQLException: Operation not allowed after ResultSet closed
-false
-java.sql.SQLException: Operation not allowed after ResultSet closed
-java.sql.SQLSyntaxErrorException: SAVEPOINT d886bc5c_f42d_4b2a_99c3_13dc21d7503a does not exist
-java.sql.SQLException: Operation not allowed after ResultSet closed
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'test' for key 'table18_0.PRIMARY'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1334)
+	at com.mysql.cj.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2089)
+	at TestJDBC.main(TestJDBC.java:289)

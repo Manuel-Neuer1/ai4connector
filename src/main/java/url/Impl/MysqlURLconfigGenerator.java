@@ -22,6 +22,10 @@ public class MysqlURLconfigGenerator extends URLconfigGenerator {
         return sb.toString();
     }
 
+    /**
+     * 随机生成Mysql规范的一个布尔型的URL
+     * @return
+     */
     @Override
     public Object generateRandomBoolUrlConfig() {
         int op = r.nextInt(3);

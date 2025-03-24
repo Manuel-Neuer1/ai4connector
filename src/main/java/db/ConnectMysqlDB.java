@@ -2,11 +2,11 @@ package db;
 
 import java.sql.*;
 
-public class ConnectDB {
+public class ConnectMysqlDB {
     private Connection con;
     static int dbId = 0; // 全局自增 ID，每次创建对象递增
 
-    public ConnectDB(String url) {
+    public ConnectMysqlDB(String url) {
         //这个url就是最简单的：jdbc:mysql://localhost:3306/?user=root&password=123456
         try {
             this.con = DriverManager.getConnection(url);
@@ -24,7 +24,6 @@ public class ConnectDB {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public Connection getConnection() {

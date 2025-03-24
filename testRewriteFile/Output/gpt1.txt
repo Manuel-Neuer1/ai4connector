@@ -1,0 +1,198 @@
+import java.sql.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+public class JdbcTest {
+
+    public static void main(String[] args) {
+        String url = "$URL$";
+        String user = "username";
+        String password = "password";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password)) {
+            // 连接配置
+            conn.setReadOnly(false);
+            conn.setAutoCommit(false);
+            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            System.out.println("Connection is read only: " + conn.isReadOnly());
+            System.out.println("Transaction isolation: " + conn.getTransactionIsolation());
+
+            // 创建保存点
+            Savepoint savepoint1 = conn.setSavepoint("savepoint1");
+
+            // 创建语句
+            try (Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+                System.out.println("Statement result set type: " + stmt.getResultSetType());
+                System.out.println("Statement result set concurrency: " + stmt.getResultSetConcurrency());
+                System.out.println("Statement result set holdability: " + stmt.getResultSetHoldability());
+
+                // 执行查询
+                String sqlQuery = "SELECT * FROM table0_0";
+                try (ResultSet rs = stmt.executeQuery(sqlQuery)) {
+                    System.out.println("ResultSet holdability: " + rs.getHoldability());
+                    System.out.println("ResultSet is before first: " + rs.isBeforeFirst());
+                    System.out.println("ResultSet is after last: " + rs.isAfterLast());
+
+                    // 导航结果集
+                    rs.beforeFirst();
+                    while (rs.next()) {
+                        System.out.println("Id: " + rs.getDouble("Id"));
+                        System.out.println("Value0: " + rs.getString("Value0"));
+                        System.out.println("Value1: " + rs.getString("Value1"));
+                        System.out.println("Value2: " + rs.getBigDecimal("Value2"));
+                    }
+
+                    rs.beforeFirst();
+                    if (rs.next()) {
+                        rs.previous();
+                        System.out.println("ResultSet is first: " + rs.isFirst());
+                        System.out.println("ResultSet is last: " + rs.isLast());
+                    }
+
+                    // 更新结果集
+                    rs.beforeFirst();
+                    if (rs.next()) {
+                        rs.updateObject("Value0", "newVal");
+                        rs.updateRow();
+                        System.out.println("Row updated");
+                    }
+
+                    // 删除行
+                    rs.beforeFirst();
+                    if (rs.next()) {
+                        rs.deleteRow();
+                        System.out.println("Row deleted");
+                    }
+                }
+
+                // 批量操作
+                String sqlUpdate = "UPDATE table0_0 SET Value0 = ? WHERE Id = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
+                    for (int i = 0; i < 1000; i++) {
+                        pstmt.setString(1, "batchVal" + i);
+                        pstmt.setDouble(2, i);
+                        pstmt.addBatch();
+                    }
+                    int[] updateCounts = pstmt.executeBatch();
+                    System.out.println("Batch update counts: " + updateCounts.length);
+                }
+
+                // 大批量操作
+                String sqlInsert = "INSERT INTO table0_0 (Id, Value0, Value1, Value2) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+                    for (int i = 0; i < 10000; i++) {
+                        pstmt.setDouble(1, i);
+                        pstmt.setString(2, "largeBatchVal0" + i);
+                        pstmt.setString(3, "largeBatchVal1" + i);
+                        pstmt.setBigDecimal(4, new java.math.BigDecimal(i));
+                        pstmt.addBatch();
+                    }
+                    long[] largeUpdateCounts = pstmt.executeLargeBatch();
+                    System.out.println("Large batch update counts: " + largeUpdateCounts.length);
+                }
+
+                // 执行大型更新
+                String sqlLargeUpdate = "UPDATE table0_0 SET Value2 = Value2 + 1";
+                long largeUpdateCount = stmt.executeLargeUpdate(sqlLargeUpdate);
+                System.out.println("Large update count: " + largeUpdateCount);
+
+                // 获取生成的键
+                String sqlInsertWithKeys = "INSERT INTO table0_0 (Id, Value0, Value1, Value2) VALUES (1000, 'keyTest0', 'keyTest1', 1000.0)";
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlInsertWithKeys, Statement.RETURN_GENERATED_KEYS)) {
+                    pstmt.executeUpdate();
+                    try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                        while (rs.next()) {
+                            System.out.println("Generated key: " + rs.getObject(1));
+                        }
+                    }
+                }
+
+                // 设置fetch size和direction
+                stmt.setFetchSize(100);
+                stmt.setFetchDirection(ResultSet.FETCH_REVERSE);
+                System.out.println("Fetch size: " + stmt.getFetchSize());
+                System.out.println("Fetch direction: " + stmt.getFetchDirection());
+
+                // 设置查询超时
+                stmt.setQueryTimeout(5);
+                System.out.println("Query timeout: " + stmt.getQueryTimeout());
+
+                // 设置最大行数
+                stmt.setMaxRows(100);
+                System.out.println("Max rows: " + stmt.getMaxRows());
+
+                // 设置转义处理
+                stmt.setEscapeProcessing(false);
+                System.out.println("Escape processing: " + stmt.getEscapeProcessing());
+
+                // 再次执行查询
+                try (ResultSet rs = stmt.executeQuery(sqlQuery)) {
+                    while (rs.next()) {
+                        System.out.println("Id: " + rs.getDouble("Id"));
+                        System.out.println("Value0: " + rs.getString("Value0"));
+                        System.out.println("Value1: " + rs.getString("Value1"));
+                        System.out.println("Value2: " + rs.getBigDecimal("Value2"));
+                    }
+                }
+
+                // 再次执行更新
+                String sqlUpdateAgain = "UPDATE table0_0 SET Value1 = 'updated' WHERE Id > 500";
+                int updateCount = stmt.executeUpdate(sqlUpdateAgain);
+                System.out.println("Update count: " + updateCount);
+
+                // 再次执行批量操作
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlUpdate)) {
+                    for (int i = 0; i < 1000; i++) {
+                        pstmt.setString(1, "batchValAgain" + i);
+                        pstmt.setDouble(2, i);
+                        pstmt.addBatch();
+                    }
+                    int[] updateCountsAgain = pstmt.executeBatch();
+                    System.out.println("Batch update counts again: " + updateCountsAgain.length);
+                }
+
+                // 再次执行大型批量操作
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+                    for (int i = 0; i < 10000; i++) {
+                        pstmt.setDouble(1, i);
+                        pstmt.setString(2, "largeBatchValAgain0" + i);
+                        pstmt.setString(3, "largeBatchValAgain1" + i);
+                        pstmt.setBigDecimal(4, new java.math.BigDecimal(i));
+                        pstmt.addBatch();
+                    }
+                    long[] largeUpdateCountsAgain = pstmt.executeLargeBatch();
+                    System.out.println("Large batch update counts again: " + largeUpdateCountsAgain.length);
+                }
+
+                // 再次执行大型更新
+                long largeUpdateCountAgain = stmt.executeLargeUpdate(sqlLargeUpdate);
+                System.out.println("Large update count again: " + largeUpdateCountAgain);
+
+                // 再次获取生成的键
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlInsertWithKeys, Statement.RETURN_GENERATED_KEYS)) {
+                    pstmt.executeUpdate();
+                    try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                        while (rs.next()) {
+                            System.out.println("Generated key again: " + rs.getObject(1));
+                        }
+                    }
+                }
+
+                // 提交事务
+                conn.commit();
+
+                // 回滚到保存点
+                conn.rollback(savepoint1);
+                conn.releaseSavepoint(savepoint1);
+
+                // 再次提交
+                conn.commit();
+            }
+
+            // 关闭连接
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

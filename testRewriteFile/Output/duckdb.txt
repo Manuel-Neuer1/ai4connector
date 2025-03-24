@@ -1,270 +1,261 @@
-// seed: 1741594562096
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-Connection con = null;
-Statement stmt = null;
-ResultSet rs = null;
-Savepoint sp = null;
-con = DriverManager.getConnection("jdbc:duckdb:test18.db");
-con.setAutoCommit(true);
-stmt = con.createStatement();
-System.out.println(stmt.executeUpdate("DROP TABLE table18_0;"));
-System.out.println(stmt.execute("CREATE TABLE table18_0(id VARCHAR(100) PRIMARY KEY, value VARCHAR(100));"));
+public class JdbcTest {
 
-//stmt.closeOnCompletion();
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/test18?user=root&password=1234";
 
-stmt.addBatch("DELETE FROM table18_0 WHERE (table18_0.value > '0'-'u&!7L(FV(tSuNS0$9a3O40B8i3u@paMbI3VZZ4)Lb');");
-System.out.println(Arrays.toString(stmt.executeBatch()));
-/*try {
-	con.commit();
-} catch (Exception e) {
-	System.out.println(e);
-}
-sp = con.setSavepoint();
-stmt = con.prepareStatement("INSERT INTO table18_0 VALUES(?, ?);");
-con.setAutoCommit(true);
-stmt.closeOnCompletion();
-System.out.println(con.getNetworkTimeout());
-//stmt = con.createStatement();
-System.out.println(stmt.getMaxFieldSize());
-stmt.addBatch("DELETE FROM table18_0 WHERE (table18_0.id <> 'wjSdnE^$Z(9Lk0P%v5Q^10J&tHW'*'hLAvnp9f8f*cs'*';WLLH%8D$^Z.ra$T!pcftYAi') AND (table18_0.value = 'TDV(RzvajJUgeLy0Cn');");
-stmt.addBatch("UPDATE table18_0 SET value = 'q@coU@h&Ghr6mspJG&q.#eQt@$P8ChMUh%OK3wVF%AqEuO' WHERE (table18_0.id != 'T44l(L9!nr9F%hsH3gPum$'/'yk;IL;)wJ7aBn%cF,v^WFx5wK1e5pv$7Ygftl') OR (table18_0.value >= 'L&YrLCI@*2%.gR,C$Fzn!FB48xO$7yW.;'*'f,%e(5N$^R5e&QRIP#uX3bI&F82!v%7y');");
-stmt.addBatch("DELETE FROM table18_0 WHERE (table18_0.id >= '8D^bqZ1YM1bm6i&3PzYy8Jb6');");
-System.out.println(Arrays.toString(stmt.executeBatch()));
-stmt = con.prepareStatement("SELECT table18_0.value FROM table18_0 WHERE table18_0.value = ?");
-stmt.setFetchSize(500055554);
-stmt.closeOnCompletion();
-con.setAutoCommit(true);
-//stmt = con.createStatement();
-System.out.println(stmt.getFetchDirection());
-stmt.setFetchSize(780533020);
+        try {
+            // 注册驱动
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-System.out.println(stmt.executeUpdate("UPDATE table18_0 SET value = '9wUm7uf&2Qju!uJfpa6WtOUOi60%e^' WHERE (table18_0.id = 'h4FV5o2I;xhDk0b,ZilHdk4m%0WZQsVw9zt3fj)L');"));
-rs = stmt.getGeneratedKeys();
-System.out.println(rs.next());
+            // 获取连接
+            Connection connection = DriverManager.getConnection(url);
 
-System.out.println("ERROR:");
-try {
-	rs.getHoldability();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.updateObject(2, "'xFfYFDCCTPIuYCXlV%E6XIUBrs'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(rs.isFirst());
-try {
-	rs.cancelRowUpdates();
-} catch (Exception e) {
-	System.out.println(e);
-}
-con.setTransactionIsolation(2);
-System.out.println(rs.previous());
-rs = stmt.executeQuery("SELECT id, value FROM table18_0 WHERE (table18_0.value != '#&u;As#&LVB7%lAgdQn%kk^@XU9x9w9.&92VOeIff;d');");
-try {
-	con.commit();
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(rs.next());
-System.out.println(stmt.getResultSetConcurrency());
-rs = stmt.executeQuery("SELECT id, value FROM table18_0;");
-System.out.println(rs.isAfterLast());
-System.out.println(rs.getType());
-System.out.println(rs.next());
-try {
-	rs.updateObject(2, "'rjx5tZeg2N4CUBJ!LBlr8'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(rs.getType());
-try {
-	rs.cancelRowUpdates();
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(stmt.getResultSetType());
-try {
-	rs.updateObject(2, "'k;fH021'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	con.commit();
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(con.getHoldability());
-try {
-	rs.updateRow();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.beforeFirst();
-} catch (Exception e) {
-	System.out.println(e);
-}
-con.setAutoCommit(true);
-System.out.println(rs.next());
-rs.setFetchDirection(1000);
-try {
-	rs.updateObject(2, "'tEtar4gUn4!uUtmt0Y'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(stmt.getMoreResults(3));
-System.out.println(stmt.getUpdateCount());
-try {
-	rs.updateRow();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.afterLast();
-} catch (Exception e) {
-	System.out.println(e);
-}
+            // 禁用自动提交
+            connection.setAutoCommit(false);
 
-System.out.println("ERROR:");
-try {
-	rs.isLast();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.updateObject(1, "'u^uQza^maJH,yt*87ihX!1N0Uj65*uAGM1#SyQ(FIw*6SX%V'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	con.rollback();
-} catch (Exception e) {
-	System.out.println(e);
-}
+            // 设置事务隔离级别
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 
-System.out.println("ERROR:");
-try {
-	rs.isAfterLast();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.cancelRowUpdates();
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(con.getHoldability());
-System.out.println(stmt.executeUpdate("INSERT INTO table18_0 VALUES('vXF1L0Fo@WTovV7f94JvDiwi;eabM@T8', 'X4TqXjwxb')"));
-rs = stmt.executeQuery("SELECT id, value FROM table18_0;");
-System.out.println(rs.next());
-try {
-	rs.updateObject(1, "'P!A1p,lJ8W'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.updateRow();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.beforeFirst();
-} catch (Exception e) {
-	System.out.println(e);
-}
+            // 创建 Statement
+            Statement statement = connection.createStatement();
 
-System.out.println("ERROR:");
-try {
-	rs.getHoldability();
-} catch (Exception e) {
-	System.out.println(e);
+            // 设置查询超时时间
+            statement.setQueryTimeout(30);
+
+            // 执行查询
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM table0_0");
+
+            // 设置 ResultSet 的获取大小
+            resultSet.setFetchSize(10);
+
+            // 遍历 ResultSet
+            while (resultSet.next()) {
+                double id = resultSet.getDouble("Id");
+                String value0 = resultSet.getString("Value0");
+                String value1 = resultSet.getString("Value1");
+                double value2 = resultSet.getDouble("Value2");
+
+                System.out.println("Id: " + id + ", Value0: " + value0 + ", Value1: " + value1 + ", Value2: " + value2);
+            }
+
+            // 关闭 ResultSet
+            resultSet.close();
+
+            // 创建 PreparedStatement
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO table0_0 (Id, Value0, Value1, Value2) VALUES (?, ?, ?, ?)");
+
+            // 设置参数
+            preparedStatement.setDouble(1, 1.0);
+            preparedStatement.setString(2, "test0");
+            preparedStatement.setString(3, "test1");
+            preparedStatement.setDouble(4, 123.45);
+
+            // 执行更新
+            int updateCount = preparedStatement.executeUpdate();
+
+            System.out.println("Update count: " + updateCount);
+
+            // 批量操作
+            List<Object[]> batchData = new ArrayList<>();
+            batchData.add(new Object[]{2.0, "test2", "test3", 678.90});
+            batchData.add(new Object[]{3.0, "test4", "test5", 12.34});
+
+            for (Object[] data : batchData) {
+                preparedStatement.setDouble(1, (Double) data[0]);
+                preparedStatement.setString(2, (String) data[1]);
+                preparedStatement.setString(3, (String) data[2]);
+                preparedStatement.setDouble(4, (Double) data[3]);
+                preparedStatement.addBatch();
+            }
+
+            // 执行批量更新
+            int[] batchUpdateCounts = preparedStatement.executeBatch();
+
+            System.out.println("Batch update counts: " + java.util.Arrays.toString(batchUpdateCounts));
+
+            // 获取生成的键
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            while (generatedKeys.next()) {
+                System.out.println("Generated key: " + generatedKeys.getLong(1));
+            }
+            generatedKeys.close();
+
+            // 关闭 PreparedStatement
+            preparedStatement.close();
+
+            // 提交事务
+            connection.commit();
+
+            // 回滚事务
+            connection.rollback();
+
+            // 创建保存点
+            Savepoint savepoint = connection.setSavepoint("savepoint1");
+
+            // 再次执行更新
+            statement.executeUpdate("UPDATE table0_0 SET Value0 = 'updated' WHERE Id = 1");
+
+            // 回滚到保存点
+            connection.rollback(savepoint);
+
+            // 删除保存点
+            connection.releaseSavepoint(savepoint);
+
+            // 获取结果集
+            resultSet = statement.executeQuery("SELECT * FROM table0_0");
+
+            // 设置获取方向
+            resultSet.setFetchDirection(ResultSet.FETCH_FORWARD);
+
+            // 遍历 ResultSet
+            while (resultSet.next()) {
+                System.out.println("Id: " + resultSet.getDouble("Id"));
+            }
+
+            // 移动到第一行之前
+            resultSet.beforeFirst();
+
+            // 检查是否在第一行之前
+            System.out.println("Is before first: " + resultSet.isBeforeFirst());
+
+            // 移动到第一行
+            resultSet.next();
+
+            // 更新行
+            resultSet.updateObject("Value0", "new_value");
+            resultSet.updateRow();
+
+            // 移动到最后一行之后
+            resultSet.afterLast();
+
+            // 检查是否在最后一行之后
+            System.out.println("Is after last: " + resultSet.isAfterLast());
+
+            // 关闭 Statement
+            statement.close();
+
+            // 关闭连接
+            connection.close();
+
+            // 再次获取连接
+            connection = DriverManager.getConnection(url);
+
+            // 再次创建 Statement
+            statement = connection.createStatement();
+
+            // 再次执行查询
+            resultSet = statement.executeQuery("SELECT * FROM table0_0");
+
+            // 再次遍历 ResultSet
+            while (resultSet.next()) {
+                System.out.println("Id: " + resultSet.getDouble("Id"));
+            }
+
+            // 再次关闭 ResultSet
+            resultSet.close();
+
+            // 再次创建 PreparedStatement
+            preparedStatement = connection.prepareStatement("INSERT INTO table0_0 (Id, Value0, Value1, Value2) VALUES (?, ?, ?, ?)");
+
+            // 再次设置参数
+            preparedStatement.setDouble(1, 4.0);
+            preparedStatement.setString(2, "test6");
+            preparedStatement.setString(3, "test7");
+            preparedStatement.setDouble(4, 90.12);
+
+            // 再次执行更新
+            updateCount = preparedStatement.executeUpdate();
+
+            System.out.println("Update count: " + updateCount);
+
+            // 再次批量操作
+            batchData.clear();
+            batchData.add(new Object[]{5.0, "test8", "test9", 34.56});
+            batchData.add(new Object[]{6.0, "test10", "test11", 78.90});
+
+            for (Object[] data : batchData) {
+                preparedStatement.setDouble(1, (Double) data[0]);
+                preparedStatement.setString(2, (String) data[1]);
+                preparedStatement.setString(3, (String) data[2]);
+                preparedStatement.setDouble(4, (Double) data[3]);
+                preparedStatement.addBatch();
+            }
+
+            // 再次执行批量更新
+            batchUpdateCounts = preparedStatement.executeBatch();
+
+            System.out.println("Batch update counts: " + java.util.Arrays.toString(batchUpdateCounts));
+
+            // 再次获取生成的键
+            generatedKeys = preparedStatement.getGeneratedKeys();
+            while (generatedKeys.next()) {
+                System.out.println("Generated key: " + generatedKeys.getLong(1));
+            }
+            generatedKeys.close();
+
+            // 再次关闭 PreparedStatement
+            preparedStatement.close();
+
+            // 再次提交事务
+            connection.commit();
+
+            // 再次回滚事务
+            connection.rollback();
+
+            // 再次创建保存点
+            savepoint = connection.setSavepoint("savepoint2");
+
+            // 再次执行更新
+            statement.executeUpdate("UPDATE table0_0 SET Value0 = 'updated_again' WHERE Id = 2");
+
+            // 再次回滚到保存点
+            connection.rollback(savepoint);
+
+            // 再次删除保存点
+            connection.releaseSavepoint(savepoint);
+
+            // 再次获取结果集
+            resultSet = statement.executeQuery("SELECT * FROM table0_0");
+
+            // 再次设置获取方向
+            resultSet.setFetchDirection(ResultSet.FETCH_REVERSE);
+
+            // 再次遍历 ResultSet
+            while (resultSet.next()) {
+                System.out.println("Id: " + resultSet.getDouble("Id"));
+            }
+
+            // 再次移动到第一行之前
+            resultSet.beforeFirst();
+
+            // 再次检查是否在第一行之前
+            System.out.println("Is before first: " + resultSet.isBeforeFirst());
+
+            // 再次移动到第一行
+            resultSet.next();
+
+            // 再次更新行
+            resultSet.updateObject("Value0", "new_value_again");
+            resultSet.updateRow();
+
+            // 再次移动到最后一行之后
+            resultSet.afterLast();
+
+            // 再次检查是否在最后一行之后
+            System.out.println("Is after last: " + resultSet.isAfterLast());
+
+            // 再次关闭 Statement
+            statement.close();
+
+            // 再次关闭连接
+            connection.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
-System.out.println(rs.next());
-System.out.println(rs.isFirst());
-try {
-	con.rollback();
-} catch (Exception e) {
-	System.out.println(e);
-}
-rs = stmt.executeQuery("SELECT id, value FROM table18_0 WHERE (table18_0.id <= 'SIAf5F6E'/'OOFXOhqCbmWi$.)oK&zCP*p(bT') OR (table18_0.id <> 'P%bfVNCPdpy6m(N.*@w'*'myVv537)U.5MVz.sa0wMKTr8N'*'hk;R,');");
-System.out.println(stmt.getMoreResults(1));
-try {
-	rs.isAfterLast();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.next();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.updateObject(2, "'azMDzz'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(rs.getType());
-try {
-	rs.cancelRowUpdates();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.updateObject(1, "'.hOZl6cyWam2$IS#V0$DkxZU3b(6.Kp'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(stmt.getResultSetConcurrency());
-try {
-	rs.updateRow();
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(stmt.executeUpdate("INSERT INTO table18_0 VALUES('D07', 'Xuge;jwP')"));
-System.out.println(con.getHoldability());
-try {
-	rs.beforeFirst();
-} catch (Exception e) {
-	System.out.println(e);
-}
-con.setTransactionIsolation(1);
-System.out.println(stmt.getResultSetConcurrency());
-try {
-	rs.next();
-} catch (Exception e) {
-	System.out.println(e);
-}
-System.out.println(con.getNetworkTimeout());
-try {
-	rs.beforeFirst();
-} catch (Exception e) {
-	System.out.println(e);
-}
-con.setAutoCommit(true);
-System.out.println(con.isReadOnly());
-try {
-	rs.next();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	con.rollback(sp);
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.afterLast();
-} catch (Exception e) {
-	System.out.println(e);
-}
-try {
-	rs.updateObject(1, "'$%8n9cpFL3Z2p0,;uhTB2YxHn1vl0jiNB5LjRFp'");
-} catch (Exception e) {
-	System.out.println(e);
-}
-*/
-con.close();
-stmt.close();
-//rs.close();

@@ -1,10 +1,8 @@
 package Schema;
 
-import db.ConnectDB;
-import java.sql.*;
+import db.ConnectMysqlDB;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 import Type.Mysql.supportColType;
@@ -14,11 +12,11 @@ public class Meta {
     private int id;
     private String tableName;
     private Table table;
-    private ConnectDB connect;
+    private ConnectMysqlDB connect;
 
     private Random r;
 
-    public Meta(ConnectDB connect,int id){
+    public Meta(ConnectMysqlDB connect, int id){
 
         r = new Random();
         this.id = id;

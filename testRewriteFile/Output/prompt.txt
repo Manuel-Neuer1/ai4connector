@@ -1,0 +1,87 @@
+现在你是一个精通数据库连接器测试和 Java 语言的专家，
+数据库连接器连接的URL为：$URL$
+已知当前我的数据库中表结构为：
+Table Name: table0_0
+Key Column:
+ 	Id	DOUBLE
+Value Columns:
+	Value0	VARCHAR(5)
+	Value1	VARCHAR(5)
+	Value2	DECIMAL
+请为我生成一个可能出现潜在问题的代码，该代码包含多种JDBC方法，在不同数据库连接器上测试时可能会产生不一样的结果,以下是你可以使用的方法，你能使用以下的方法以及其重载方法
+getConnection
+commit
+rollback
+rollback(Savepoint)
+close
+isReadOnly
+setAutoCommit
+setTransactionIsolation
+setSavepoint
+createStatement
+getHoldability
+getNetworkTimeout
+prepareStatement
+executeQuery
+executeUpdate
+executeLargeUpdate
+executeBatch
+executeLargeBatch
+addBatch
+clearBatch
+close
+closeOnCompletion
+getResultSet
+getUpdateCount
+getMoreResults
+getLargeUpdateCount
+getGeneratedKeys
+getMaxFieldSize
+setMaxFieldSize
+getQueryTimeout
+setQueryTimeout
+setFetchDirection
+getFetchDirection
+setFetchSize
+getFetchSize
+getResultSetConcurrency
+getResultSetType
+getResultSetHoldability
+setMaxRows
+setEscapeProcessing
+getMaxRows
+setObject
+addBatch
+executeBatch
+execute
+executeQuery
+executeUpdate
+clearParameters
+executeLargeUpdate
+next
+previous
+getObject
+cancelRowUpdates
+updateObject
+updateRow
+beforeFirst
+afterLast
+getHoldability
+getType
+setFetchSize
+setFetchDirection
+deleteRow
+rowDeleted
+rowInserted
+rowUpdated
+isFirst
+isLast
+isAfterLast
+isBeforeFirst
+close
+
+代码结构大致分为连接配置、事务处理、批量操作、结果集测试、异常处理、资源管理几个部分，每个部分调用多个允许的方法，参数设置极端，确保覆盖所有指定的方法，并生成足够长的调用序列。
+另外根据我们的研究发现Result中的beforeFirst、getholdability、isbeforefirst、next、previous、updateobject方法在某些数据库中可能会导致潜在问题，因此需要特别注意。
+Seyayment中的executebatch、executeLargeupdate、executeupdate、getgeneratedkeys、getresultset、getupdatecount、setfetchsize方法在某些数据库中可能会导致潜在问题，因此需要特别注意。
+尤其是当参数的设置不合理以及进行某些强制转化时爷更容易引起不同数据库连接器返回的结果不同。
+整合所有测试到一个代码块中，确保语法正确，资源管理适当，同时覆盖尽可能多的方法，并触发潜在问题。
