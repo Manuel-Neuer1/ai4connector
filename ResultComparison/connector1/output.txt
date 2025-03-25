@@ -1,1 +1,20 @@
-Generated keys not requested. You need to specify Statement.RETURN_GENERATED_KEYS to Statement.executeUpdate(), Statement.executeLargeUpdate() or Connection.prepareStatement().
+Savepoint: com.mysql.cj.jdbc.MysqlSavepoint@17aad511
+Id: 2.0, Value0: Test2
+Id: 3.0, Value0: Test3
+Id: 4.0, Value0: Test4
+Id: 5.0, Value0: Test5
+Id: 6.0, Value0: Test6
+Id: 7.0, Value0: Test7
+Id: 6.0, Value0: Test6
+Id: 2.0, Value0: Test2
+Id: 3.0, Value0: Test3
+Id: 4.0, Value0: Test4
+Id: 5.0, Value0: Test5
+Id: 6.0, Value0: Test6
+Id: 7.0, Value0: Test7
+Id: 8.0, Value0: Test8
+java.sql.SQLFeatureNotSupportedException
+Max Field Size: 50
+Max Rows: 100
+Fetch Direction: 1000
+here

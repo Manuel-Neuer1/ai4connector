@@ -1,0 +1,115 @@
+Connection con = null;
+Statement stmt = null;
+PreparedStatement pstmt = null;
+ResultSet rs = null;
+Savepoint savepoint = null;
+
+try{
+        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb0?user=root&password=1234");
+        stmt = con.createStatement(1005, 1007, 2);
+        stmt.getQueryTimeout();
+        stmt.executeUpdate("DROP TABLE IF EXISTS table0_0;");
+        stmt.executeUpdate("CREATE TABLE table0_0 (Id DOUBLE PRIMARY KEY, Value0 TEXT(5));");
+
+        // 测试更新操作
+        stmt.executeLargeUpdate("UPDATE table0_0 SET Value0 = 'Test' WHERE Id = 1;", 1);
+        stmt.getGeneratedKeys();
+        stmt.getLargeUpdateCount();
+
+        // 测试查询操作
+        rs = stmt.executeQuery("SELECT Id, Value0 FROM table0_0 WHERE Value0 = 'Test';");
+        rs.setFetchDirection(1001);
+        rs.next();
+        //con.commit();
+
+        // 测试事务回滚
+        savepoint = con.setSavepoint();
+        System.out.println("Savepoint: " + savepoint);
+        stmt.executeUpdate("INSERT INTO table0_0 (Id, Value0) VALUES (2, 'Test2');");
+        try{con.rollback(savepoint);}catch(Exception e){e.printStackTrace();}
+
+        // 测试 PreparedStatement
+        pstmt = con.prepareStatement("INSERT INTO table0_0 (Id, Value0) VALUES (?, ?);");
+        pstmt.setObject(1, 3.0);
+        pstmt.setObject(2, "Test3");
+        pstmt.executeUpdate();
+
+        // 测试批处理
+        stmt.addBatch("INSERT INTO table0_0 (Id, Value0) VALUES (4, 'Test4');");
+        stmt.addBatch("INSERT INTO table0_0 (Id, Value0) VALUES (5, 'Test5');");
+        stmt.executeBatch();
+
+        // 测试大批量操作
+        stmt.addBatch("INSERT INTO table0_0 (Id, Value0) VALUES (6, 'Test6');");
+        stmt.addBatch("INSERT INTO table0_0 (Id, Value0) VALUES (7, 'Test7');");
+        stmt.executeLargeBatch();
+
+        // 结果集遍历
+        rs = stmt.executeQuery("SELECT Id, Value0 FROM table0_0 WHERE Value0 LIKE 'Test%';");
+        rs.setFetchSize(100);
+        rs.beforeFirst();
+        while (rs.next()) {
+            System.out.println("Id: " + rs.getObject(1) + ", Value0: " + rs.getObject(2));
+        }
+
+        // 测试事务提交与自动提交模式
+        con.setAutoCommit(false);
+        stmt.executeUpdate("INSERT INTO table0_0 (Id, Value0) VALUES (8, 'Test8');");
+        con.commit();
+
+        // 执行带有多个查询条件的查询
+        rs = stmt.executeQuery("SELECT Id, Value0 FROM table0_0 WHERE Id > 5 AND Value0 = 'Test6';");
+        rs.next();
+        System.out.println("Id: " + rs.getObject(1) + ", Value0: " + rs.getObject(2));
+
+        // 测试删除行
+        stmt.executeUpdate("DELETE FROM table0_0 WHERE Id = 8;");
+
+        // 测试事务回滚
+        con.rollback();
+        // 结果集操作：使用next(), previous(), beforeFirst(), afterLast()
+        rs = stmt.executeQuery("SELECT Id, Value0 FROM table0_0;");
+        rs.beforeFirst();
+        while (rs.next()) {
+            System.out.println("Id: " + rs.getObject(1) + ", Value0: " + rs.getObject(2));
+        }
+
+        rs.afterLast();
+        // 测试获取结果集的保持能力
+        try{System.out.println("Result Set Holdability: " + rs.getHoldability());} catch(Exception e){System.out.println(e);}
+
+        // 测试获取 Statement 的最大字段大小
+        stmt.setMaxFieldSize(50);
+        System.out.println("Max Field Size: " + stmt.getMaxFieldSize());
+
+        // 测试设置和获取 Statement 的最大行数
+        stmt.setMaxRows(100);
+        System.out.println("Max Rows: " + stmt.getMaxRows());
+
+        // 测试设置和获取结果集的获取方向
+        stmt.setFetchDirection(ResultSet.FETCH_FORWARD);
+        System.out.println("Fetch Direction: " + stmt.getFetchDirection());
+
+        // 测试批量插入操作
+        stmt.addBatch("INSERT INTO table0_0 (Id, Value0) VALUES (9, 'Test9');");
+        stmt.addBatch("INSERT INTO table0_0 (Id, Value0) VALUES (10, 'Test10');");
+        stmt.executeBatch();
+
+        // 测试查询超时
+        stmt.setQueryTimeout(5);
+        rs = stmt.executeQuery("SELECT Id, Value0 FROM table0_0;");
+        rs.next();
+
+        // 测试大批量更新
+        stmt.executeLargeUpdate("UPDATE table0_0 SET Value0 = 'UpdatedTest' WHERE Id = 9;");
+        stmt.getLargeUpdateCount();
+
+        // 执行多个更新操作
+        stmt.executeUpdate("UPDATE table0_0 SET Value0 = 'UpdatedTest' WHERE Id = 10;");
+
+        // 关闭连接
+        stmt.close();
+        con.close();
+} catch(Exception e){
+        e.printStackTrace();
+}
