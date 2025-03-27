@@ -1,0 +1,10 @@
+目前在服务器里配置了qwen2.5-coder:7b模型
+https://blog.csdn.net/su_xiao_wei/article/details/146419463
+上面这个博客很有用，目前是配置的自启动ollama
+
+在qwen2.5_coder_7b_Modelfile中添加下面的参数，第一个是整个会话过程中的最大token数，第二个是每次生成的最大token数
+PARAMETER num_ctx 32768
+PARAMETER num_predict 20480
+
+ollama run qwen2.5-coder 启动大模型
+

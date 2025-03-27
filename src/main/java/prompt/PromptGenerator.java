@@ -35,7 +35,7 @@ public class PromptGenerator {
             writer.println("数据库连接器连接的URL为：" + URL);
             writer.print("已知当前我的数据库中表结构为：\n");
             writer.println(meta.getTable().toString());
-            writer.println("你的任务是为我生成一段 Java 代码，该代码需要满足以下要求:");
+            writer.println("你的任务是为我生成一段 Java 代码，该代码需要满足以下要求：");
             writer.println("    1. 代码需要包含多种 JDBC 方法的调用，以测试不同数据库连接器的行为差异。\n" +
                            "    2. 代码需符合以下格式，不包含 try-catch 块和其他不必要的代码:\n" +
                            "        “stmt = con.createStatement(1005, 1007, 2);\n" +
@@ -129,9 +129,9 @@ public class PromptGenerator {
                     "              isLast()：检查光标是否在最后一行。\n" +
                     "              isAfterLast()：检查光标是否在结果集的末尾之后。\n" +
                     "              isBeforeFirst()：检查光标是否在结果集的开头之前。\n" +
-                    "              close()：关闭此 ResultSet 对象。");
+                    "              close()：关闭此 ResultSet 对象。\n");
 
-            writer.println("    4. 测试模块以及给出了如下内容：" +
+            writer.println("    4. 测试模块以及给出了如下内容：\n" +
                     "       Connection conn = null;\n" +
                     "       Statement stmt = null;\n" +
                     "       PreparedStatement pstmt = null;\n" +
