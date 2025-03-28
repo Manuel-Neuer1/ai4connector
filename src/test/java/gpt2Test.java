@@ -11,13 +11,14 @@ public class gpt2Test {
         Savepoint savepoint = null;
 
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb0?user=root&password=1234");
-            //con = DriverManager.getConnection("jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234");
+            //con = DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb0?user=root&password=1234");
+            con = DriverManager.getConnection("jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234");
             con.setAutoCommit(false); // Disable auto-commit to test transactions
 
             // Test statement creation with different configurations
             stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
-
+            con.setHoldability(ResultSet.CLOSE_CURSORS_AT_COMMIT);
+            System.out.println("here: " + con.getHoldability());
             stmt.executeUpdate("DROP TABLE IF EXISTS table0_0;");
             stmt.executeUpdate("CREATE TABLE table0_0 (Id DOUBLE PRIMARY KEY, Value0 TEXT(5));");
             // 1. Test commit() and rollback() with multiple transactions
@@ -68,12 +69,25 @@ public class gpt2Test {
             System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             try{
                 rs.beforeFirst(); // Move to before first row
+                System.out.println("ERROR rs.beforeFirst()!");
             } catch (Exception e){
                 System.out.println("mysql抛出异常，OB没有");
             }
+            try{
+                rs.previous(); // Move to before first row
+                System.out.println("rs.previous()!");
+                System.out.println(rs.first());
+                System.out.println(rs.absolute(2));
+                System.out.println(rs.absolute(1));
+                System.out.println(rs.last());
+            } catch (Exception e){
+                System.out.println("OB nb");
+            }
+
             System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             try{
                 rs.afterLast(); // Move to after last row
+                System.out.println("ERROR rs.afterLast()!");
             } catch (Exception e){
                 System.out.println("mysql抛出异常，OB没有");
             }

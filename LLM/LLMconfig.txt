@@ -1,3 +1,28 @@
+首先OB只支持 ResultSet.TYPE_FORWARD_ONLY
+因此以下的结果：
+            con.setHoldability(ResultSet.CLOSE_CURSORS_AT_COMMIT);
+            System.out.println("here: " + con.getHoldability()); //这里输出为 1
+ResultSet.HOLD_CURSORS_OVER_COMMIT (值为 1) 表示结果集在事务提交后仍然保持打开状态。这是大多数数据库的默认行为。
+ResultSet.CLOSE_CURSORS_AT_COMMIT (值为 2) 表示结果集在事务提交时会被自动关闭。
+“可能是因为 OceanBase 的 JDBC 连接器对 setHoldability 方法的实现与 MySQL 或其他数据库有所不同。OceanBase 的 JDBC 连接器可能对 setHoldability 方法的实现进行了优化或限制，导致返回值为 1。
+OceanBase 的 JDBC 连接器在事务提交时关闭游标的行为是默认的，这可能是为了确保事务的一致性和资源的有效管理。这种行为可能与 MySQL 的 JDBC 连接器有所不同，后者可能支持更多的保持能力选项。
+”
+因此对于ResultSet中的方法：
+            boolean absolute()
+            boolean first()
+            boolean last()
+            都是只返回true，这与实际情况不符合，即使是规定了了ResultSet.TYPE_FORWARD_ONLY，但是也需要返回应该正确的结果或者抛出异常
+            这是JDK17 API文档给出的解释：
+            “抛出：
+             SQLException - 如果发生数据库访问错误；在关闭的结果集上调用此方法或结果集类型为 TYPE_FORWARD_ONLY
+             SQLFeatureNotSupportedException - 如果 JDBC 驱动程序不支持此方法”
+
+
+
+
+
+
+
 目前在服务器里配置了qwen2.5-coder:7b模型
 https://blog.csdn.net/su_xiao_wei/article/details/146419463
 上面这个博客很有用，目前是配置的自启动ollama
@@ -7,4 +32,8 @@ PARAMETER num_ctx 32768
 PARAMETER num_predict 20480
 
 ollama run qwen2.5-coder 启动大模型
+
+
+下载Anaconda3-2024.10-1-Linux-x86_64.sh
+wget https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh
 

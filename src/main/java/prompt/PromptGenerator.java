@@ -60,7 +60,6 @@ public class PromptGenerator {
                     "       3.1 DriverManager类中可使用的方法只有：\n" +
                     "              getConnection(URL);\n" +
                     "       3.2 Connection类中可使用的方法有：\n" +
-                    "              Connection 类中可使用的方法有：\n" +
                     "              commit()：提交当前事务。\n" +
                     "              rollback()：回滚当前事务。\n" +
                     "              rollback(Savepoint sp)：回滚到指定的保存点。\n" +

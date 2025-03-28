@@ -1,0 +1,120 @@
+
+// Placeholder for table structure (to be provided in prompt)
+// CREATE TABLE table_name (
+//     id SMALLINT PRIMARY KEY,
+//     value DOUBLE
+// );
+
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/db_name?user=root&password=1234");
+con.setAutoCommit(false); // Disable auto-commit to test transactions
+stmt = con.createStatement(1003, 1007, 1);
+stmt.executeLargeUpdate("CREATE TABLE table_name(id SMALLINT PRIMARY KEY,value DOUBLE);", 1);
+rs = stmt.getGeneratedKeys();
+stmt.getResultSetConcurrency();
+rs.next();
+sp = con.setSavepoint();
+rs.rowUpdated();
+rs = stmt.executeQuery("SELECT id, value FROM table_name;");
+con.isReadOnly();
+rs.next();
+rs.isAfterLast();
+rs.beforeFirst();
+con.isReadOnly();
+rs.isLast();
+rs.next();
+rs.isAfterLast();
+rs.updateObject(1, 1797933206);
+rs.updateRow();
+rs.getObject(1);
+stmt.getLargeUpdateCount();
+rs.beforeFirst();
+rs.next();
+rs.isFirst();
+con.isReadOnly();
+rs.updateObject(1, 533073167);
+stmt.getResultSetHoldability();
+rs.updateRow();
+rs.next();
+rs.afterLast();
+rs.beforeFirst();
+rs.isAfterLast();
+stmt.executeUpdate("INSERT INTO table_name VALUES(-1445227821, 0.20789422650530742)", 2);
+rs.next();
+stmt.getResultSetHoldability();
+con.rollback(sp);
+rs = stmt.executeQuery("SELECT id, value FROM table_name WHERE (table_name.value <> 0.3009806411570549+0.7249032706614513+0.4097607817915998);");
+rs.next();
+rs.updateObject(1, 0.5517045831304886);
+rs.updateRow();
+rs.updateObject(1, 846649483);
+rs.getHoldability();
+rs.isAfterLast());
+rs.cancelRowUpdates();
+stmt.executeUpdate("UPDATE table_name SET value = 0.23851048352535553 WHERE (table_name.value != 0.6553185953581724);", 1);
+rs = stmt.executeQuery("SELECT id, value FROM table_name;");
+stmt.getUpdateCount());
+rs.next());
+con.setTransactionIsolation(1);
+rs.setFetchDirection(1002);
+rs.beforeFirst();
+stmt.getLargeUpdateCount();
+con.setAutoCommit(true);
+rs.next();
+stmt.getResultSetType();
+rs.beforeFirst();
+rs.next();
+rs = stmt.executeQuery("SELECT id, value FROM table_name WHERE (table_name.value < 0.2765012819304111*0.21659991217720953);");
+rs.next();
+rs = stmt.executeQuery("SELECT id, value FROM table_name;");
+stmt.getUpdateCount();
+rs.setFetchDirection(1002);
+rs.next();
+rs.getObject(2);
+rs.updateObject(1, 0.7524850485115598);
+rs.updateRow();
+rs.getType();
+rs.updateObject(1, 0.3021939479626703);
+stmt.getResultSetConcurrency();
+rs.updateRow();
+rs.getType();
+rs.beforeFirst();
+rs.next());
+stmt.getResultSetConcurrency();
+stmt.getResultSetHoldability();
+rs.updateObject(1, -687474633);
+con.rollback(sp);
+rs.getType();
+rs.cancelRowUpdates();
+stmt.getMoreResults(3);
+rs.beforeFirst();
+stmt.executeUpdate("INSERT INTO table_name VALUES(607487473, 0.22939990573152635)", 2);
+rs.getType();
+rs.next();
+rs.updateObject(1, 0.9780089229103237);
+con.getHoldability();
+rs.updateRow();
+rs = stmt.executeQuery("SELECT id, value FROM table_name;");
+stmt.getResultSetConcurrency();
+rs.next();
+rs.next();
+rs.updateObject(1, 0.9586589137970863);
+stmt.executeLargeUpdate("UPDATE table_name SET value = 0.9859668524112163 WHERE (table_name.id != 315431726);", 2);
+rs.cancelRowUpdates();
+rs.beforeFirst();
+rs.next();
+con.isReadOnly();
+rs.updateObject(2, 0.4502156096477572);
+con.setTransactionIsolation(1);
+rs.updateRow();
+con.commit();
+
+con.close();
+stmt.close();
+rs.close();
+
