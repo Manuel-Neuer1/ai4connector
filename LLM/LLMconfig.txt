@@ -37,3 +37,12 @@ ollama run qwen2.5-coder 启动大模型
 下载Anaconda3-2024.10-1-Linux-x86_64.sh
 wget https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh
 
+
+星期一：
+微调的意义：
+原本有问题的数据集去微调LLM是让LLM知道哪里可能产生问题，这样LLM就会在生成答案的时候更加关注这些地方，从而生成更加准确的答案。
+另外是如果单纯让LLM去生成代码，LLM可能会出现幻觉的情况，因此微调可以让LLM更加专注于代码的生成，从而生成更加准确的代码。
+但是需要解决的一个问题就是SQL语句的生成，这个很重要
+
+现在搞了一个数据集，即Fine-tuning/Output1/ResultSet/afterLast/1.txt 关键代码大概在50行左右，对于一些方法的参数设置我觉得可以自己写方法去设置
+

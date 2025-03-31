@@ -1,0 +1,202 @@
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test73?user=root&password=123456&allowMultiQueries=true&rewriteBatchedStatements=true&dumpQueriesOnException=true&yearIsDateType=false&cacheCallableStmts=false");
+
+stmt = con.createStatement(1004, 1007, 1);
+System.out.println(stmt.getResultSetConcurrency());
+System.out.println(stmt.executeUpdate("CREATE TABLE table73_0(id VARCHAR(100) PRIMARY KEY,value CHAR);", 2));
+stmt = con.prepareStatement("SELECT table73_0.value FROM table73_0 WHERE table73_0.value < ?", 1003, 1008, 1);
+stmt.setEscapeProcessing(true);
+System.out.println(con.getHoldability());
+stmt.setObject(1, "'H6jZNvCnf^#a;K8nOj'");
+
+stmt.clearParameters();
+stmt.setQueryTimeout(2147483647);
+try {
+	con.rollback(null);
+} catch (Exception e) {
+	System.out.println(e);
+}
+stmt.setObject(1, "'f5'");
+
+try {
+	stmt.executeUpdate();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	stmt.executeUpdate("UPDATE table73_0 SET value = 'Yku,SYTRa7kQgKaDLGIO9Bf$eb#z0JW!PZ3fXql' WHERE (table73_0.value < 'QqmIP(R.QuwTrJr'/'N@L0%rm9.U6LfvkG$02rTA9yLogqOnW@g0n#*zJJ#4ifYLR;u') AND (table73_0.id <= 'Mw(i^flK^qmyIT(Dqk!),a6');", 1);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	con.commit();
+} catch (Exception e) {
+	System.out.println(e);
+}
+rs = stmt.getGeneratedKeys();
+System.out.println(rs.next());
+try {
+	stmt.executeLargeUpdate("DELETE FROM table73_0 WHERE (table73_0.value = 'nr,NLY@q5U4czNBY6XSF)h11rMzqScnP*luo') AND (table73_0.id <> 'mzDN)vluAP(LcpTD^e9NxcsA0$nKJL!@xID$8KsDN');", 2);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	stmt.executeQuery("SELECT id, value FROM table73_0 WHERE (table73_0.value <> '&&.Di(9(yYL399oOH9J4PC4Ex,Oa'*')BjI9jK72$#ey^jXiae#&6Z5yz3j8afV'*'&Y,Rmn$C)*w)lVAOOF26,)D^Ym@2S7I5t') OR (table73_0.value <= 'E@(ajfOnGYK8e2lnJQfxX@^KtAFYdyukt$k;TZVxbO3lJ');");
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.isLast();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.isAfterLast();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetHoldability());
+try {
+	rs.updateObject(1, "'hUessphOs4yRQEI$)C42vLnH3,wpA@m,Xp!)2'");
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	con.rollback(null);
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.setTransactionIsolation(8);
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.isBeforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetType());
+try {
+	rs.updateObject(2, "'9Zcuf$L;v*lrPEVZw;D1oZic'");
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.setTransactionIsolation(8);
+con.setTransactionIsolation(4);
+
+System.out.println("ERROR:");
+try {
+	rs.beforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetType());
+con.setAutoCommit(true);
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.afterLast();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.isBeforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.beforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(con.getHoldability());
+try {
+	stmt.executeQuery("SELECT id, value FROM table73_0 WHERE (table73_0.id >= 'OZXan8zAXqO)OD@PSS1MAn%UvNV(EDd3twu');");
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	stmt.executeUpdate("INSERT INTO table73_0 VALUES('9qr790yHC!vlTtKCiqs5r@K&G%$Q', 't&DIwej3AN0A!chD')", 2);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.beforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// rs = stmt.getResultSet();
+stmt.getResultSet();
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(1, "'zIK29Q@^tgm8&#mMJCtfvG^t8!RI3#3YTDuew2^9&3I6F7'");
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(con.getHoldability());
+
+System.out.println("ERROR:");
+// rs = stmt.getResultSet();
+stmt.getResultSet();
+con.close();
+stmt.close();
+rs.close();
+

@@ -1,11 +1,3 @@
-
-// Placeholder for table structure (to be provided in prompt)
-// CREATE TABLE table_name (
-//     id SMALLINT PRIMARY KEY,
-//     value DOUBLE
-// );
-
-
 Connection con = null;
 Statement stmt = null;
 ResultSet rs = null;

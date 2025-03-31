@@ -1,0 +1,49 @@
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test303?user=root&password=123456&useServerPrepStmts=true&yearIsDateType=false&createDatabaseIfNotExist=true&cacheCallableStmts=true");
+stmt = con.createStatement(1003, 1007, 2);
+stmt.getResultSetType();
+stmt.setQueryTimeout(1057483837);
+stmt.executeLargeUpdate("CREATE TABLE table303_0(id VARCHAR(100) PRIMARY KEY,value SMALLINT);", 2);
+stmt.getFetchDirection();
+sp = con.setSavepoint();
+	stmt.getGeneratedKeys();
+stmt.getResultSet();
+stmt.executeUpdate("DELETE FROM table303_0 WHERE (table303_0.value >= 542788621/107183547) AND (table303_0.id < 'nifmCSB#*K;@vbhd%ypK7*#n3FpQ^j*e()e7*wx');", 2);
+stmt.getLargeUpdateCount();
+	con.rollback();
+stmt.getLargeUpdateCount();
+stmt.getMoreResults(2);
+	con.rollback();
+rs = stmt.executeQuery("SELECT id, value FROM table303_0 WHERE (table303_0.value > -197775460*1483456000*-850934191) OR (table303_0.id <= '');");
+rs.next();
+	rs.updateObject(2, -1853249493);
+rs.isBeforeFirst();
+	rs.setFetchDirection(1001);
+	rs.updateRow();
+	rs.afterLast(); //ERROR
+rs.next();
+rs = stmt.executeQuery("SELECT id, value FROM table303_0 WHERE (table303_0.id > '@fBZ!g$8!2') AND (table303_0.value <> -2129718624);");
+rs.next();
+rs.isBeforeFirst();
+	rs.updateObject(2, "'vzoK,ohO,dFe$sx1,@0a%6XaWOt,05fFnl5IwNA#(hgIcbV(%'");
+	con.commit();
+rs.isBeforeFirst();
+	rs.cancelRowUpdates();
+	con.commit();
+stmt.getResultSetType();
+rs = stmt.executeQuery("SELECT id, value FROM table303_0 WHERE (table303_0.id >= 'Q9z5LuUu)ECH)F;Av,PnLbOS!pIlNJ7L');");
+con.setAutoCommit(true);
+sp = con.setSavepoint();
+rs.next();
+con.setTransactionIsolation(1);
+	rs.updateObject(1, "'1jwzjxv53w8Kl*cCY8%84dZERuVF%%WV(cAzDJo'");
+con.getNetworkTimeout();
+
+con.close();
+stmt.close();
+rs.close();
+

@@ -1,0 +1,60 @@
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test269?user=root&password=1234&allowMultiQueries=true&rewriteBatchedStatements=true&tinyInt1isBit=false&createDatabaseIfNotExist=true&cacheCallableStmts=false");
+stmt = con.createStatement(1003, 1007, 1);
+con.isReadOnly();
+sp = con.setSavepoint();
+stmt.executeUpdate("CREATE TABLE table269_0(id BIGINT PRIMARY KEY,value VARCHAR(5));", 1);
+stmt.getResultSetConcurrency();
+stmt.getFetchSize();
+rs = stmt.executeQuery("SELECT id, value FROM table269_0;");
+stmt.getResultSetHoldability();
+	con.commit();
+rs.next();
+	rs.afterLast(); //ERROR
+	rs.beforeFirst(); //ERROR
+	rs.setFetchDirection(1002);// 参数设置错误，应该是ResultSet.FETCH_FORWARD
+rs.next();
+stmt.getResultSetHoldability();
+	sout(rs.rowUpdated());
+	rs.updateObject(2, 918462153538412451); //在当前行使用x更新第2列（从1开始的下标）
+con.setTransactionIsolation(2);
+stmt.getUpdateCount();
+	rs.updateRow();
+	rs.getHoldability(); //ERROR
+	rs.rowUpdated();
+	rs.updateObject(1, 2257796056895505182);
+	con.rollback(sp);
+	rs.cancelRowUpdates();
+rs = stmt.executeQuery("SELECT id, value FROM table269_0;");
+rs.getType();
+rs.next();
+stmt.getResultSetType();
+	rs.rowDeleted();
+	rs.beforeFirst(); //ERROR
+stmt.getLargeUpdateCount();
+stmt.getResultSetType();
+rs.next();
+rs = stmt.executeQuery("SELECT id, value FROM table269_0 WHERE (table269_0.value > 'j') OR (table269_0.id > -9052785909881487205);");
+stmt.getResultSetConcurrency();
+stmt.getResultSetConcurrency();
+rs.next();
+	rs.rowInserted();
+sp = con.setSavepoint();
+rs = stmt.executeQuery("SELECT id, value FROM table269_0 WHERE (table269_0.value > 'eT6jIoE2!aBnpq@GK8gb;J') AND (table269_0.id != -6305954557349723889--6458880561418285542--3293896792246249967);");
+	con.rollback();
+stmt.getUpdateCount();
+rs.next();
+stmt.getResultSetHoldability();
+	rs.updateObject(1, "'dT23gfjrQx.yu8mgNdZ$.QftGpYB0s#sANwrenFmO'");
+con.getHoldability();
+	rs.updateRow();
+stmt.getResultSetConcurrency();
+
+con.close();
+stmt.close();
+rs.close();
+
