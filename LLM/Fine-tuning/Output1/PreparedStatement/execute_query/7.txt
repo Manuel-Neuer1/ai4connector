@@ -1,0 +1,178 @@
+// seed: 1743405716380
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test1636?user=root&password=123456&rewriteBatchedStatements=true&yearIsDateType=false&cacheCallableStmts=true");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test1636?user=root&password=123456&rewriteBatchedStatements=true&yearIsDateType=false&cacheCallableStmts=true");
+stmt = con.createStatement(1004, 1007, 1);
+System.out.println(stmt.executeUpdate("CREATE TABLE table1636_0(id FLOAT PRIMARY KEY,value DECIMAL);", 2));
+stmt.closeOnCompletion();
+con.setTransactionIsolation(8);
+System.out.println(con.getHoldability());
+stmt = con.createStatement(1003, 1008, 2);
+System.out.println(con.isReadOnly());
+con.setAutoCommit(false);
+System.out.println(stmt.executeUpdate("DELETE FROM table1636_0 WHERE (table1636_0.id >= 0.0544672);", 1));
+con.setTransactionIsolation(2);
+sp = con.setSavepoint();
+stmt = con.prepareStatement("INSERT INTO table1636_0 VALUES(?, ?);", 1004, 1008, 2);
+con.setAutoCommit(false);
+stmt.setObject(1, "0.32621098");
+ stmt.setObject(2, "0.033489304208364934");
+
+System.out.println(stmt.executeLargeUpdate());
+try {
+	stmt.setFetchSize(-1);
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.setAutoCommit(false);
+stmt.setObject(1, "0.7038022");
+ stmt.setObject(2, "0.9853604015838217");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.isFirst());
+
+stmt.setObject(1, "0.44118387");
+ stmt.setObject(2, "0.1486680941259506");
+
+System.out.println(stmt.executeLargeUpdate());
+
+System.out.println("ERROR:");
+// System.out.println(rs.isLast());
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.isLast());
+
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("INSERT INTO table1636_0 VALUES(0.26489007, 0.11914333429207946)", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("INSERT INTO table1636_0 VALUES(0.7787137, 0.4504857547963005)", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table1636_0;");
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(rs.isLast());
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+
+System.out.println("ERROR:");
+try {
+	rs.getHoldability();
+} catch (Exception e) {
+	System.out.println(e);
+}
+rs.beforeFirst();
+con.setTransactionIsolation(4);
+System.out.println(con.isReadOnly());
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+System.out.println(rs.isLast());
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table1636_0;");
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+
+System.out.println("ERROR:");
+System.out.println(rs.getType());
+System.out.println(rs.isLast());
+try {
+	rs.updateObject(2, 0.05126071);
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetConcurrency());
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("UPDATE table1636_0 SET value = 0.564679672896127 WHERE (table1636_0.value > 0.6365266774197762) OR (table1636_0.value > 0.8827191565873655);", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.beforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.getHoldability();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.setFetchDirection(1000);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getMoreResults(3));
+System.out.println(stmt.getLargeUpdateCount());
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();

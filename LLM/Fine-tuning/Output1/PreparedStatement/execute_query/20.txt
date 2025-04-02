@@ -1,0 +1,193 @@
+// seed seems not equal somewhere
+// seed: 1743407739051
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test4974?user=root&password=123456&rewriteBatchedStatements=true&dumpQueriesOnException=true&createDatabaseIfNotExist=true&useBulkStmts=false");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test4974?user=root&password=123456&rewriteBatchedStatements=true&dumpQueriesOnException=true&createDatabaseIfNotExist=true&useBulkStmts=false");
+stmt = con.createStatement(1003, 1008, 1);
+stmt.closeOnCompletion();
+con.setTransactionIsolation(8);
+con.setAutoCommit(false);
+stmt = con.createStatement(1005, 1007, 2);
+System.out.println(stmt.executeLargeUpdate("CREATE TABLE table4974_0(id DECIMAL PRIMARY KEY,value VARCHAR(100));", 1));
+con.commit();
+stmt.setFetchDirection(1002);
+stmt = con.prepareStatement("INSERT INTO table4974_0 VALUES(?, ?);", 1004, 1007, 2);
+stmt.setObject(1, "0.5357124143182572");
+ stmt.setObject(2, "'&sH40B@MZK&P%vMtJG#R^o9e,dDR'");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("INSERT INTO table4974_0 VALUES(0.24251494909585392, 'M.h2^o!fK7dv.WTbJgn9bl')", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+// rs.setFetchSize(672554522);
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("UPDATE table4974_0 SET value = 'zhteQ9w333b9Z9r0%5nOKxpgDr3Xg' WHERE (table4974_0.id > 0.3142908514816586) AND (table4974_0.id <> 0.09643106328378925);", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.setTransactionIsolation(8);
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(stmt.getLargeUpdateCount());
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.isBeforeFirst());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(stmt.getLargeUpdateCount());
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.isLast());
+
+try {
+	con.rollback(null);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table4974_0 WHERE (table4974_0.id != 0.0451048679035132/0.6472163505636437/0.7264452991200991) OR (table4974_0.value < 'Daerqx4Z6I8o)xkgib(oT(fDCqVQ;aGWM!o#t3%V@'/'');");
+} catch (Exception e) {
+	System.out.println(e);
+}
+sp = con.setSavepoint();
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+try {
+	rs.rowUpdated();
+} catch (Exception e) {
+	System.out.println(e);
+}
+rs.beforeFirst();
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+System.out.println(con.getHoldability());
+con.commit();
+try {
+	rs.updateObject(2, "'y8Z$47IWox3Xxl)695yy7F'");
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.setFetchDirection(1002);
+} catch (Exception e) {
+	System.out.println(e);
+}
+// con.setTransactionIsolation(8);
+con.setTransactionIsolation(2);
+try {
+	rs.updateObject(1, 0.9966001655071787);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(rs.next());
+System.out.println(rs.isLast());
+rs.beforeFirst();
+// rs.setFetchSize(877212429);
+rs.setFetchSize(0);
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+System.out.println(stmt.getResultSetHoldability());
+try {
+	rs.updateObject(2, "'8ZD;1LT'");
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();

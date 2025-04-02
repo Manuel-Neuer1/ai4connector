@@ -1,0 +1,195 @@
+// seed seems not equal somewhere
+// seed: 1743407330526
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test4315?user=root&password=123456&useServerPrepStmts=true&yearIsDateType=false&createDatabaseIfNotExist=true");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test4315?user=root&password=123456&useServerPrepStmts=true&yearIsDateType=false&createDatabaseIfNotExist=true");
+stmt = con.createStatement(1003, 1007, 1);
+con.setAutoCommit(false);
+con.setAutoCommit(true);
+System.out.println(stmt.executeLargeUpdate("CREATE TABLE table4315_0(id DOUBLE PRIMARY KEY,value DOUBLE);", 2));
+stmt.closeOnCompletion();
+stmt = con.createStatement(1005, 1007, 1);
+System.out.println(stmt.getQueryTimeout());
+System.out.println(stmt.executeUpdate("UPDATE table4315_0 SET value = 0.45669879590476026 WHERE (table4315_0.value > 0.26795553297569785) OR (table4315_0.value <= 0.6769434015237137*0.469041547570368);", 1));
+System.out.println(stmt.getResultSetType());
+stmt = con.prepareStatement("INSERT INTO table4315_0 VALUES(?, ?);", 1003, 1008, 2);
+stmt.setObject(1, "0.7800413302342236");
+ stmt.setObject(2, "0.9948940582774743");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+// rs.setFetchDirection(1002);
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.getHoldability());
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+// rs.setFetchDirection(1002);
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+// stmt.setObject(1, "0.5587989445734728");
+ stmt.setObject(2, "0.9375473728327866");
+
+stmt.setObject(1, "0.5553746837661181");
+ stmt.setObject(2, "0.2671549763597746");
+
+System.out.println(stmt.execute());
+System.out.println(con.getHoldability());
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.isAfterLast());
+
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+// stmt.setObject(1, "0.6639602250119077");
+ stmt.setObject(2, "0.22560846101255538");
+
+stmt.setObject(1, "0.02674470681805141");
+ stmt.setObject(2, "0.4819310083981815");
+
+System.out.println(stmt.execute());
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+System.out.println(stmt.getResultSetType());
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("INSERT INTO table4315_0 VALUES(0.5273408755447697, 0.09852575919867557)", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+// System.out.println(stmt.getMoreResults(1));
+System.out.println(stmt.getMoreResults(2));
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	con.commit();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+sp = con.setSavepoint();
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table4315_0;");
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+System.out.println(rs.getType());
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("DELETE FROM table4315_0 WHERE (table4315_0.id = 0.3831820531351262) AND (table4315_0.value >= 0.1195717061698971*0.3194277893564347*0.8679417390230952);", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(1, 0.11374360449179655);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(stmt.getLargeUpdateCount());
+
+System.out.println("ERROR:");
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+sp = con.setSavepoint();
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("DELETE FROM table4315_0 WHERE (table4315_0.value <> 0.48641497084970287-0.04543457524510819);", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(1, 0.3119386565652267);
+} catch (Exception e) {
+	System.out.println(e);
+}
+// con.setTransactionIsolation(2);
+con.setTransactionIsolation(1);
+System.out.println(rs.getType());
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();

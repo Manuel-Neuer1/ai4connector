@@ -1,0 +1,233 @@
+// seed seems not equal somewhere
+// seed: 1743405162031
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test661?user=root&password=123456&allowMultiQueries=true&rewriteBatchedStatements=true&dumpQueriesOnException=true&tinyInt1isBit=false&yearIsDateType=false&createDatabaseIfNotExist=true");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test661?user=root&password=123456&allowMultiQueries=true&rewriteBatchedStatements=true&dumpQueriesOnException=true&tinyInt1isBit=false&yearIsDateType=false&createDatabaseIfNotExist=true");
+stmt = con.createStatement(1004, 1008, 1);
+System.out.println(stmt.getMaxRows());
+stmt.setQueryTimeout(1931749864);
+stmt.closeOnCompletion();
+System.out.println(con.getHoldability());
+con.setAutoCommit(false);
+stmt = con.createStatement(1004, 1008, 2);
+try {
+	stmt.setMaxRows(1292165527);
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.executeLargeUpdate("CREATE TABLE table661_0(id FLOAT PRIMARY KEY,value FLOAT);", 1));
+try {
+	stmt.setQueryTimeout(-1);
+} catch (Exception e) {
+	System.out.println(e);
+}
+stmt = con.prepareStatement("INSERT INTO table661_0 VALUES(?, ?);", 1003, 1007, 1);
+System.out.println(con.isReadOnly());
+stmt.setObject(1, "0.46630818");
+ stmt.setObject(2, "0.12124294");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.rollback();
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("INSERT INTO table661_0 VALUES(0.95056117, 0.06456119)", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("UPDATE table661_0 SET value = 0.1393261 WHERE (table661_0.id <> 0.6166067) AND (table661_0.id != 0.56559545/0.1747424/0.20525628);", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.commit();
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.isBeforeFirst());
+
+System.out.println(con.getNetworkTimeout());
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.rollback();
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+System.out.println(stmt.getResultSetConcurrency());
+con.rollback();
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+System.out.println(stmt.getResultSetHoldability());
+sp = con.setSavepoint();
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.getType());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.rollback();
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+try {
+	con.rollback(com.mysql.cj.jdbc.MysqlSavepoint@1a08ae0);
+} catch (Exception e) {
+	System.out.println(e);
+}
+// rs.setFetchDirection(1002);
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("UPDATE table661_0 SET value = 0.2424041 WHERE (table661_0.id = 0.11954063);", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.getHoldability());
+
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+

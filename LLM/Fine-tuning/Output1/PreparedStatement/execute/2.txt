@@ -1,0 +1,59 @@
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test4639?user=root&password=123456&useServerPrepStmts=true&allowMultiQueries=true&rewriteBatchedStatements=true&dumpQueriesOnException=true&tinyInt1isBit=false&createDatabaseIfNotExist=true&cacheCallableStmts=false&useBulkStmts=false");
+stmt = con.createStatement(1003, 1007, 1);
+stmt.addBatch("CREATE TABLE table4639_0(id BOOL PRIMARY KEY,value FLOAT);");
+	stmt.executeBatch();
+	con.rollback();
+stmt = con.prepareStatement("INSERT INTO table4639_0 VALUES(?, ?);", 1005, 1008, 1);
+	stmt.setMaxRows(2147483647);
+	stmt.setQueryTimeout(-1);
+stmt.closeOnCompletion();
+stmt = con.createStatement(1003, 1007, 1);
+con.setAutoCommit(true);
+stmt.getMaxFieldSize();
+stmt.addBatch("DELETE FROM table4639_0 WHERE (table4639_0.value > 0.9138943+0.8626763);");
+Arrays.toString(stmt.executeLargeBatch());
+stmt.closeOnCompletion();
+con.getHoldability();
+stmt = con.createStatement(1005, 1008, 2);
+stmt.setEscapeProcessing(false);
+stmt.setFetchDirection(1001);
+stmt.addBatch("INSERT INTO table4639_0 VALUES(1585500222, 0.97174686)");
+stmt.addBatch("DELETE FROM table4639_0 WHERE (table4639_0.id >= -522243637);");
+stmt.addBatch("INSERT INTO table4639_0 VALUES(1838076687, 0.1527803)");
+	stmt.executeBatch();
+stmt.getResultSetConcurrency();
+stmt.getResultSetConcurrency();
+stmt = con.prepareStatement("INSERT INTO table4639_0 VALUES(?, ?);", 1003, 1007, 1);
+stmt.setFetchSize(873640457);
+stmt.getResultSetConcurrency();
+	stmt.executeUpdate("UPDATE table4639_0 SET value = 0.32612932 WHERE (table4639_0.id = -736235443) OR (table4639_0.id = -1960043638*-2112998523*-1152389005);", 1);
+stmt = con.prepareStatement("INSERT INTO table4639_0 VALUES(?, ?);", 1004, 1007, 1);
+	stmt.executeLargeUpdate("INSERT INTO table4639_0 VALUES(790123336, 0.5627769)", 2);
+	con.commit();
+stmt = con.prepareStatement("SELECT table4639_0.id FROM table4639_0 WHERE table4639_0.id <= ?", 1003, 1008, 2);
+stmt.setQueryTimeout(1438482620);
+stmt.setObject(1, "0.4441499");
+	stmt.execute(); // ERROR
+stmt.getFetchSize();
+con.setTransactionIsolation(2);
+	stmt.executeUpdate("DELETE FROM table4639_0 WHERE (table4639_0.value = 0.49418133) OR (table4639_0.id < 1878633950);", 2);
+	stmt.setMaxRows(979742454);
+stmt.setQueryTimeout(284797468);
+	rs = stmt.executeQuery("SELECT id, value FROM table4639_0;"); // ERROR
+con.isReadOnly();
+rs.next(); // ERROR
+	rs.updateObject(1, 0.21506971); // ERROR
+	rs.updateRow(); // ERROR
+	rs.rowUpdated();
+rs.isFirst(); // ERROR
+	rs = stmt.executeQuery("SELECT id, value FROM table4639_0;"); // ERROR
+	con.rollback(null);
+con.close();
+stmt.close();
+rs.close(); // ERROR
+

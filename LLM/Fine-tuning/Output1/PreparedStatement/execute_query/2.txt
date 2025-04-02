@@ -1,0 +1,223 @@
+// seed seems not equal somewhere
+// seed: 1743405071565
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test525?user=root&password=123456&cacheCallableStmts=false&useBulkStmts=false");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test525?user=root&password=123456&cacheCallableStmts=false&useBulkStmts=false");
+stmt = con.createStatement(1004, 1008, 1);
+System.out.println(stmt.executeLargeUpdate("CREATE TABLE table525_0(id FLOAT PRIMARY KEY,value DECIMAL);", 2));
+System.out.println(stmt.getMaxRows());
+stmt = con.prepareStatement("INSERT INTO table525_0 VALUES(?, ?);", 1004, 1007, 1);
+System.out.println(stmt.getQueryTimeout());
+stmt.setObject(1, "0.20157933");
+ stmt.setObject(2, "0.14549793844129577");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.setTransactionIsolation(8);
+
+System.out.println("ERROR:");
+// System.out.println(rs.isAfterLast());
+
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("DELETE FROM table525_0 WHERE (table525_0.value = 0.9808907073996794*0.19167225045625835) AND (table525_0.id >= 0.6652569);", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.isLast());
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.getType());
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+System.out.println(stmt.getMoreResults(3));
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+sp = con.setSavepoint();
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table525_0;");
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(rs.next());
+try {
+	con.rollback(com.mysql.cj.jdbc.MysqlSavepoint@28fe258a);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(2, 0.590711);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getMoreResults(3));
+
+System.out.println("ERROR:");
+try {
+	rs.beforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("INSERT INTO table525_0 VALUES(0.7165969, 0.8363232697716408)", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+stmt.getResultSet();
+
+System.out.println("ERROR:");
+try {
+	rs.beforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.isFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.isAfterLast();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table525_0 WHERE (table525_0.id >= 0.21366358);");
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getLargeUpdateCount());
+System.out.println(rs.isLast());
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+System.out.println(rs.next());
+System.out.println(stmt.getResultSetType());
+rs.beforeFirst();
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("INSERT INTO table525_0 VALUES(0.026684225, 0.3246997560832996)", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(rs.getType());
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(2, 0.43842512);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(1, 0.8080003);
+} catch (Exception e) {
+	System.out.println(e);
+}
+stmt.getResultSet();
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+stmt.getResultSet();
+
+System.out.println("ERROR:");
+try {
+	rs.isAfterLast();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(1, 0.6862137);
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetHoldability());
+try {
+	con.rollback();
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();

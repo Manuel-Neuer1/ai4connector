@@ -1,0 +1,217 @@
+// seed seems not equal somewhere
+// seed: 1743408041019
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test5490?user=root&password=123456&useServerPrepStmts=false&dumpQueriesOnException=true&yearIsDateType=false&cacheCallableStmts=true");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test5490?user=root&password=123456&useServerPrepStmts=false&dumpQueriesOnException=true&yearIsDateType=false&cacheCallableStmts=true");
+stmt = con.createStatement(1005, 1008, 1);
+System.out.println(stmt.executeUpdate("CREATE TABLE table5490_0(id FLOAT PRIMARY KEY,value FLOAT);", 1));
+stmt = con.prepareStatement("INSERT INTO table5490_0 VALUES(?, ?);", 1004, 1007, 1);
+System.out.println(stmt.getQueryTimeout());
+System.out.println(con.getHoldability());
+stmt.setObject(1, "0.91928214");
+ stmt.setObject(2, "0.49744374");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+stmt.setObject(1, "0.31665212");
+ stmt.setObject(2, "0.6005035");
+
+System.out.println(stmt.executeUpdate());
+con.setTransactionIsolation(4);
+stmt.setObject(1, "0.88043934");
+ stmt.setObject(2, "0.3071084");
+
+System.out.println(stmt.execute());
+System.out.println(con.getNetworkTimeout());
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("DELETE FROM table5490_0 WHERE (table5490_0.value < 0.4142176) AND (table5490_0.value = 0.044150233+0.01850754);", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+System.out.println(con.isReadOnly());
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+// con.setTransactionIsolation(2);
+con.setTransactionIsolation(8);
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table5490_0;");
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(rs.isBeforeFirst());
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+try {
+	rs.updateObject(2, 0.31369358);
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetHoldability());
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(2, 0.34034044);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(stmt.getUpdateCount());
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+// System.out.println(stmt.getMoreResults(3));
+System.out.println(stmt.getMoreResults(1));
+try {
+	rs.updateObject(1, 0.5801233);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.isBeforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(con.getNetworkTimeout());
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(1, 0.46252435);
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetHoldability());
+
+System.out.println("ERROR:");
+try {
+	rs.setFetchSize(78144645);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.beforeFirst();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs.next();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	con.rollback(null);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table5490_0 WHERE (table5490_0.value != 0.041808724);");
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetConcurrency());
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+System.out.println(stmt.getResultSetConcurrency());
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();

@@ -1,0 +1,229 @@
+// seed seems not equal somewhere
+// seed: 1743407332027
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test4318?user=root&password=123456&useServerPrepStmts=false&dumpQueriesOnException=true");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test4318?user=root&password=123456&useServerPrepStmts=false&dumpQueriesOnException=true");
+stmt = con.createStatement(1004, 1008, 1);
+System.out.println(stmt.getResultSetHoldability());
+stmt.closeOnCompletion();
+con.setTransactionIsolation(4);
+stmt = con.createStatement(1004, 1007, 1);
+con.setTransactionIsolation(8);
+stmt.setFetchDirection(1001);
+System.out.println(stmt.executeLargeUpdate("CREATE TABLE table4318_0(id DOUBLE PRIMARY KEY,value VARCHAR(100));", 2));
+try {
+	stmt.setMaxRows(2017980105);
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getMaxRows());
+stmt.closeOnCompletion();
+stmt = con.createStatement(1005, 1007, 1);
+System.out.println(stmt.executeLargeUpdate("UPDATE table4318_0 SET value = 'aLj)J,5GAswH7,3zbdW),' WHERE (table4318_0.value <> 'af8KP^zMOJ$AlQnJDklpt;^bbtCt7,O0AcGpiN9') OR (table4318_0.id >= 0.6021038939276071);", 1));
+stmt = con.prepareStatement("INSERT INTO table4318_0 VALUES(?, ?);", 1003, 1007, 2);
+stmt.setObject(1, "0.6951796175852003");
+ stmt.setObject(2, "'JV%tmnknfrt%TO6'");
+
+stmt.clearParameters();
+System.out.println(stmt.getResultSetType());
+stmt.setObject(1, "0.9178702238641834");
+ stmt.setObject(2, "'yLZ#cFhTXv.pBCnJ&Wot7ThAJHk#l1INHOX9u42BjL;F'");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(con.isReadOnly());
+System.out.println(stmt.getResultSetConcurrency());
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.isFirst());
+
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("UPDATE table4318_0 SET value = 'tlN7DZCLm^TH8rpv^lPp5q31irpyQ7^' WHERE (table4318_0.id != 0.7343182497496062+0.7519812229727333+0.18675753859942157) OR (table4318_0.id >= 0.9660911259136593);", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.setTransactionIsolation(4);
+
+System.out.println("ERROR:");
+// System.out.println(rs.isAfterLast());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("UPDATE table4318_0 SET value = 'LsXK^7V' WHERE (table4318_0.value <> '@sH6c#hgxv1tr2Jo,VD6G%*Vx') AND (table4318_0.id > 0.49434768160963083-0.5646041054719244-0.4384760561278833);", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("DELETE FROM table4318_0 WHERE (table4318_0.id <= 0.150817665178134/0.7116826068888283);", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("DELETE FROM table4318_0 WHERE (table4318_0.id >= 0.07009716269298527*0.20202921889901404);", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+con.setTransactionIsolation(2);
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	con.commit();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// rs.afterLast();
+
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.isAfterLast());
+
+try {
+	con.rollback();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+

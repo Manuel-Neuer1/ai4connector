@@ -1,0 +1,182 @@
+// seed: 1743406769517
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test3360?user=root&password=123456&useServerPrepStmts=true&rewriteBatchedStatements=true&dumpQueriesOnException=true&yearIsDateType=false&createDatabaseIfNotExist=true&cacheCallableStmts=false&useBulkStmts=false");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test3360?user=root&password=123456&useServerPrepStmts=true&rewriteBatchedStatements=true&dumpQueriesOnException=true&yearIsDateType=false&createDatabaseIfNotExist=true&cacheCallableStmts=false&useBulkStmts=false");
+stmt = con.createStatement(1005, 1007, 2);
+stmt.closeOnCompletion();
+sp = con.setSavepoint();
+System.out.println(con.getHoldability());
+stmt = con.createStatement(1003, 1007, 1);
+System.out.println(stmt.executeLargeUpdate("CREATE TABLE table3360_0(id BOOL PRIMARY KEY,value FLOAT);", 2));
+stmt = con.prepareStatement("INSERT INTO table3360_0 VALUES(?, ?);", 1005, 1007, 2);
+System.out.println(con.isReadOnly());
+stmt.setFetchSize(1672097467);
+stmt.setObject(1, "true");
+ stmt.setObject(2, "0.5367513");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.setAutoCommit(false);
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeUpdate("INSERT INTO table3360_0 VALUES(true, 0.7836954)", 2));
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table3360_0;");
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(rs.next());
+try {
+	rs.updateObject(2, 0.28527105);
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.rollback();
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetConcurrency());
+try {
+	rs.updateObject(2, 0.78043467);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	con.rollback(com.mysql.cj.jdbc.MysqlSavepoint@1a722860);
+} catch (Exception e) {
+	System.out.println(e);
+}
+rs.setFetchSize(0);
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+rs.setFetchDirection(1002);
+
+System.out.println("ERROR:");
+// stmt.getResultSet();
+rs = stmt.getResultSet();
+try {
+	rs.updateObject(2, true);
+} catch (Exception e) {
+	System.out.println(e);
+}
+sp = con.setSavepoint();
+try {
+	rs.updateRow();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(1, 0.12986356);
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.commit();
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.rollback();
+
+System.out.println("ERROR:");
+System.out.println(stmt.getLargeUpdateCount());
+try {
+	rs.updateObject(1, true);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// stmt.getResultSet();
+rs = stmt.getResultSet();
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetConcurrency());
+rs.afterLast();
+try {
+	rs.updateObject(1, true);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	con.rollback(com.mysql.cj.jdbc.MysqlSavepoint@5f7fc494);
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.updateObject(2, 0.49014616);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+System.out.println(stmt.getUpdateCount());
+try {
+	rs.cancelRowUpdates();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	rs.rowDeleted();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table3360_0 WHERE (table3360_0.id <= false) OR (table3360_0.id <> true);");
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(rs.next());
+
+System.out.println("ERROR:");
+System.out.println(stmt.getUpdateCount());
+rs.afterLast();
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();
+rs.close();

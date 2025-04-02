@@ -1,0 +1,218 @@
+// seed seems not equal somewhere
+// seed: 1743407718042
+
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+// con = DriverManager.getConnection("jdbc:mariadb://localhost:3366/test4932?user=root&password=123456&rewriteBatchedStatements=true&yearIsDateType=false&useBulkStmts=true");
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test4932?user=root&password=123456&rewriteBatchedStatements=true&yearIsDateType=false&useBulkStmts=true");
+stmt = con.createStatement(1003, 1007, 2);
+System.out.println(con.getHoldability());
+stmt.setMaxRows(0);
+stmt.closeOnCompletion();
+stmt = con.createStatement(1004, 1008, 1);
+System.out.println(stmt.getFetchSize());
+stmt.addBatch("CREATE TABLE table4932_0(id DOUBLE PRIMARY KEY,value DECIMAL);");
+System.out.println(Arrays.toString(stmt.executeBatch()));
+stmt = con.prepareStatement("SELECT table4932_0.id FROM table4932_0 WHERE table4932_0.id >= ?", 1004, 1008, 1);
+stmt.setQueryTimeout(2147483647);
+System.out.println(con.getNetworkTimeout());
+stmt.setObject(1, "0.7134254288961602");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.isLast());
+
+try {
+	stmt.executeUpdate("DELETE FROM table4932_0 WHERE (table4932_0.value >= 0.3203276506200585) OR (table4932_0.value != 0.996371963528733/0.19224172898354208/0.2426553698169961);", 2);
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+System.out.println(stmt.getResultSetType());
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// rs.cancelRowUpdates();
+
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+// rs.setFetchDirection(1000);
+
+System.out.println(stmt.getResultSetType());
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+// System.out.println(rs.rowUpdated());
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.isBeforeFirst());
+
+try {
+	stmt.executeQuery("SELECT id, value FROM table4932_0 WHERE (table4932_0.value != 0.7997657753424375-0.723067470453086-0.5514581851319186) OR (table4932_0.id <> 0.617614878376292);");
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	stmt.executeUpdate("INSERT INTO table4932_0 VALUES(0.5090006075292077, 0.8351371642566349)", 1);
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getUpdateCount());
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+// rs.setFetchSize(-1);
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.isAfterLast());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.previous());
+
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+// rs.setFetchSize(-2147483648);
+
+try {
+	stmt.executeQuery("SELECT id, value FROM table4932_0;");
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+System.out.println(stmt.getMoreResults(2));
+try {
+	stmt.executeQuery("SELECT id, value FROM table4932_0 WHERE (table4932_0.value > 0.3190013446434049+0.4459675529395404);");
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	stmt.executeUpdate("INSERT INTO table4932_0 VALUES(0.3941480092403661, 0.669683460809005)", 2);
+} catch (Exception e) {
+	System.out.println(e);
+}
+// rs.setFetchDirection(1000);
+
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+stmt.getResultSet();
+// con.setTransactionIsolation(8);
+con.setTransactionIsolation(2);
+con.close();
+stmt.close();
+stmt.close();
+stmt.close();
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+
+
+System.out.println("ERROR:");
+// rs.close();
+

@@ -1,0 +1,153 @@
+Connection con = null;
+Statement stmt = null;
+ResultSet rs = null;
+Savepoint sp = null;
+
+con = DriverManager.getConnection("jdbc:mysql://localhost:3366/test5665?user=root&password=123456&useServerPrepStmts=false&rewriteBatchedStatements=true&dumpQueriesOnException=true&cacheCallableStmts=true&useBulkStmts=false");
+stmt = con.createStatement(1003, 1007, 2);
+stmt.addBatch("CREATE TABLE table5665_0(id DOUBLE PRIMARY KEY,value FLOAT);");
+stmt.addBatch("CREATE TABLE table5665_0(id FLOAT PRIMARY KEY,value INT);");
+stmt.addBatch("CREATE TABLE table5665_0(id CHAR PRIMARY KEY,value CHAR);");
+try {
+	stmt.executeLargeBatch();
+} catch (Exception e) {
+	System.out.println(e);
+}
+con.setAutoCommit(true);
+stmt.setEscapeProcessing(true);
+stmt = con.prepareStatement("SELECT table5665_0.value FROM table5665_0 WHERE table5665_0.value <> ?", 1003, 1007, 2);
+stmt.setQueryTimeout(691424437);
+try {
+	stmt.executeLargeUpdate("INSERT INTO table5665_0 VALUES(0.9513951500789167, 0.91066855)", 2);
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getMaxRows());
+stmt.setFetchSize(775808235);
+stmt = con.prepareStatement("INSERT INTO table5665_0 VALUES(?, ?);", 1005, 1007, 2);
+System.out.println(stmt.getFetchSize());
+stmt.setObject(1, "0.7949952594119823");
+ stmt.setObject(2, "0.31439865");
+
+
+System.out.println("ERROR:");
+try {
+	stmt.executeQuery();
+} catch (Exception e) {
+	System.out.println(e);
+}
+try {
+	con.rollback(null);
+} catch (Exception e) {
+	System.out.println(e);
+}
+stmt.setObject(1, "0.7935993547465635");
+ stmt.setObject(2, "0.9952755");
+
+System.out.println(stmt.executeUpdate());
+con.setAutoCommit(true);
+sp = con.setSavepoint();
+
+System.out.println("ERROR:");
+try {
+	System.out.println(stmt.executeLargeUpdate("UPDATE table5665_0 SET value = 0.8151007 WHERE (table5665_0.value > 0.58834374*0.31919378) OR (table5665_0.id > 0.2533023087443963/0.8227368472040641);", 1));
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getLargeUpdateCount());
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(con.getHoldability());
+
+System.out.println("ERROR:");
+// rs.setFetchSize(0);
+
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+stmt.getResultSet();
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getResultSetType());
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+// rs.beforeFirst();
+
+System.out.println(stmt.getResultSetConcurrency());
+System.out.println(stmt.getLargeUpdateCount());
+
+System.out.println("ERROR:");
+// System.out.println(rs.next());
+
+System.out.println(stmt.getResultSetHoldability());
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+
+System.out.println("ERROR:");
+try {
+
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(stmt.getUpdateCount());
+System.out.println(con.getHoldability());
+
+System.out.println("ERROR:");
+try {
+	rs = stmt.executeQuery("SELECT id, value FROM table5665_0 WHERE (table5665_0.value >= 0.6941124/0.09424877/0.9127783);");
+} catch (Exception e) {
+	System.out.println(e);
+}
+System.out.println(con.getNetworkTimeout());
+System.out.println(rs.isFirst());
+System.out.println(rs.next());
+System.out.println(con.getHoldability());
+System.out.println(con.isReadOnly());
+con.close();
+stmt.close();
+rs.close();
+
