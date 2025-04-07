@@ -1,0 +1,48 @@
+{
+  "examples": [
+    {
+      "id": "example_001",
+      "instruction": "请根据以下要求生成一段Java代码，用于测试不同数据库连接器的行为差异。代码需要包含多种JDBC方法的调用，确保代码涵盖批处理操作、事务控制、SQL查询、结果集操作和性能测试等场景。",
+      "input": {
+        "database_type": "mysql",
+        "url": "jdbc:mysql://localhost:3306/testdb?user=root&password=1234",
+        "table_structure": "CREATE TABLE table_name(id BIGINT PRIMARY KEY,value VARCHAR(5));",
+        "requirements": {
+          "allowed_classes": ["DriverManager", "Connection", "Statement", "PreparedStatement", "ResultSet"],
+          "allowed_methods": {
+            "DriverManager": ["getConnection"],
+            "Connection": [],
+            "Statement": [],
+            "Connection": [],
+            "PreparedStatement": [],
+            "ResultSet": []
+          },
+          "scenarios": [
+            "Batch operations: Test addBatch, executeBatch, executeLargeBatch with large data.",
+            "Transaction control: Use commit, rollback, and nested Savepoints.",
+            "SQL queries: Run SELECT, UPDATE, INSERT with WHERE conditions.",
+            "ResultSet operations: Iterate large result sets for cursor performance.",
+            "Performance: Test setFetchSize and query response time."
+          ],
+          "errors": "Simulate exceptions (e.g., duplicate keys, constraint violations) and cursor behavior."
+        },
+        "code_template": [
+          "Connection conn = null;",
+          "Statement stmt = null;",
+          "PreparedStatement pstmt = null;",
+          "ResultSet rs = null;",
+          "Savepoint savepoint = null;",
+          "conn = DriverManager.getConnection(\"jdbc:mysql://localhost:3306/testdb?user=root&password=1234\");"
+        ]
+      },
+      "output": [
+        "Connection con = null;\nStatement stmt = null;\nResultSet rs = null;\nSavepoint sp = null;\n\ncon = DriverManager.getConnection(\"jdbc:mysql://localhost:3366/testdb?user=root&password=1234\");\nstmt = con.createStatement(1003, 1007, 1);\ncon.isReadOnly();\nsp = con.setSavepoint();\nstmt.executeUpdate(\"CREATE TABLE table_name(id BIGINT PRIMARY KEY,value VARCHAR(5));\", 1);\nstmt.getResultSetConcurrency();\nstmt.getFetchSize();\nrs = stmt.executeQuery(\"SELECT id, value FROM table_name;\");\nstmt.getResultSetHoldability();\n\tcon.commit();\nrs.next();\n\trs.afterLast(); //ERROR\n\trs.beforeFirst(); //ERROR\n\trs.setFetchDirection(1002);// 参数设置错误，应该是ResultSet.FETCH_FORWARD\nrs.next();\nstmt.getResultSetHoldability();\n\tsout(rs.rowUpdated());\n\trs.updateObject(2, 918462153538412451); //在当前行使用x更新第2列（从1开始的下标）\ncon.setTransactionIsolation(2);\nstmt.getUpdateCount();\n\trs.updateRow();\n\trs.getHoldability(); //ERROR\n\trs.rowUpdated();\n\trs.updateObject(1, 2257796056895505182);\n\tcon.rollback(sp);\n\trs.cancelRowUpdates();\nrs = stmt.executeQuery(\"SELECT id, value FROM table_name;\");\nrs.getType();\nrs.next();\nstmt.getResultSetType();\n\trs.rowDeleted();\n\trs.beforeFirst(); //ERROR\nstmt.getLargeUpdateCount();\nstmt.getResultSetType();\nrs.next();\nrs = stmt.executeQuery(\"SELECT id, value FROM table_name WHERE (table_name.value > 'j') OR (table_name.id > -9052785909881487205);\");\nstmt.getResultSetConcurrency();\nstmt.getResultSetConcurrency();\nrs.next();\n\trs.rowInserted();\nsp = con.setSavepoint();\nrs = stmt.executeQuery(\"SELECT id, value FROM table_name WHERE (table_name.value > 'eT6jIoE2!aBnpq@GK8gb;J') AND (table_name.id != -6305954557349723889--6458880561418285542--3293896792246249967);\");\n\tcon.rollback();\nstmt.getUpdateCount();\nrs.next();\nstmt.getResultSetHoldability();\n\trs.updateObject(1, \"'dT23gfjrQx.yu8mgNdZ$.QftGpYB0s#sANwrenFmO'\");\ncon.getHoldability();\n\trs.updateRow();\nstmt.getResultSetConcurrency();\n\ncon.close();\nstmt.close();\nrs.close();\n\n"
+        
+      ],
+      "metadata": {
+        "difficulty": "hard",
+        "description": "生成包含特定错误的JDBC代码，用于检测数据库连接器的bug，并正确使用JDBC方法。"
+      }
+    }
+  ]
+}

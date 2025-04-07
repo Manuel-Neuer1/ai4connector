@@ -1,5 +1,0 @@
-{
-  "instruction": "Generate a sequence of JDBC method calls that highlight potential differences in behavior when using various MySQL-compatible database connectors. Focus on operations such as transaction management, ResultSet navigation, and error handling.",
-  "input": "",
-  "output": ""
-}

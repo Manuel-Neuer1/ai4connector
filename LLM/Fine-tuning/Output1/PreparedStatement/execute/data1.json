@@ -1,0 +1,129 @@
+{
+  "examples": [
+    {
+      "id": "example_001",
+      "instruction": "请根据以下要求生成一段Java代码，用于测试不同数据库连接器的行为差异。代码需要包含多种JDBC方法的调用，确保代码涵盖批处理操作、事务控制、SQL查询、结果集操作和性能测试等场景。",
+      "input": {
+        "database_type": "mysql",
+        "url": "jdbc:mysql://localhost:3306/testdb?user=root&password=1234",
+        "table_structure": "CREATE TABLE table_name(id FLOAT PRIMARY KEY,value BIGINT)",
+        "requirements": "代码需要满足以下要求：\n1. 包含多种 JDBC 方法的调用。\n2. 只能调用指定的五个类中的方法：DriverManager、Connection、Statement、PreparedStatement、ResultSet。\n3. 测试场景包括批处理操作、事务控制、SQL查询、结果集操作和性能测试。\n",
+        "allowed_classes": [
+          "DriverManager",
+          "Connection",
+          "Statement",
+          "PreparedStatement",
+          "ResultSet"
+        ],
+        "allowed_methods": {
+          "DriverManager": [
+            "getConnection"
+          ],
+          "Connection": [
+            "commit",
+            "rollback",
+            "rollback(Savepoint sp)",
+            "isReadOnly",
+            "setAutoCommit",
+            "setSavepoint",
+            "setSavepoint(String name)",
+            "getHoldability",
+            "prepareStatement",
+            "createStatement",
+            "close"
+          ],
+          "Statement": [
+            "executeQuery",
+            "executeUpdate",
+            "executeLargeUpdate",
+            "executeBatch",
+            "executeLargeBatch",
+            "addBatch",
+            "clearBatch",
+            "close",
+            "closeOnCompletion",
+            "getResultSet",
+            "getUpdateCount",
+            "getMoreResults",
+            "getLargeUpdateCount",
+            "getGeneratedKeys",
+            "getMaxFieldSize",
+            "setMaxFieldSize",
+            "setFetchDirection",
+            "getFetchDirection",
+            "setFetchSize",
+            "getFetchSize",
+            "getResultSetConcurrency",
+            "getResultSetType",
+            "getResultSetHoldability",
+            "setMaxRows",
+            "setEscapeProcessing",
+            "getMaxRows"
+          ],
+          "PreparedStatement": [
+            "setObject",
+            "addBatch",
+            "executeBatch",
+            "execute",
+            "executeQuery",
+            "executeUpdate",
+            "clearParameters",
+            "executeLargeUpdate"
+          ],
+          "ResultSet": [
+            "next",
+            "previous",
+            "getObject(int columnIndex)",
+            "getObject(String columnLabel)",
+            "cancelRowUpdates",
+            "updateObject(int columnIndex, Object value)",
+            "updateObject(String columnLabel, Object value)",
+            "updateRow",
+            "beforeFirst",
+            "afterLast",
+            "getHoldability",
+            "getType",
+            "setFetchSize",
+            "setFetchDirection",
+            "deleteRow",
+            "rowDeleted",
+            "rowInserted",
+            "rowUpdated",
+            "isFirst",
+            "isLast",
+            "isAfterLast",
+            "isBeforeFirst",
+            "close"
+          ]
+        },
+        "test_scenarios": [
+          "批处理操作：通过多次执行批处理操作 (例如addBatch, executeBatch, executeLargeBatch等方法) 测试数据库在大批量数据处理时的表现。",
+          "事务控制：测试 `commit()`、`rollback()`、`Savepoint` 的嵌套使用。",
+          "SQL 查询：多次执行不同类型的简单查询（SELECT、UPDATE、INSERT以及条件 WHERE），以测试数据库的查询优化和响应。",
+          "结果集操作：多轮遍历结果集，测试大数据量时的游标性能。",
+          "性能测试：使用 setFetchSize(), getQueryTimeout() 等方法多次验证数据库的查询性能。"
+        ],
+        "error_simulation": [
+          "测试时需要模拟数据库异常的场景，例如对重复主键的插入、违反外键约束的插入、批量插入等，观察不同数据库连接器的反应",
+          "多次使用结果集的相关操作，测试数据库连接器的游标表现是否正确"
+        ],
+
+        "code_template": [
+          "Connection conn = null;",
+          "Statement stmt = null;",
+          "PreparedStatement pstmt = null;",
+          "ResultSet rs = null;",
+          "Savepoint savepoint = null;",
+          "conn = DriverManager.getConnection(\"jdbc:mysql://localhost:3306/testdbname?user=root&password=1234\");"
+        ]
+      },
+      "output": [
+        "Connection con = null;\nStatement stmt = null;\nResultSet rs = null;\nSavepoint sp = null;\ncon = DriverManager.getConnection(\"jdbc:mysql://localhost:3366/testdb?user=root&password=1234\");\n\nstmt = con.createStatement(1004, 1008, 2);\nstmt.getQueryTimeout();\nsp = con.setSavepoint();\nstmt.executeLargeUpdate(\"CREATE TABLE table_name(id FLOAT PRIMARY KEY,value BIGINT);\", 2);\nstmt.setFetchDirection(1002);\nstmt = con.prepareStatement(\"INSERT INTO table_name VALUES(?, ?);\", 1003, 1008, 2);\nstmt.setQueryTimeout(1935297258);\nstmt.getResultSetType();\nstmt.setObject(1, \"0.056898117\");\nstmt.setObject(2, \"8295502607217476284\");\n\tstmt.execute(); // ERROR\nstmt.closeOnCompletion();\nstmt = con.createStatement(1003, 1008, 2);\ncon.setAutoCommit(true);\nstmt.executeLargeUpdate(\"DELETE FROM table_name WHERE (table_name.value <> 5862508454718948187) AND (table_name.value = -2399489827615452616);\", 2);\ncon.getNetworkTimeout();\nrs = stmt.executeQuery(\"SELECT id, value FROM table_name WHERE (table_name.value >= -828857320991398623);\");\nrs.next(); // ERROR\nstmt.getLargeUpdateCount();\n\trs.rowDeleted();\nrs = stmt.executeQuery(\"SELECT id, value FROM table_name WHERE (table_name.value >= 7994742387644809555);\");\nrs.next(); // ERROR\n\trs.rowInserted();\n\trs.updateObject(1, -592998372573306019); // ERROR\n\tcon.rollback();\nrs.isAfterLast();\n\trs.updateRow(); // ERROR\n\trs.updateObject(2, 0.6426866);\n\trs.updateRow(); // ERROR\nrs.isAfterLast();\nstmt.getLargeUpdateCount();\nrs = stmt.executeQuery(\"SELECT id, value FROM table_name;\");\nrs.isBeforeFirst(); // ERROR\ncon.setAutoCommit(false);\nrs.next(); // ERROR\ncon.setAutoCommit(true);\n\tcon.commit();\n\trs.updateObject(2, 0.46713024);\nstmt.getMoreResults(1);\nstmt.getUpdateCount();\nrs.cancelRowUpdates();\n\trs.deleteRow();\n\trs.updateObject(2, 6326492117452982557);\nrs.getType();\n\trs.updateRow();\n\trs.beforeFirst();\nstmt.executeUpdate(\"INSERT INTO table_name VALUES(0.8969472, 4789555142330452479)\", 1);\n\trs.getHoldability(); // ERROR\n\trs.next(); // ERROR\n\tcon.commit();\n\ncon.close();\nstmt.close();\nrs.close();\n\n"
+      ],
+      "metadata": {
+        "difficulty": "hard",
+        "description": "生成包含特定错误的JDBC代码，用于检测数据库连接器的bug，并正确使用JDBC方法。"
+      }
+    }
+  ]
+}

@@ -46,3 +46,7 @@ wget https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh
 
 现在搞了一个数据集，即Fine-tuning/Output1/ResultSet/afterLast/1.txt 关键代码大概在50行左右，对于一些方法的参数设置我觉得可以自己写方法去设置
 
+2025-04-07
+今天就想如何去设计微调格式，生成了大概的格式，搞了6个json文件，但是微调肯定要200+个文件起步效果会好一些，打算搞100个时候去微调一下llm试试效果
+批改lab的报告
+
