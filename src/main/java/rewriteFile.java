@@ -14,12 +14,22 @@ public class rewriteFile {
         EXCEPTION_METHODS.add("rollback");
         EXCEPTION_METHODS.add("setAutoCommit");
         EXCEPTION_METHODS.add("setTransactionIsolation");
+        EXCEPTION_METHODS.add("setHoldability"); // Connection 类
         EXCEPTION_METHODS.add("setReadOnly");
         EXCEPTION_METHODS.add("getGeneratedKeys");
+        EXCEPTION_METHODS.add("executeQuery");
+        EXCEPTION_METHODS.add("executeUpdate");
+        EXCEPTION_METHODS.add("executeLargeUpdate");
+        EXCEPTION_METHODS.add("executeBatch");
+        EXCEPTION_METHODS.add("executeLargeBatch");
+
         // rs
         EXCEPTION_METHODS.add("cancelRowUpdates");
         EXCEPTION_METHODS.add("updateObject");
         EXCEPTION_METHODS.add("updateRow");
+        EXCEPTION_METHODS.add("setFetchSize");
+        EXCEPTION_METHODS.add("setFetchDirection");
+
 
         PRINT_METHODS.add("isReadOnly");
         PRINT_METHODS.add("getHoldability");
@@ -37,7 +47,7 @@ public class rewriteFile {
         PRINT_METHODS.add("getResultSetHoldability");
         PRINT_METHODS.add("getMaxRows");
         // rs
-        // PRINT_METHODS.add("next");
+        PRINT_METHODS.add("next");
         PRINT_METHODS.add("previous");
         PRINT_METHODS.add("isFirst");
         PRINT_METHODS.add("isLast");

@@ -59,33 +59,32 @@ public class Main {
         folderPath = folderPath + condb.getDbId() + "/";
         /* 测试列、表的逻辑 */
         // 每个数据库db里最多生成10个表用于测试（因此每个数据库db只生成10个prompt）
-        // for (int i = 0; i < maxTableCount; i++) {
-        // Meta meta = new Meta(condb, i);
-        // meta.initTable(maxColumnCount);
-        // MysqlSQLGenerator mysqlSQLGenerator = new MysqlSQLGenerator(meta);
-        // // System.out.println(mysqlSQLGenerator.generateCreateSql());
-        // String createTableSQL = mysqlSQLGenerator.generateCreateSql();
-        // promptGen(folderPath, URL, meta, createTableSQL, promptFileNum);
-        // /* 这里开始为每个数据库db创建表 */
+         for (int i = 0; i < maxTableCount; i++) {
+         Meta meta = new Meta(condb, i);
+         meta.initTable(maxColumnCount);
+         MysqlSQLGenerator mysqlSQLGenerator = new MysqlSQLGenerator(meta);
+         // System.out.println(mysqlSQLGenerator.generateCreateSql());
+         String createTableSQL = mysqlSQLGenerator.generateCreateSql();
+         promptGen(folderPath, URL, meta, createTableSQL, promptFileNum);
 
-        // }
+         }
 
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current working directory: " + currentDir);
-        // String inputFilePath = "testRewriteFile/Input/input.txt";
+        String inputFilePath = "testRewriteFile/Input/input.txt";
         String outputFilePath = "testRewriteFile/Output/TestPrompt1.txt";
 
-        // try{
-        // rewriteFile rf = new rewriteFile(inputFilePath, outputFilePath);
-        // System.out.println("文件改写完成，结果已保存到：" + outputFilePath);}
-        // catch (IOException e){
-        // e.printStackTrace();
-        // }
-        // try {
-        // Class.forName("com.mysql.cj.jdbc.Driver");
-        // } catch (ClassNotFoundException e) {
-        // System.err.println("未找到 MySQL JDBC 驱动程序: " + e.getMessage());
-        // }
+         try{
+         rewriteFile rf = new rewriteFile(inputFilePath, outputFilePath);
+         System.out.println("文件改写完成，结果已保存到：" + outputFilePath);}
+         catch (IOException e){
+         e.printStackTrace();
+         }
+         try {
+         Class.forName("com.mysql.cj.jdbc.Driver");
+         } catch (ClassNotFoundException e) {
+         System.err.println("未找到 MySQL JDBC 驱动程序: " + e.getMessage());
+         }
 
         ExecuteJavaCodeFromFile ejf = new ExecuteJavaCodeFromFile();
         ejf.executeFile(outputFilePath);

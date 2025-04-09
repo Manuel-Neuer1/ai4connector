@@ -48,8 +48,8 @@ Value Columns:
        - 事务控制：commit(), rollback(), rollback(Savepoint), setAutoCommit(boolean)
        - 保存点：setSavepoint(), setSavepoint(String)
        - 连接属性：isReadOnly(), getHoldability()
-       - 语句创建：createStatement(), createStatement(int, int), createStatement(int, int, int)
-       - 预处理语句：prepareStatement(String), prepareStatement(String, int), prepareStatement(String, int[]), prepareStatement(String, String[])
+       - 语句创建：createStatement(int, int, int)
+       - 预处理语句：prepareStatement(String), prepareStatement(String, int), prepareStatement(String, int[]), prepareStatement(String, String[]) //
        - 资源管理：close()
 
    4.3 Statement类：
@@ -78,7 +78,7 @@ Value Columns:
        - 行状态：rowDeleted(), rowInserted(), rowUpdated()
        - 游标位置：isFirst(), isLast(), isAfterLast(), isBeforeFirst()
        - 结果集属性：getHoldability(), getType()
-       - 获取控制：setFetchSize(int), setFetchDirection(int)
+       - 获取控制：setFetchSize(int), setFetchDirection(int) 
        - 资源管理：close()
 
 5. 测试场景要求：
