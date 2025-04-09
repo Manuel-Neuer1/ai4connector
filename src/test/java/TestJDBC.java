@@ -5,357 +5,314 @@ import java.util.List;
 
 public class TestJDBC {
 
-    public static void main(String[] args) {
-        Connection con = null;
+    public static void main(String[] args) throws SQLException {
+        Connection conn = null;
         Statement stmt = null;
+        PreparedStatement pstmt = null;
         ResultSet rs = null;
-        Savepoint sp = null;
+        Savepoint savepoint = null;
+
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb0?user=root&password=1234");
+        //conn = DriverManager.getConnection("jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234");
+        conn.setAutoCommit(false);
+        stmt = conn.createStatement(1003, 1007, 1);
+        System.out.println(stmt.getQueryTimeout());
+        stmt.setQueryTimeout(30);
+        System.out.println(stmt.getFetchSize());
+        stmt.setFetchSize(50);
+        System.out.println(stmt.getMaxRows());
+        stmt.setMaxRows(100);
+        stmt.setEscapeProcessing(true);
+        System.out.println(stmt.getResultSetType());
+        System.out.println(stmt.getResultSetConcurrency());
+        System.out.println(stmt.getResultSetHoldability());
+
+        System.out.println(stmt.executeUpdate("DROP TABLE IF EXISTS table0_0;"));
+        System.out.println(stmt.executeLargeUpdate(
+                "CREATE TABLE table0_0(Id VARCHAR(5) PRIMARY KEY, Value0 TINYINT, Value1 DECIMAL, Value2 BIGINT);", 1));
+        savepoint = conn.setSavepoint();
+
+        stmt.addBatch("INSERT INTO table0_0 VALUES ('ID1', 1, 10.5, 100);");
+        stmt.addBatch("INSERT INTO table0_0 VALUES ('ID2', 2, 20.5, 200);");
+        System.out.println(Arrays.toString(stmt.executeBatch()));
+        rs = stmt.executeQuery("SELECT * FROM table0_0;");
+        System.out.println(rs.next());
+        System.out.println(rs.getObject("Id"));
+        System.out.println(rs.getObject("Value0"));
+        System.out.println(rs.getObject("Value1"));
+        System.out.println(rs.getObject("Value2"));
+        System.out.println(rs.isFirst());
+        System.out.println(rs.isLast());
+        System.out.println(rs.isBeforeFirst());
+        System.out.println(rs.isAfterLast());
 
         try {
-            // 获取连接
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test18?user=root&password=1234");
-
-            // 创建 Statement
-            stmt = con.createStatement(1004, 1008, 1);
-            System.out.println(stmt.executeUpdate("DROP TABLE IF EXISTS table18_0;"));
-            System.out.println(stmt.executeLargeUpdate("CREATE TABLE table18_0(id VARCHAR(100) PRIMARY KEY, value VARCHAR(100));", 1));
-            stmt.closeOnCompletion();
-
-            // 再次创建 Statement
-            stmt = con.createStatement(1005, 1007, 2);
-            stmt.addBatch("DELETE FROM table18_0 WHERE (table18_0.value > '0');");
-            System.out.println(Arrays.toString(stmt.executeLargeBatch()));
-
-            // 提交事务
-            try {
-                con.commit();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // 设置保存点
-            sp = con.setSavepoint();
-
-            // 创建 PreparedStatement
-            stmt = con.prepareStatement("INSERT INTO table18_0 VALUES(?, ?);", 1005, 1008, 2);
-            con.setAutoCommit(true);
-            stmt.closeOnCompletion();
-
-            // 获取网络超时时间
-            System.out.println(con.getNetworkTimeout());
-
-            // 再次创建 Statement
-            stmt = con.createStatement(1003, 1007, 2);
-            System.out.println(stmt.getMaxFieldSize());
-
-            // 添加批量操作
-            stmt.addBatch("DELETE FROM table18_0 WHERE (table18_0.id <> 'test') AND (table18_0.value = 'test');");
-            stmt.addBatch("UPDATE table18_0 SET value = 'updated' WHERE (table18_0.id != 'test') OR (table18_0.value >= 'test');");
-            stmt.addBatch("DELETE FROM table18_0 WHERE (table18_0.id >= 'test');");
-            System.out.println(Arrays.toString(stmt.executeLargeBatch()));
-
-            // 创建 PreparedStatement
-            stmt = con.prepareStatement("SELECT table18_0.value FROM table18_0 WHERE table18_0.value = ?", 1005, 1007, 1);
-            stmt.setFetchSize(100);
-            stmt.closeOnCompletion();
-
-            // 设置自动提交
-            con.setAutoCommit(true);
-
-            // 再次创建 Statement
-            stmt = con.createStatement(1003, 1007, 1);
-            System.out.println(stmt.getFetchDirection());
-            stmt.setFetchSize(100);
-            System.out.println(stmt.executeLargeUpdate("UPDATE table18_0 SET value = 'updated' WHERE (table18_0.id = 'test');", 1));
-
-            // 获取结果集
-            rs = stmt.getGeneratedKeys();
-            System.out.println(rs.next());
-
-            // 捕获异常
-            System.out.println("ERROR:");
-            try {
-                rs.getHoldability();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.updateObject(2, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(rs.isFirst());
-            try {
-                rs.cancelRowUpdates();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // 设置事务隔离级别
-            con.setTransactionIsolation(2);
-            System.out.println(rs.previous());
-
-            // 执行查询
-            rs = stmt.executeQuery("SELECT id, value FROM table18_0 WHERE (table18_0.value != 'test');");
-            try {
-                con.commit();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(rs.next());
-            System.out.println(stmt.getResultSetConcurrency());
-
-            // 执行查询
-            rs = stmt.executeQuery("SELECT id, value FROM table18_0;");
-            System.out.println(rs.isAfterLast());
-            System.out.println(rs.getType());
-            System.out.println(rs.next());
-
-            // 捕获异常
-            try {
-                rs.updateObject(2, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(rs.getType());
-            try {
-                rs.cancelRowUpdates();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(stmt.getResultSetType());
-
-            // 捕获异常
-            try {
-                rs.updateObject(2, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                con.commit();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(con.getHoldability());
-
-            // 捕获异常
-            try {
-                rs.updateRow();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.beforeFirst();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // 设置自动提交
-            con.setAutoCommit(true);
-            System.out.println(rs.next());
-            rs.setFetchDirection(1000);
-
-            // 捕获异常
-            try {
-                rs.updateObject(2, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(stmt.getMoreResults(3));
-            System.out.println(stmt.getUpdateCount());
-
-            // 捕获异常
-            try {
-                rs.updateRow();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.afterLast();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // 捕获异常
-            System.out.println("ERROR:");
-            try {
-                rs.isLast();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.updateObject(1, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                con.rollback();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // 捕获异常
-            System.out.println("ERROR:");
-            try {
-                rs.isAfterLast();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.cancelRowUpdates();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(con.getHoldability());
-            System.out.println(stmt.executeLargeUpdate("INSERT INTO table18_0 VALUES('test', 'test')", 2));
-
-            // 执行查询
-            rs = stmt.executeQuery("SELECT id, value FROM table18_0;");
-            System.out.println(rs.next());
-
-            // 捕获异常
-            try {
-                rs.updateObject(1, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.updateRow();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.beforeFirst();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // 捕获异常
-            System.out.println("ERROR:");
-            try {
-                rs.getHoldability();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(rs.next());
-            System.out.println(rs.isFirst());
-
-            // 捕获异常
-            try {
-                con.rollback();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            rs = stmt.executeQuery("SELECT id, value FROM table18_0 WHERE (table18_0.id <= 'test') OR (table18_0.id <> 'test');");
-            System.out.println(stmt.getMoreResults(1));
-
-            // 捕获异常
-            try {
-                rs.isAfterLast();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.next();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.updateObject(2, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(rs.getType());
-
-            // 捕获异常
-            try {
-                rs.cancelRowUpdates();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.updateObject(1, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(stmt.getResultSetConcurrency());
-
-            // 捕获异常
-            try {
-                rs.updateRow();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(stmt.executeLargeUpdate("INSERT INTO table18_0 VALUES('test', 'test')", 2));
-            System.out.println(con.getHoldability());
-
-            // 捕获异常
-            try {
-                rs.beforeFirst();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            con.setTransactionIsolation(1);
-            System.out.println(stmt.getResultSetConcurrency());
-
-            // 捕获异常
-            try {
-                rs.next();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            System.out.println(con.getNetworkTimeout());
-
-            // 捕获异常
-            try {
-                rs.beforeFirst();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            con.setAutoCommit(true);
-            System.out.println(con.isReadOnly());
-
-            // 捕获异常
-            try {
-                rs.next();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                con.rollback(sp);
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // 捕获异常
-            try {
-                rs.afterLast();
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                rs.updateObject(1, "test");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // 关闭资源
-            con.close();
-            stmt.close();
-            stmt.close();
-            stmt.close();
             rs.close();
-            rs.close();
-            rs.close();
-            rs.close();
-            rs.close();
-            rs.close();
-            rs.close();
-            rs.close();
-            rs.close();
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e);
+        }
+
+        System.out.println(stmt.executeUpdate("UPDATE table0_0 SET Value0 = 10 WHERE Id = 'ID1';"));
+
+        try {
+            conn.rollback(savepoint);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            conn.commit();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        conn.setAutoCommit(false);
+        savepoint = conn.setSavepoint("SP1");
+        System.out.println(stmt.executeUpdate("INSERT INTO table0_0 VALUES ('ID3', 3, 30.5, 300);"));
+        System.out.println(stmt.executeUpdate("INSERT INTO table0_0 VALUES ('ID4', 4, 40.5, 400);"));
+        rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value0 > 2;");
+        rs.setFetchSize(100);
+        System.out.println(rs.next());
+        System.out.println(rs.getObject(1));
+        System.out.println(rs.getObject(2));
+        System.out.println(rs.getObject(3));
+        System.out.println(rs.getObject(4));
+
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        pstmt = conn.prepareStatement("INSERT INTO table0_0 VALUES (?, ?, ?, ?);");
+        pstmt.setObject(1, "ID5");
+        pstmt.setObject(2, 5);
+        pstmt.setObject(3, 50.5);
+        pstmt.setObject(4, 500);
+        System.out.println(pstmt.executeUpdate());
+        pstmt.clearParameters();
+        try{
+            pstmt.addBatch();
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        System.out.println(Arrays.toString(pstmt.executeBatch()));
+
+        rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value0 = 5;");
+        System.out.println(rs.next());
+
+        try {
+            rs.updateObject("Value0", 15);
+            rs.updateRow();
+        } catch (SQLException e) {
+            System.out.println(e);//
+        }
+
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        System.out.println(stmt.getQueryTimeout());
+        stmt.setQueryTimeout(60);
+        System.out.println(stmt.getMaxRows());
+        stmt.setMaxRows(200);
+        System.out.println(stmt.getFetchSize());
+        stmt.setFetchSize(150);
+        rs = stmt.executeQuery("SELECT * FROM table0_0;");
+        try{
+            rs.setFetchDirection(1001);
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        System.out.println(rs.next());
+        try{
+            rs.previous();
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        try{
+            rs.beforeFirst();
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        try{
+            rs.afterLast();
+        }catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            System.out.println(stmt.executeUpdate("INSERT INTO table0_0 VALUES ('ID1', 1, 10.5, 100);"));
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            System.out.println(stmt.executeUpdate("UPDATE table0_0 SET Value0 = 200 WHERE Id = 'ID2';"));
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            stmt.executeQuery("SELECT * FROM non_existent_table;");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        conn.setAutoCommit(false);
+        savepoint = conn.setSavepoint("SP2");
+        System.out.println(stmt.executeUpdate("UPDATE table0_0 SET Value1 = 15.5 WHERE Id = 'ID3';"));
+
+        try {
+            conn.rollback(savepoint);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            conn.commit();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value0 > 1 OR Id != 'ID2';");
+        rs.setFetchSize(200);
+        System.out.println(rs.next());
+        System.out.println(rs.getObject("Id"));
+        System.out.println(rs.getObject("Value0"));
+        System.out.println(rs.getObject("Value1"));
+        System.out.println(rs.getObject("Value2"));
+        System.out.println(rs.isFirst());
+        System.out.println(rs.isLast());
+        System.out.println(rs.isBeforeFirst());
+        System.out.println(rs.isAfterLast());
+
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        System.out.println(stmt.getResultSetConcurrency());
+        System.out.println(stmt.getResultSetType());
+        System.out.println(stmt.getResultSetHoldability());
+
+        pstmt = conn.prepareStatement("SELECT * FROM table0_0 WHERE Value0 > ?");
+        pstmt.setObject(1, 2);
+        rs = pstmt.executeQuery();
+        System.out.println(rs.next());
+        System.out.println(rs.getObject(1));
+        System.out.println(rs.getObject(2));
+        System.out.println(rs.getObject(3));
+        System.out.println(rs.getObject(4));
+
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        System.out.println(stmt.getQueryTimeout());
+        stmt.setQueryTimeout(120);
+        System.out.println(stmt.getMaxRows());
+        stmt.setMaxRows(500);
+        System.out.println(stmt.getFetchSize());
+        stmt.setFetchSize(250);
+        rs = stmt.executeQuery("SELECT * FROM table0_0;");
+        rs.setFetchDirection(1001);
+        System.out.println(rs.next());
+        rs.previous();
+        rs.beforeFirst();
+        rs.afterLast();
+
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        conn.setAutoCommit(false);
+        savepoint = conn.setSavepoint("SP3");
+        System.out.println(stmt.executeUpdate("UPDATE table0_0 SET Value2 = 150 WHERE Id = 'ID4';"));
+
+        try {
+            conn.rollback(savepoint);
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            conn.commit();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value1 > 20.0 AND Value2 < 400;");
+        rs.setFetchSize(300);
+        System.out.println(rs.next());
+        System.out.println(rs.getObject("Id"));
+        System.out.println(rs.getObject("Value0"));
+        System.out.println(rs.getObject("Value1"));
+        System.out.println(rs.getObject("Value2"));
+        System.out.println(rs.isFirst());
+        System.out.println(rs.isLast());
+        System.out.println(rs.isBeforeFirst());
+        System.out.println(rs.isAfterLast());
+
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            System.out.println(stmt.executeUpdate("UPDATE table0_0 SET Value0 = -200 WHERE Id = 'ID2';"));
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            stmt.executeQuery("SELECT invalid_column FROM table0_0;");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            stmt.executeQuery("SELECT * FROM table0_0 WHERE invalid_condition;");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            pstmt.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 }

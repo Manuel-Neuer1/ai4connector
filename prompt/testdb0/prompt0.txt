@@ -1,0 +1,127 @@
+现在你是一个精通数据库连接器测试和 Java 语言的专家。
+
+数据库连接器连接的URL为：
+jdbc:mysql://localhost:3306/testdb0?user=root&password=1234
+
+已知当前我的数据库中表结构为：
+Table Name: table0_0
+Key Column: 
+    Id    VARCHAR(5)
+Value Columns:
+    Value0    TINYINT
+    Value1    DECIMAL
+    Value2    BIGINT
+
+你的任务是为我生成一段 Java 代码，该代码需要满足以下要求：
+
+1. 代码格式要求：
+   - 不包含 try-catch 块
+   - 不包含注释
+   - 每个方法调用独占一行
+   - 保持简洁的代码风格
+   - 示例格式：
+     stmt = con.createStatement(1003, 1007, 1);
+     stmt.getQueryTimeout();
+     stmt.executeUpdate("DROP TABLE IF EXISTS table18_0;");
+
+2. 代码量要求：
+   - 生成的代码应该包含至少 150 行有效代码
+   - 每个重要的 JDBC 方法应该被调用多次，使用不同的参数
+   - 应该包含多个完整的测试流程
+
+3. 代码结构要求：
+   - 代码应该按照自然的执行顺序编写
+   - 结果集操作可以在任何地方进行，只要结果集对象存在并且不是null
+   - 事务控制应该自然地融入代码流程中
+   - 批处理操作应该与其他操作自然地混合
+   - 性能设置应该在需要时自然地添加
+   - 异常测试应该自然地融入正常流程中
+   - 不同类的操作应该高度耦合，而不是分模块
+   - 同一个对象的方法调用可以分散在不同位置
+   - 代码应该反映真实的数据库操作场景
+
+4. 允许使用的JDBC类和方法：
+   4.1 DriverManager类：
+       - getConnection(URL)
+
+   4.2 Connection类：
+       - 事务控制：commit(), rollback(), rollback(Savepoint), setAutoCommit(boolean)
+       - 保存点：setSavepoint(), setSavepoint(String)
+       - 连接属性：isReadOnly(), getHoldability()
+       - 语句创建：createStatement(), createStatement(int, int), createStatement(int, int, int)
+       - 预处理语句：prepareStatement(String), prepareStatement(String, int), prepareStatement(String, int[]), prepareStatement(String, String[])
+       - 资源管理：close()
+
+   4.3 Statement类：
+       - 查询执行：executeQuery(String sql), executeUpdate(String sql), executeLargeUpdate(String sql)
+       - 批处理：executeBatch(), executeLargeBatch(), addBatch(String sql), clearBatch()
+       - 结果集控制：getResultSet(), getUpdateCount(), getMoreResults(), getLargeUpdateCount()
+       - 自动生成键：getGeneratedKeys()
+       - 字段控制：getMaxFieldSize(), setMaxFieldSize(int)
+       - 获取方向：setFetchDirection(int), getFetchDirection()
+       - 获取大小：setFetchSize(int), getFetchSize()
+       - 结果集属性：getResultSetConcurrency(), getResultSetType(), getResultSetHoldability()
+       - 行数控制：setMaxRows(int), getMaxRows()
+       - 转义处理：setEscapeProcessing(boolean)
+       - 资源管理：close(), closeOnCompletion()
+
+   4.4 PreparedStatement类：
+       - 参数设置：setObject()
+       - 批处理：addBatch(), executeBatch()
+       - 执行操作：execute(), executeQuery(), executeUpdate(), executeLargeUpdate()
+       - 参数清理：clearParameters()
+
+   4.5 ResultSet类：
+       - 游标移动：next(), previous(), beforeFirst(), afterLast()
+       - 数据获取：getObject(int), getObject(String)
+       - 行更新：cancelRowUpdates(), updateObject(int, Object), updateObject(String, Object), updateRow()
+       - 行状态：rowDeleted(), rowInserted(), rowUpdated()
+       - 游标位置：isFirst(), isLast(), isAfterLast(), isBeforeFirst()
+       - 结果集属性：getHoldability(), getType()
+       - 获取控制：setFetchSize(int), setFetchDirection(int)
+       - 资源管理：close()
+
+5. 测试场景要求：
+   5.1 基本操作：
+       - 建立连接
+       - 创建表
+       - 插入数据
+       - 查询数据
+       - 更新数据
+       - 删除数据
+
+   5.2 高级操作：
+       - 事务控制
+       - 批处理
+       - 预处理语句
+       - 结果集操作
+       - 性能设置
+
+   5.3 异常测试：
+       - 重复主键
+       - 违反约束
+       - 无效SQL
+       - 连接超时
+       - 资源耗尽
+
+6. 代码生成要求：
+   - 生成的代码应该能够测试不同数据库连接器的行为差异
+   - 代码应该包含所有重要的JDBC方法调用
+   - 代码应该按照自然的执行顺序编写
+   - 代码应该易于理解和维护
+   - 代码应该遵循Java编码规范
+   - 代码应该包含完整的测试流程
+   - 代码应该包含必要的变量声明
+   - 代码应该包含资源清理
+   - 代码应该保持简洁和清晰
+   - 代码应该反映真实的数据库操作场景
+   - 代码应该避免模块化的结构
+   - 代码应该让不同类的操作高度耦合
+
+7. 输出格式：
+   - 生成的代码应该直接可执行
+   - 代码应该包含必要的变量声明
+   - 代码应该包含资源清理
+   - 代码应该保持简洁和清晰
+   - 代码应该按照自然的执行顺序编写
+

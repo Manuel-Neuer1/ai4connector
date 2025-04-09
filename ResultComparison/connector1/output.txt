@@ -1,20 +1,68 @@
-Savepoint: com.mysql.cj.jdbc.MysqlSavepoint@17aad511
-Id: 2.0, Value0: Test2
-Id: 3.0, Value0: Test3
-Id: 4.0, Value0: Test4
-Id: 5.0, Value0: Test5
-Id: 6.0, Value0: Test6
-Id: 7.0, Value0: Test7
-Id: 6.0, Value0: Test6
-Id: 2.0, Value0: Test2
-Id: 3.0, Value0: Test3
-Id: 4.0, Value0: Test4
-Id: 5.0, Value0: Test5
-Id: 6.0, Value0: Test6
-Id: 7.0, Value0: Test7
-Id: 8.0, Value0: Test8
-java.sql.SQLFeatureNotSupportedException
-Max Field Size: 50
-Max Rows: 100
-Fetch Direction: 1000
-here
+0
+0
+0
+1003
+1007
+1
+0
+0
+[1, 1]
+true
+ID1
+1
+11
+100
+true
+false
+false
+false
+1
+1
+1
+true
+ID3
+3
+31
+300
+1
+java.sql.SQLException: No value specified for parameter 1
+[]
+true
+com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
+30
+100
+50
+java.sql.SQLException: Fetch direction ResultSet.FETCH_REVERSE cannot be set on a ResultSet of type ResultSet.TYPE_FORWARD_ONLY
+true
+java.sql.SQLException: Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.
+java.sql.SQLException: Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.
+java.sql.SQLException: Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.
+1
+0
+java.sql.SQLSyntaxErrorException: Table 'testdb0.non_existent_table' doesn't exist
+1
+true
+ID1
+1
+11
+100
+true
+false
+false
+false
+1007
+1003
+1
+true
+ID3
+3
+31
+300
+60
+200
+150
+Exception in thread "main" java.sql.SQLException: Fetch direction ResultSet.FETCH_UNKNOWN cannot be set on a ResultSet of type ResultSet.TYPE_FORWARD_ONLY
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)
+	at com.mysql.cj.jdbc.result.ResultSetImpl.setFetchDirection(ResultSetImpl.java:2082)
+	at TestJDBC.main(TestJDBC.java:230)

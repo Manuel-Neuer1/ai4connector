@@ -24,7 +24,7 @@ public class ExecuteJavaCodeFromFile {
         }
     }
 
-    public String outputFilePath(){
+    public String outputFilePath() {
         String directoryPath = "ResultComparison/connector1";
         String filePath = directoryPath + "/output.txt";
 
@@ -84,7 +84,6 @@ public class ExecuteJavaCodeFromFile {
                 + "    }\n"
                 + "}";
 
-
         // 创建一个内存中的Java文件对象
         DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null);
@@ -100,15 +99,30 @@ public class ExecuteJavaCodeFromFile {
         // 设置编译选项，包括类路径和输出目录
         List<String> options = new ArrayList<>();
         options.add("-classpath");
-        options.add(System.getProperty("java.class.path"));
+        // options.add(System.getProperty("java.class.path"));
+        // 使用指定的Maven仓库路径
+        String mavenRepo = "D:\\JavaDevelop\\apache-maven-3.9.9\\mvn_repo";
+
+        // 构建类路径
+        String classPath = System.getProperty("java.class.path") + File.pathSeparator +
+                "target/classes" + File.pathSeparator +
+                mavenRepo + "/com/mysql/mysql-connector-j/9.2.0/mysql-connector-j-9.2.0.jar";
+
+        options.add(classPath);
         options.add("-d");
         options.add(outputDir.getAbsolutePath());
 
-        System.out.println(options);
-        /*[-classpath, D:\JavaDevelop\Project\ai4connector\target\classes;C:\Users\25302\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar;C:\Users\25302\.m2\repository\com\google\protobuf\protobuf-java\3.21.9\protobuf-java-3.21.9.jar, -d, D:\JavaDevelop\Project\ai4connector\temp]
+        System.out.println("Classpath: " + classPath);
+        /*
+         * [-classpath,
+         * D:\JavaDevelop\Project\ai4connector\target\classes;C:\Users\25302\.m2\
+         * repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar;C:
+         * \Users\25302\.m2\repository\com\google\protobuf\protobuf-java\3.21.9\protobuf
+         * -java-3.21.9.jar, -d, D:\JavaDevelop\Project\ai4connector\temp]
          */
         // 编译
-        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null, fileObjects);
+        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, options, null,
+                fileObjects);
         boolean success = task.call();
 
         if (success) {
@@ -125,9 +139,57 @@ public class ExecuteJavaCodeFromFile {
                 e.printStackTrace();
             }
         } else {
-            System.err.println("编译失败！");
+            System.err.println("\n编译失败！以下是详细错误信息：");
             for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
-                System.err.println("行 " + diagnostic.getLineNumber() + ": " + diagnostic.getMessage(null));
+                try {
+                    JavaFileObject source = (JavaFileObject) diagnostic.getSource();
+                    String sourceCode = source.getCharContent(true).toString();
+                    String[] lines = sourceCode.split("\n");
+                    long lineNumber = diagnostic.getLineNumber();
+
+                    // 计算原始代码中的行号
+                    int originalLineNumber = (int) lineNumber - 12; // 减去包装代码的行数
+                    if (originalLineNumber > 0) {
+                        System.err.println("\n错误位置：原始代码第 " + originalLineNumber + " 行");
+                        System.err.println("错误描述：" + diagnostic.getMessage(null));
+
+                        // 显示出错行的代码内容
+                        if (originalLineNumber <= lines.length) {
+                            String errorLine = lines[originalLineNumber - 1];
+                            System.err.println("出错的代码：" + errorLine);
+
+                            // 尝试识别JDBC相关方法
+                            if (errorLine.contains("DriverManager") ||
+                                    errorLine.contains("Connection") ||
+                                    errorLine.contains("Statement") ||
+                                    errorLine.contains("PreparedStatement") ||
+                                    errorLine.contains("ResultSet")) {
+                                System.err.println("这是一个JDBC相关的错误，涉及到的JDBC操作：");
+                                if (errorLine.contains("getConnection"))
+                                    System.err.println("- 数据库连接操作");
+                                if (errorLine.contains("createStatement"))
+                                    System.err.println("- 创建Statement对象");
+                                if (errorLine.contains("prepareStatement"))
+                                    System.err.println("- 创建PreparedStatement对象");
+                                if (errorLine.contains("executeQuery"))
+                                    System.err.println("- 执行查询操作");
+                                if (errorLine.contains("executeUpdate"))
+                                    System.err.println("- 执行更新操作");
+                                if (errorLine.contains("executeBatch"))
+                                    System.err.println("- 执行批处理操作");
+                                if (errorLine.contains("getObject"))
+                                    System.err.println("- 获取结果集数据");
+                                if (errorLine.contains("next"))
+                                    System.err.println("- 结果集遍历");
+                                if (errorLine.contains("close"))
+                                    System.err.println("- 关闭资源");
+                            }
+                        }
+                        System.err.println("----------------------------------------");
+                    }
+                } catch (IOException e) {
+                    System.err.println("无法读取源代码内容: " + e.getMessage());
+                }
             }
         }
 
@@ -174,7 +236,7 @@ public class ExecuteJavaCodeFromFile {
             }
 
             try (FileInputStream fis = new FileInputStream(classFile);
-                 ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                 byte[] buffer = new byte[1024];
                 int length;
                 while ((length = fis.read(buffer)) != -1) {

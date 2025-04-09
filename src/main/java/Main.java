@@ -26,7 +26,6 @@ public class Main {
         Random r = new Random();
         ConnectMysqlDB condb = null;
 
-
         /* 数据库连接测试 */
         try {
             /* 这里测试 ConnectDB 的逻辑 */
@@ -36,11 +35,11 @@ public class Main {
             // 1.2 连接上mysql后调用创建数据库的方法,创建数据库testdb-cnt
             condb.createDatabase(condb.getDbId());
             // 1.3 成功创建好数据库testdb-cnt后关闭连接
-            if(URL.contains("mysql")) {
+            if (URL.contains("mysql")) {
                 System.out.println("mysql数据库成功连接！");
-            }else if(URL.contains("oceanbase")) {
+            } else if (URL.contains("oceanbase")) {
                 System.out.println("oceanbase数据库成功连接！");
-            }else{
+            } else {
                 System.out.println("连接成功！");
             }
             condb.closeConnection();
@@ -59,55 +58,48 @@ public class Main {
 
         folderPath = folderPath + condb.getDbId() + "/";
         /* 测试列、表的逻辑 */
-        //每个数据库db里最多生成10个表用于测试（因此每个数据库db只生成10个prompt）
-        for(int i = 0; i < maxTableCount; i++) {
-            Meta meta = new Meta(condb, i);
-            meta.initTable(maxColumnCount);
-            MysqlSQLGenerator mysqlSQLGenerator = new MysqlSQLGenerator(meta);
-            //System.out.println(mysqlSQLGenerator.generateCreateSql());
-            String createTableSQL = mysqlSQLGenerator.generateCreateSql();
-            promptGen(folderPath, URL, meta, createTableSQL, promptFileNum);
-            /* 这里开始为每个数据库db创建表 */
+        // 每个数据库db里最多生成10个表用于测试（因此每个数据库db只生成10个prompt）
+        // for (int i = 0; i < maxTableCount; i++) {
+        // Meta meta = new Meta(condb, i);
+        // meta.initTable(maxColumnCount);
+        // MysqlSQLGenerator mysqlSQLGenerator = new MysqlSQLGenerator(meta);
+        // // System.out.println(mysqlSQLGenerator.generateCreateSql());
+        // String createTableSQL = mysqlSQLGenerator.generateCreateSql();
+        // promptGen(folderPath, URL, meta, createTableSQL, promptFileNum);
+        // /* 这里开始为每个数据库db创建表 */
 
-        }
+        // }
 
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current working directory: " + currentDir);
-        //String inputFilePath = "testRewriteFile/Input/input.txt";
-        String outputFilePath = "testRewriteFile/Output/gpt2.txt";
+        // String inputFilePath = "testRewriteFile/Input/input.txt";
+        String outputFilePath = "testRewriteFile/Output/TestPrompt1.txt";
 
-//        try{
-//            rewriteFile rf = new rewriteFile(inputFilePath, outputFilePath);
-//            System.out.println("文件改写完成，结果已保存到：" + outputFilePath);}
-//        catch (IOException e){
-//            e.printStackTrace();
-//        }
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("未找到 MySQL JDBC 驱动程序: " + e.getMessage());
-        }
+        // try{
+        // rewriteFile rf = new rewriteFile(inputFilePath, outputFilePath);
+        // System.out.println("文件改写完成，结果已保存到：" + outputFilePath);}
+        // catch (IOException e){
+        // e.printStackTrace();
+        // }
+        // try {
+        // Class.forName("com.mysql.cj.jdbc.Driver");
+        // } catch (ClassNotFoundException e) {
+        // System.err.println("未找到 MySQL JDBC 驱动程序: " + e.getMessage());
+        // }
 
         ExecuteJavaCodeFromFile ejf = new ExecuteJavaCodeFromFile();
         ejf.executeFile(outputFilePath);
 
-        //对比逻辑
-        //OutputFileComparator.compare();
+        // 对比逻辑
+        // OutputFileComparator.compare();
     }
 
-    public static String InsertDB2URL(String URL,String dbName) {
-            // 如果URL中不包含数据库名称，则在URL中添加数据库名称
-            int pos = URL.indexOf("?");
-            String URLFirst = URL.substring(0,pos);
-            String URLLast = URL.substring(pos);
-            return URLFirst + dbName + URLLast;
+    public static String InsertDB2URL(String URL, String dbName) {
+        // 如果URL中不包含数据库名称，则在URL中添加数据库名称
+        int pos = URL.indexOf("?");
+        String URLFirst = URL.substring(0, pos);
+        String URLLast = URL.substring(pos);
+        return URLFirst + dbName + URLLast;
     }
-
-
-
-
-
-
-
 
 }

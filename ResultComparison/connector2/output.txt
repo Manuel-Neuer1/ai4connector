@@ -1,70 +1,72 @@
 0
 0
-[0]
-java.sql.SQLException: Can't call commit when autocommit=true
 0
-67108864
-[0, 0, 0]
-1000
-0
-false
-ERROR:
-java.sql.SQLFeatureNotSupportedException
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-false
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-false
-java.sql.SQLException: Can't call commit when autocommit=true
-false
+1003
 1007
+1
+0
+0
+[1, 1]
+true
+ID1
+1
+11
+100
+true
 false
-1003
 false
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-1003
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-1003
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-java.sql.SQLException: Can't call commit when autocommit=true
-2
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-java.sql.SQLException: Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.
 false
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-false
--1
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-java.sql.SQLException: Operation not allowed after ResultSet closed
-ERROR:
-java.sql.SQLException: Operation not allowed after ResultSet closed
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-java.sql.SQLNonTransientConnectionException: Can't call rollback when autocommit=true
-ERROR:
-java.sql.SQLException: Operation not allowed after ResultSet closed
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-2
+1
+1
 1
 true
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-java.sql.SQLException: Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.
-ERROR:
-java.sql.SQLFeatureNotSupportedException
+ID3
+3
+31
+300
+1
+java.sql.SQLSyntaxErrorException: (conn=3221495076) You need to set exactly 4 parameters on the prepared statement
+[]
+true
+java.sql.SQLFeatureNotSupportedException: Updates are not supported when using ResultSet.CONCUR_READ_ONLY
+30
+100
+50
+java.sql.SQLException: Invalid operation. Allowed direction are ResultSet.FETCH_FORWARD and ResultSet.FETCH_UNKNOWN
+true
+1
+0
+java.sql.SQLSyntaxErrorException: (conn=3221495076) Table 'test.non_existent_table' doesn't exist [172.17.0.2:2882] [2025-04-08 13:03:25.365607] [YB42AC110002-000630C59269202C-0-0]
+1
+true
+ID1
+1
+11
+100
+true
 false
 false
-java.sql.SQLNonTransientConnectionException: Can't call rollback when autocommit=true
 false
-java.sql.SQLException: Operation not allowed after ResultSet closed
-java.sql.SQLException: Operation not allowed after ResultSet closed
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-1003
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
 1007
-com.mysql.cj.jdbc.exceptions.NotUpdatable: Result Set not updatable.This result set must come from a statement that was created with a result set type of ResultSet.CONCUR_UPDATABLE, the query must select only one table, can not use functions and must select all primary keys from that table. See the JDBC 2.1 API Specification, section 5.6 for more details.
-java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'test' for key 'table18_0.PRIMARY'
-	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)
-	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
-	at com.mysql.cj.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1334)
-	at com.mysql.cj.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2089)
-	at TestJDBC.main(TestJDBC.java:289)
+1003
+1
+true
+ID3
+3
+31
+300
+60
+200
+150
+true
+1
+true
+ID3
+3
+31
+300
+true
+true
+false
+false
+0
