@@ -1,0 +1,153 @@
+Connection conn = null;
+Statement stmt = null;
+PreparedStatement pstmt = null;
+ResultSet rs = null;
+Savepoint savepoint = null;
+
+// 建立连接
+conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb0?user=root&password=1234&useServerPrepStmts=true&dumpQueriesOnException=true&tinyInt1isBit=false&yearIsDateType=true&createDatabaseIfNotExist=false&cacheCallableStmts=false&useBulkStmts=false");
+
+// 创建Statement并测试各种参数组合
+stmt = conn.createStatement(1005, 1007, 2);
+stmt = conn.createStatement(1003, 1008, 1);
+stmt = conn.createStatement(1004, 1007, 2);
+
+// 测试Statement的各种方法
+stmt.getQueryTimeout();
+stmt.setQueryTimeout(30);
+stmt.getMaxFieldSize();
+stmt.setMaxFieldSize(100);
+stmt.getMaxRows();
+stmt.setMaxRows(1000);
+stmt.setEscapeProcessing(true);
+stmt.getFetchSize();
+stmt.setFetchSize(50);
+stmt.getFetchDirection();
+stmt.setFetchDirection(1001);
+stmt.getResultSetType();
+stmt.getResultSetConcurrency();
+stmt.getResultSetHoldability();
+
+// 表操作
+stmt.executeUpdate("DROP TABLE IF EXISTS table0_0;");
+stmt.executeLargeUpdate("CREATE TABLE table0_0(Id VARCHAR(5) PRIMARY KEY, Value0 TINYINT, Value1 DECIMAL, Value2 BIGINT);", 1);
+
+// 批处理操作 - 插入数据
+stmt.addBatch("INSERT INTO table0_0 VALUES ('ID1', 1, 10.5, 100);");
+stmt.addBatch("INSERT INTO table0_0 VALUES ('ID2', 2, 20.5, 200);");
+stmt.addBatch("INSERT INTO table0_0 VALUES ('ID3', 3, 30.5, 300);");
+stmt.addBatch("INSERT INTO table0_0 VALUES ('ID4', 4, 40.5, 400);");
+stmt.addBatch("INSERT INTO table0_0 VALUES ('ID5', 5, 50.5, 500);");
+stmt.executeBatch();
+stmt.clearBatch();
+
+// 批处理操作 - 更新数据
+stmt.addBatch("UPDATE table0_0 SET Value0 = 10 WHERE Id = 'ID1';");
+stmt.addBatch("UPDATE table0_0 SET Value0 = 20 WHERE Id = 'ID2';");
+stmt.addBatch("UPDATE table0_0 SET Value0 = 30 WHERE Id = 'ID3';");
+stmt.executeLargeBatch();
+
+// 事务控制 - 第一个事务
+conn.setAutoCommit(false);
+savepoint = conn.setSavepoint();
+stmt.executeUpdate("UPDATE table0_0 SET Value0 = 5 WHERE Id = 'ID1';");
+conn.rollback(savepoint);
+conn.commit();
+
+// 事务控制 - 第二个事务
+conn.setAutoCommit(false);
+savepoint = conn.setSavepoint("SP1");
+stmt.executeUpdate("UPDATE table0_0 SET Value1 = 15.5 WHERE Id = 'ID2';");
+conn.rollback(savepoint);
+conn.commit();
+
+// 事务控制 - 第三个事务
+conn.setAutoCommit(false);
+savepoint = conn.setSavepoint("SP2");
+stmt.executeUpdate("UPDATE table0_0 SET Value2 = 150 WHERE Id = 'ID3';");
+conn.rollback(savepoint);
+conn.commit();
+
+// 查询操作 - 不同条件组合
+rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value0 > 0;");
+rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value0 > 1 OR Id != 'ID2';");
+rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value1 > 20.0 AND Value2 < 400;");
+
+// 结果集操作 - 遍历和移动
+rs.setFetchSize(10);
+rs.setFetchDirection(1001);
+rs.next();
+rs.previous();
+rs.beforeFirst();
+rs.afterLast();
+rs.isFirst();
+rs.isLast();
+rs.isBeforeFirst();
+rs.isAfterLast();
+
+// 结果集操作 - 数据获取
+rs.getObject(1);
+rs.getObject("Id");
+rs.getObject(2);
+rs.getObject("Value0");
+rs.getObject(3);
+rs.getObject("Value1");
+rs.getObject(4);
+rs.getObject("Value2");
+
+// 结果集操作 - 更新
+rs.cancelRowUpdates();
+rs.updateObject(2, 15);
+rs.updateObject("Value0", 20);
+rs.updateRow();
+
+// PreparedStatement操作
+pstmt = conn.prepareStatement("SELECT * FROM table0_0 WHERE Value0 > ?");
+pstmt.setObject(1, 2);
+rs = pstmt.executeQuery();
+pstmt = conn.prepareStatement("UPDATE table0_0 SET Value0 = ? WHERE Id = ?");
+pstmt.setObject(1, 15);
+pstmt.setObject(2, "ID1");
+pstmt.executeUpdate();
+pstmt.clearParameters();
+pstmt.addBatch();
+pstmt.executeBatch();
+
+// 性能测试 - 超时设置
+stmt.setQueryTimeout(30);
+stmt.setQueryTimeout(60);
+stmt.setQueryTimeout(120);
+
+// 性能测试 - 获取大小设置
+stmt.setFetchSize(50);
+stmt.setFetchSize(100);
+stmt.setFetchSize(200);
+
+// 性能测试 - 最大行数设置
+stmt.setMaxRows(100);
+stmt.setMaxRows(500);
+stmt.setMaxRows(1000);
+
+// 性能测试 - 结果集类型和并发性
+stmt.getResultSetConcurrency();
+stmt.getResultSetType();
+stmt.getResultSetHoldability();
+
+// 异常场景测试 - 重复主键
+stmt.executeUpdate("INSERT INTO table0_0 VALUES ('ID1', 1, 10.5, 100);");
+stmt.executeUpdate("INSERT INTO table0_0 VALUES ('ID1', 2, 20.5, 200);");
+
+// 异常场景测试 - 违反约束
+stmt.executeUpdate("UPDATE table0_0 SET Value0 = 200 WHERE Id = 'ID1';");
+stmt.executeUpdate("UPDATE table0_0 SET Value0 = -200 WHERE Id = 'ID2';");
+
+// 异常场景测试 - 无效SQL
+stmt.executeQuery("SELECT * FROM non_existent_table;");
+stmt.executeQuery("SELECT invalid_column FROM table0_0;");
+stmt.executeQuery("SELECT * FROM table0_0 WHERE invalid_condition;");
+
+// 资源清理
+rs.close();
+stmt.close();
+pstmt.close();
+conn.close(); 
