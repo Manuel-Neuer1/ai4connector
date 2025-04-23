@@ -12,11 +12,12 @@ public class gpt2Test {
 
         try {
             //con = DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb0?user=root&password=1234");
-            con = DriverManager.getConnection("jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234");
+            con = DriverManager.getConnection("jdbc:oceanbase://ip:2881/test?user=root@test&password=XXXX");
             con.setAutoCommit(false); // Disable auto-commit to test transactions
 
             // Test statement creation with different configurations
-            stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, ResultSet.HOLD_CURSORS_OVER_COMMIT);
+            stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY,
+                    ResultSet.HOLD_CURSORS_OVER_COMMIT);
             con.setHoldability(ResultSet.CLOSE_CURSORS_AT_COMMIT);
             System.out.println("here: " + con.getHoldability());
             stmt.executeUpdate("DROP TABLE IF EXISTS table0_0;");
@@ -63,32 +64,32 @@ public class gpt2Test {
 
             // 5. Test ResultSet fetching and navigation
             rs.setFetchSize(5); // Test fetch size for large result sets
-            rs.setFetchDirection(ResultSet.FETCH_FORWARD); // Test forward direction
+            //rs.setFetchDirection(ResultSet.FETCH_FORWARD); // Test forward direction
             rs.next(); // Move to next row
 
             System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            try{
+            try {
                 rs.beforeFirst(); // Move to before first row
                 System.out.println("ERROR rs.beforeFirst()!");
-            } catch (Exception e){
-                System.out.println("mysql抛出异常，OB没有");
+            } catch (Exception e) {
+                System.out.println("mysql抛出异常，OB没有" + e);
             }
-            try{
+            try {
                 rs.previous(); // Move to before first row
                 System.out.println("rs.previous()!");
-                System.out.println(rs.first());
-                System.out.println(rs.absolute(2));
-                System.out.println(rs.absolute(1));
+                System.out.println(rs.first()); // OB 输出true
+                System.out.println(rs.absolute(3)); // OB 输出true
+                System.out.println(rs.absolute(-2)); //OB输出true
                 System.out.println(rs.last());
-            } catch (Exception e){
-                System.out.println("OB nb");
+            } catch (Exception e) {
+                System.out.println("OB nb" + e);
             }
 
             System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            try{
+            try {
                 rs.afterLast(); // Move to after last row
                 System.out.println("ERROR rs.afterLast()!");
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("mysql抛出异常，OB没有");
             }
             // 6. Test batch insert with large dataset
@@ -122,7 +123,6 @@ public class gpt2Test {
             while (rs.next()) {
                 System.out.println("Final - Id: " + rs.getDouble("Id") + ", Value0: " + rs.getString("Value0"));
             }
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

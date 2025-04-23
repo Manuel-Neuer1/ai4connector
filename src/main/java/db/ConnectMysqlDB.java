@@ -7,7 +7,7 @@ public class ConnectMysqlDB {
     static int dbId = 0; // 全局自增 ID，每次创建对象递增
 
     public ConnectMysqlDB(String url) {
-        //这个url就是最简单的：jdbc:mysql://localhost:3306/?user=root&password=123456
+        // 这个url就是最简单的：jdbc:mysql://localhost:3306/?user=root&password=123456
         try {
             this.con = DriverManager.getConnection(url);
         } catch (SQLException e) {
@@ -16,7 +16,7 @@ public class ConnectMysqlDB {
     }
 
     public void createDatabase(int dbId) {
-        //e.g. CREATE DATABASE IF NOT EXISTS test1;
+        // e.g. CREATE DATABASE IF NOT EXISTS test1;
         try {
             Statement stmt = con.createStatement();
             stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS testdb" + dbId);
@@ -40,5 +40,11 @@ public class ConnectMysqlDB {
         }
     }
 
-    public int getDbId() { return dbId; }
+    public int getDbId() {
+        return dbId;
+    }
+
+    public void addDbId() {
+        dbId = dbId + 1;
+    }
 }

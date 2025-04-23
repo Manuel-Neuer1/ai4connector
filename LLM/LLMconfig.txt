@@ -53,5 +53,38 @@ wget https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh
 2025-04-08
 还是做了一些文件的处理，但是仔细想了想似乎这种方式不太可行，因为这个数据集不是标准的数据集，并且不知道训练的效果怎么样，而且无法解决LLM的幻觉问题，并且这种方式想大规模测试也有点不知所措
 
+/*else {
+                    // 判断是不是setFetchSize调用getNextInt方法
+                    if (trimmedLine.contains("setFetchSize")) {
+                        // 找到左括号位置
+                        int leftBracket = trimmedLine.indexOf("setFetchSize(") + "setFetchSize(".length();
+                        // 找到右括号位置
+                        int rightBracket = trimmedLine.indexOf(")", leftBracket);
+
+                        if (leftBracket > 0 && rightBracket > leftBracket) {
+                            // 构建新行：保留左括号前的部分 + random.nextInt(1000) + 保留右括号后的部分
+                            String prefix = line.substring(0, line.indexOf("setFetchSize(") + "setFetchSize(".length());
+                            String suffix = line.substring(line.indexOf(")", line.indexOf("setFetchSize(")) + 1);
+
+                            // 使用random.nextInt()替换原参数
+                            // 但是这里也要修改一下，有20%的可能直接使用Intger.MIN_VALUE,有50%的可能使用[0,Intger.MAX_VALUE],有30%的可能使用random.nextInt()
+                            int randomValue = random.nextInt(100);
+                            String newLine = "";
+                            if (randomValue < 20) {
+                                newLine = prefix + Integer.MIN_VALUE + suffix;
+                            } else if (randomValue < 70) {
+                                String insertStr = String.format("%03d",
+                                        random.nextInt(Integer.MAX_VALUE));
+                                newLine = prefix + insertStr + suffix;
+                            } else {
+                                newLine = prefix + random.nextInt() + suffix;
+                            }
+                            rewrittenLines.add(newLine);
+                        } else {
+                            // 无法找到括号位置，保留原行
+                            rewrittenLines.add(line);
+                        }
+                    }*/
+
 
 

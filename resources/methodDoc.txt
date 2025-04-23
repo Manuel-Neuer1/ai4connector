@@ -1,0 +1,52 @@
+File: Connection.java
+Method: createStatement
+Return Type: Statement
+Parameters: int resultSetType, int resultSetConcurrency, int resultSetHoldability
+Documentation: Creates a Statement object that will generate ResultSet objects with the given type, concurrency, and holdability. This method is the same as the createStatement method above, but it allows the default result set type, concurrency, and holdability to be overridden.
+
+Method: prepareStatement
+Return Type: PreparedStatement
+Parameters: String sql
+Documentation: Creates a PreparedStatement object for sending parameterized SQL statements to the database. A SQL statement with or without IN parameters can be pre-compiled and stored in a PreparedStatement object. This object can then be used to efficiently execute this statement multiple times.
+
+Method: commit
+Return Type: void
+Parameters: 
+Documentation: Makes all changes made since the previous commit/rollback permanent and releases any database locks currently held by this Connection object. This method should be used only when auto-commit mode has been disabled.
+
+Method: close
+Return Type: void
+Parameters: 
+Documentation: Releases this Connection object's database and JDBC resources immediately instead of waiting for them to be automatically released. Calling the method close on a Connection object that is already closed is a no-op.
+
+File: Statement.java
+Method: executeQuery
+Return Type: ResultSet
+Parameters: String sql
+Documentation: Executes the given SQL statement, which returns a single ResultSet object. Note: This method cannot be called on a PreparedStatement or CallableStatement.
+
+Method: executeUpdate
+Return Type: int
+Parameters: String sql
+Documentation: Executes the given SQL statement, which may be an INSERT, UPDATE, or DELETE statement or an SQL statement that returns nothing, such as an SQL DDL statement. This method returns the number of rows affected by the execution.
+
+Method: close
+Return Type: void
+Parameters: 
+Documentation: Releases this Statement object's database and JDBC resources immediately instead of waiting for this to happen when it is automatically closed. It is generally good practice to release resources as soon as you are finished with them to avoid tying up database resources.
+
+File: ResultSet.java
+Method: next
+Return Type: boolean
+Parameters: 
+Documentation: Moves the cursor forward one row from its current position. A ResultSet cursor is initially positioned before the first row; the first call to the method next makes the first row the current row; the second call makes the second row the current row, and so on.
+
+Method: getObject
+Return Type: Object
+Parameters: int columnIndex
+Documentation: Gets the value of the designated column in the current row of this ResultSet object as an Object in the Java programming language. This method will return the value of the given column as a Java object.
+
+Method: close
+Return Type: void
+Parameters: 
+Documentation: Releases this ResultSet object's database and JDBC resources immediately instead of waiting for this to happen when it is automatically closed. 

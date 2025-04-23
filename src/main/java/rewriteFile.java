@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class rewriteFile {
     // 定义可能抛出异常的JDBC方法
@@ -8,6 +9,9 @@ public class rewriteFile {
 
     // 定义需要添加System.out.println()的方法
     private static final List<String> PRINT_METHODS = new ArrayList<>();
+
+    // 创建随机数生成器
+    private static final Random random = new Random();
 
     static {
         EXCEPTION_METHODS.add("commit");
@@ -29,7 +33,6 @@ public class rewriteFile {
         EXCEPTION_METHODS.add("updateRow");
         EXCEPTION_METHODS.add("setFetchSize");
         EXCEPTION_METHODS.add("setFetchDirection");
-
 
         PRINT_METHODS.add("isReadOnly");
         PRINT_METHODS.add("getHoldability");
@@ -107,20 +110,26 @@ public class rewriteFile {
                 String rewrittenLine = tryBlockStart + "\n\t" + line + "\n" + catchBlock + "\n\t" + exceptionHandler
                         + "\n" + catchBlockEnd;
                 rewrittenLines.add(rewrittenLine);
-            } else {
-                if (isPrintMethod) {
-                    // 去掉最后的 ; 号（如果有的话）
-                    if (trimmedLine.endsWith(";")) {
-                        trimmedLine = trimmedLine.substring(0, trimmedLine.length() - 1);
-                    }
-                    String printStatement = "System.out.println(" + trimmedLine + ");";
-                    rewrittenLines.add(printStatement);
-                } else {
-                    // 如果不包含特殊处理的方法调用，直接添加原行
-                    rewrittenLines.add(line);
+            } else if (isPrintMethod) {
+                // 去掉最后的 ; 号（如果有的话）
+                if (trimmedLine.endsWith(";")) {
+                    trimmedLine = trimmedLine.substring(0, trimmedLine.length() - 1);
                 }
+                String printStatement = "System.out.println(" + trimmedLine + ");";
+                rewrittenLines.add(printStatement);
+            } else {
+                // 如果不包含特殊处理的方法调用，try catch包装一下
+                String tryBlockStart = "try {";
+                String catchBlock = "} catch (Exception e) {";
+                String exceptionHandler = "System.out.println(e);";
+                String catchBlockEnd = "}";
+                // 将方法调用包裹在try-catch块中
+                String rewrittenLine = tryBlockStart + "\n\t" + line + "\n" + catchBlock + "\n\t" + exceptionHandler
+                        + "\n" + catchBlockEnd;
+                rewrittenLines.add(rewrittenLine);
             }
         }
+
         // 写入输出文件
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
             for (String line : rewrittenLines) {

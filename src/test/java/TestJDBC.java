@@ -19,7 +19,7 @@ public class TestJDBC {
         System.out.println(stmt.getQueryTimeout());
         stmt.setQueryTimeout(30);
         System.out.println(stmt.getFetchSize());
-        stmt.setFetchSize(50);
+        stmt.setFetchSize(2147483647);
         System.out.println(stmt.getMaxRows());
         stmt.setMaxRows(100);
         stmt.setEscapeProcessing(true);
@@ -36,13 +36,29 @@ public class TestJDBC {
         stmt.addBatch("INSERT INTO table0_0 VALUES ('ID2', 2, 20.5, 200);");
         System.out.println(Arrays.toString(stmt.executeBatch()));
         rs = stmt.executeQuery("SELECT * FROM table0_0;");
+        System.out.println("rs.isFirst: " + rs.isFirst()); //OB、Mysql 输出false
+        System.out.println("rs.isLast: " + rs.isLast()); //OB、Mysql 输出false
+        //rs.afterLast(); //结果集类型为 TYPE_FORWARD_ONLY OB没有报错，Mysql报错
+        //rs.beforeFirst(); //这OB直接执行了，没有报错，Mysql报错抛出了异常
+        //rs.afterLast(); //这OB直接执行了，没有报错，Mysql报错抛出了异常
+        //System.out.println("疑惑!" + rs.last()); //这里也离谱，OB返回的是true，Mysql还是抛出异常 Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY
+        //System.out.println("疑惑！" + rs.first()); //这里更离谱，OB返回的是true，Mysql也是抛出异常 Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY
+        //System.out.println("疑惑！" + rs.previous());//Mysql这里直接抛出异常，但是OB这里只是输出false（createStatement(1003, 1007, 1)），mysql：Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.
         System.out.println(rs.next());
         System.out.println(rs.getObject("Id"));
         System.out.println(rs.getObject("Value0"));
         System.out.println(rs.getObject("Value1"));
         System.out.println(rs.getObject("Value2"));
-        System.out.println(rs.isFirst());
-        System.out.println(rs.isLast());
+        try{
+            System.out.println(rs.isFirst());
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        try{
+            System.out.println(rs.isLast());
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
         System.out.println(rs.isBeforeFirst());
         System.out.println(rs.isAfterLast());
 
@@ -71,7 +87,11 @@ public class TestJDBC {
         System.out.println(stmt.executeUpdate("INSERT INTO table0_0 VALUES ('ID3', 3, 30.5, 300);"));
         System.out.println(stmt.executeUpdate("INSERT INTO table0_0 VALUES ('ID4', 4, 40.5, 400);"));
         rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value0 > 2;");
-        rs.setFetchSize(100);
+        //try {
+            rs.setFetchSize(2147483647); //这里OB报错，mysql没有报错
+        //} catch (SQLException e) {
+        //    System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   OB : " + e);
+        //}
         System.out.println(rs.next());
         System.out.println(rs.getObject(1));
         System.out.println(rs.getObject(2));
@@ -91,9 +111,9 @@ public class TestJDBC {
         pstmt.setObject(4, 500);
         System.out.println(pstmt.executeUpdate());
         pstmt.clearParameters();
-        try{
+        try {
             pstmt.addBatch();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
         System.out.println(Arrays.toString(pstmt.executeBatch()));
@@ -119,27 +139,34 @@ public class TestJDBC {
         System.out.println(stmt.getMaxRows());
         stmt.setMaxRows(200);
         System.out.println(stmt.getFetchSize());
-        stmt.setFetchSize(150);
+        //try {
+            //stmt.setFetchSize(-2147483648);
+        //} catch (SQLException e) {
+        //    System.out.println("ERROR2!!!!!!!!!");
+        //    System.out.println(e);
+        //}
         rs = stmt.executeQuery("SELECT * FROM table0_0;");
-        try{
+        try {
             rs.setFetchDirection(1001);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
         }
+        //JDK 17 中给出的解释：如果发生数据库访问错误；在关闭的结果集上调用此方法或结果集类型为TYPE_FORWARD_ONLY且提取方向不是FETCH_FORWARD
+        System.out.println("rs.getFetchDirection() : " + rs.getFetchDirection()); //这里OB输出的是1002！！！！！！Mysql输出的是1000（第一行->下一行），1002：ResultSet.FETCH_UNKNOWN表示结果集的处理方向由 JDBC 驱动程序和数据库系统决定，这里虽然没问题但是感觉怪怪的
         System.out.println(rs.next());
-        try{
-            rs.previous();
-        }catch (SQLException e){
+        try {
+            rs.previous(); // OB和Mysql都不支持因为是 Result set of type is ResultSet.TYPE_FORWARD_ONLY
+        } catch (SQLException e) {
             System.out.println(e);
         }
-        try{
-            rs.beforeFirst();
-        }catch (SQLException e){
+        try {
+            rs.beforeFirst(); // OB和Mysql都不支持因为是 Result set of type is ResultSet.TYPE_FORWARD_ONLY
+        } catch (SQLException e) {
             System.out.println(e);
         }
-        try{
-            rs.afterLast();
-        }catch (SQLException e) {
+        try {
+            rs.afterLast(); // OB和Mysql都不支持因为是 Result set of type is ResultSet.TYPE_FORWARD_ONLY
+        } catch (SQLException e) {
             System.out.println(e);
         }
 
@@ -184,19 +211,27 @@ public class TestJDBC {
         }
 
         rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value0 > 1 OR Id != 'ID2';");
-        rs.setFetchSize(200);
+        //try{
+            rs.setFetchSize(-2147483648);
+        //} catch (Exception e){
+        //    System.out.println("ERROR3!!!!!!!!!!!!!!!!!");
+        //    System.out.println(e);
+        //}
         System.out.println(rs.next());
         System.out.println(rs.getObject("Id"));
         System.out.println(rs.getObject("Value0"));
         System.out.println(rs.getObject("Value1"));
         System.out.println(rs.getObject("Value2"));
-        System.out.println(rs.isFirst());
-        System.out.println(rs.isLast());
-        System.out.println(rs.isBeforeFirst());
-        System.out.println(rs.isAfterLast());
-
         try {
-            rs.close();
+            System.out.println("rs.ifFirst(): " + rs.isFirst()); //这里Mysql输出了true
+            System.out.println("rs.isLast(): " + rs.isLast()); //这里mysql输出了false
+        } catch (Exception e) {
+            System.out.println(e + "这两个方法OB报错"); //java.sql.SQLException: Invalid operation on STREAMING ResultSet
+        }
+        System.out.println("ERROR 1 " + rs.isBeforeFirst()); //这里mysql、OB输出的是false
+        System.out.println("ERROR 2 " + rs.isAfterLast()); // 这里mysql、OB输出的是false
+        try {
+            rs.close(); //这里OB直接执行
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -225,13 +260,38 @@ public class TestJDBC {
         System.out.println(stmt.getMaxRows());
         stmt.setMaxRows(500);
         System.out.println(stmt.getFetchSize());
-        stmt.setFetchSize(250);
+        try {
+            //stmt.setFetchSize(2147483647);
+            int i = 1;
+        } catch (Exception e){
+            System.out.println("ERROR BIG !!!!!!!!!!!!!!!!!" + e);
+            //System.out.println(e);
+        }
         rs = stmt.executeQuery("SELECT * FROM table0_0;");
-        rs.setFetchDirection(1001);
+        try{
+            rs.setFetchDirection(1001); //Mysql和OB都报错了，OB报错：Invalid operation. Allowed direction are ResultSet.FETCH_FORWARD and ResultSet.FETCH_UNKNOWN
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
         System.out.println(rs.next());
-        rs.previous();
-        rs.beforeFirst();
-        rs.afterLast();
+        try{
+            rs.previous(); // 这里也是
+        } catch (Exception e){
+            System.out.println("mysql报错：Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY.,OB 报错Invalid operation on STREAMING ResultSet。");
+
+        }
+        try {
+            rs.beforeFirst();
+        } catch (SQLException e) {
+            System.out.println("Mysql 报错Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY. OB 报错Invalid operation on STREAMING ResultSet");
+
+        }
+        try{
+            rs.afterLast(); // 这里也是
+        } catch (SQLException e) {
+            System.out.println(" OB1 !!! Invalid operation on STREAMING ResultSet            mysql报错：Operation not allowed for a result set of type ResultSet.TYPE_FORWARD_ONLY");
+
+        }
 
         try {
             rs.close();
@@ -256,14 +316,39 @@ public class TestJDBC {
         }
 
         rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value1 > 20.0 AND Value2 < 400;");
-        rs.setFetchSize(300);
+        try{
+            rs.setFetchSize(-2147483648);
+        } catch (Exception e){
+            System.out.println("ERROR4!!!!!!!!!!!!!!!!!    OB 的 rs.setFetchSize(-2147483648) 报错" + e);
+        }
+        rs.setFetchSize(2147483647);
+        System.out.println(rs.getFetchSize());
+        rs.setFetchSize(-2147483648);
+        System.out.println(rs.getFetchSize());
+        rs.setFetchSize(-2147483648);
+        System.out.println(rs.getFetchSize());
+        rs.setFetchSize(2147483647);
+        System.out.println(rs.getFetchSize());
+        rs.setFetchSize(-2147483648);
+        System.out.println(rs.getFetchSize());
+
         System.out.println(rs.next());
         System.out.println(rs.getObject("Id"));
         System.out.println(rs.getObject("Value0"));
         System.out.println(rs.getObject("Value1"));
         System.out.println(rs.getObject("Value2"));
-        System.out.println(rs.isFirst());
-        System.out.println(rs.isLast());
+        try {
+            System.out.println(rs.isFirst());
+        } catch (Exception e){
+            System.out.println("rs.isFirst() : OB Invalid operation on STREAMING ResultSet" + e);
+           // System.out.println(e);
+        }
+        try {
+            System.out.println(rs.isLast());
+        } catch (Exception e){
+            System.out.println("rs.isLast() : OB Invalid operation on STREAMING ResultSet" + e);
+            //System.out.println(e);
+        }
         System.out.println(rs.isBeforeFirst());
         System.out.println(rs.isAfterLast());
 
@@ -285,11 +370,11 @@ public class TestJDBC {
             System.out.println(e);
         }
 
-        try {
-            stmt.executeQuery("SELECT * FROM table0_0 WHERE invalid_condition;");
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
+//        try {
+//            stmt.executeQuery("SELECT * FROM table0_0 WHERE invalid_condition;");
+//        } catch (SQLException e) {
+//            System.out.println(e);
+//        }
 
         try {
             rs.close();
