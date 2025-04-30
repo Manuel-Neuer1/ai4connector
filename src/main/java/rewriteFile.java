@@ -33,6 +33,11 @@ public class rewriteFile {
         EXCEPTION_METHODS.add("updateRow");
         EXCEPTION_METHODS.add("setFetchSize");
         EXCEPTION_METHODS.add("setFetchDirection");
+        EXCEPTION_METHODS.add("beforeFirst");
+        EXCEPTION_METHODS.add("afterLast");
+        EXCEPTION_METHODS.add("first");
+        EXCEPTION_METHODS.add("last");
+
 
         PRINT_METHODS.add("isReadOnly");
         PRINT_METHODS.add("getHoldability");
@@ -118,15 +123,7 @@ public class rewriteFile {
                 String printStatement = "System.out.println(" + trimmedLine + ");";
                 rewrittenLines.add(printStatement);
             } else {
-                // 如果不包含特殊处理的方法调用，try catch包装一下
-                String tryBlockStart = "try {";
-                String catchBlock = "} catch (Exception e) {";
-                String exceptionHandler = "System.out.println(e);";
-                String catchBlockEnd = "}";
-                // 将方法调用包裹在try-catch块中
-                String rewrittenLine = tryBlockStart + "\n\t" + line + "\n" + catchBlock + "\n\t" + exceptionHandler
-                        + "\n" + catchBlockEnd;
-                rewrittenLines.add(rewrittenLine);
+                rewrittenLines.add(line);
             }
         }
 

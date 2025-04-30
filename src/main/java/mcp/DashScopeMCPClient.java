@@ -27,7 +27,7 @@ public class DashScopeMCPClient {
     private final PromptManager promptManager;
     private final String outputDir;
     // 从环境变量获取API密钥，与LLMalbb.java使用相同的环境变量名
-    private static final String API_KEY = "";
+    private static final String API_KEY = "sk-02b4fc0304604239b4d9fca0fa191385";
     private static final String MODEL_NAME = "qwen-plus-2025-01-25";
 
     public DashScopeMCPClient(String outputDir) {
@@ -102,19 +102,17 @@ public class DashScopeMCPClient {
         return generatedCode;
     }
 
-//    private String buildAgentRequest(String prompt) {
-//        // 构建请求提示
-//        StringBuilder request = new StringBuilder();
-//        request.append(
-//                "You are a Java testing expert. Please generate a JUnit test case based on the following requirements:\n\n");
-//        request.append(prompt);
-//        request.append("\n\nPlease generate a complete JUnit test class that:\n");
-//        request.append("1. Follows the code format requirements\n");
-//        request.append("2. Contains at least 150 lines of effective code\n");
-//        request.append("3. Tests all specified JDBC operations\n");
-//        request.append("4. Includes proper error handling and resource management\n");
-//        return request.toString();
-//    }
+    private String buildAgentRequest(String prompt) {
+        // 构建请求提示
+        StringBuilder request = new StringBuilder();
+        request.append(prompt);
+        request.append("\n\nPlease generate a complete JUnit test class that:\n");
+        request.append("1. Follows the code format requirements\n");
+        request.append("2. Contains at least 150 lines of effective code\n");
+        request.append("3. Tests all specified JDBC operations\n");
+        request.append("4. Includes proper error handling and resource management\n");
+        return request.toString();
+    }
 
     private String callDashScope(String request) {
         try {

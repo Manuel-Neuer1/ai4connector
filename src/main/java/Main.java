@@ -20,8 +20,8 @@ public class Main {
     static String baseURL = "jdbc:mysql://localhost:3306/?user=root&password=1234";
     static String baseOceanbaseURL = "jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234";
     static int maxColumnCount = 2;
-    static int maxTableCount = 2; // 每个数据库db中能够被允许创建的表的数量
-    static int roundCount = 2;     // 总共生成 5 个 testdb，分别编号 0 ~ 4
+    static int maxTableCount = 10; // 每个数据库db中能够被允许创建的表的数量
+    static int roundCount = 1;     // 总共生成 5 个 testdb，分别编号 0 ~ 4
 
     public static AtomicLong promptFileNum = new AtomicLong(0);
 
@@ -75,10 +75,6 @@ public class Main {
             }
             System.out.println("Prompt generation complete.");
 
-            // 等待5分钟
-            // Thread.sleep(1000 * 60 * 5);
-
-            // String currentDir = System.getProperty("user.dir");
             String inputDir = "";
             String genTestsDir = Paths.get("testRewriteFile", "generated_tests", "testdb" + condb.getDbId()).toString();
 
@@ -87,69 +83,66 @@ public class Main {
                 DashScopeMCPClient client = new DashScopeMCPClient(genTestsDir);
 
                 // 为每个prompt生成测试用例
-                    client.generateTestCases(folderPath);
-//                for (int i = 0; i < maxTableCount; i++) {
-//                    String promptPath = folderPath + "prompt" + i + ".txt";
-//                    client.generateTestCases(promptPath, i);
-//                }
+                client.generateTestCases(folderPath);
 
                 // 更新输入目录路径指向生成的测试
                 inputDir = genTestsDir;
             } catch (Exception e) {
                 System.err.println("Error in API test generation: " + e.getMessage());
                 e.printStackTrace();
-                // 如果API测试生成失败，使用备用路径
-//                inputDir = Paths.get("testRewriteFile", "Input", "testdb" + condb.getDbId()).toString();
+
             }
 
-            // 5. 重写测试文件
-//        String outputDir = Paths.get("testRewriteFile", "Output", "testdb" + condb.getDbId()).toString();
-//
-//        try {
-//            Files.createDirectories(Paths.get(outputDir));
-//
-//            // 获取输入目录中的所有测试文件
-//            File inputDirectory = new File(inputDir);
-//            File[] testFiles = inputDirectory
-//                    .listFiles((dir, name) -> name.startsWith("test_") && name.endsWith(".java"));
-//
-//            if (testFiles != null) {
-//                for (File testFile : testFiles) {
-//                    String inputFilePath = testFile.getAbsolutePath();
-//                    String outputFilePath = Paths.get(outputDir, "Test" + testFile.getName().substring(5)).toString();
-//
-//                    try {
-//                        rewriteFile rf = new rewriteFile(inputFilePath, outputFilePath);
-//                        System.out.println("文件改写完成，结果已保存到：" + outputFilePath);
-//                    } catch (IOException e) {
-//                        System.err.println("Error rewriting file " + testFile.getName() + ": " + e.getMessage());
-//                    }
-//                }
-//            }
-//        } catch (IOException e) {
-//            System.err.println("Error creating directories: " + e.getMessage());
-//        }
-//
-//        // 6. 执行测试文件
-//        File outputDirectory = new File(outputDir);
-//        File[] rewrittenTestFiles = outputDirectory
-//                .listFiles((dir, name) -> name.startsWith("Test") && name.endsWith(".java"));
-//
-//        if (rewrittenTestFiles != null) {
-//            for (File testFile : rewrittenTestFiles) {
-//                try {
-//                    ExecuteJavaCodeFromFile ejf = new ExecuteJavaCodeFromFile();
-//                    ejf.executeFile(testFile.getAbsolutePath());
-//                } catch (Exception e) {
-//                    System.err.println("Error executing test file " + testFile.getName() + ": " + e.getMessage());
-//                }
-//            }
-//        }
+             //5. 重写测试文件
+        //String outputDir = Paths.get("testRewriteFile", "Output", "testdb" + condb.getDbId()).toString();
+
+        String outputDir = Paths.get("testRewriteFile", "Output", "testdb0").toString();
+        try {
+            Files.createDirectories(Paths.get(outputDir));
+
+            // 获取输入目录中的所有测试文件
+            //File inputDirectory = new File(inputDir);
+            File inputDirectory = new File("testRewriteFile/generated_tests/testdb0");
+            File[] testFiles = inputDirectory
+                    .listFiles((dir, name) -> name.startsWith("test_") && name.endsWith(".java"));
+
+            if (testFiles != null) {
+                for (File testFile : testFiles) {
+                    String inputFilePath = testFile.getAbsolutePath();
+                    String outputFilePath = Paths.get(outputDir, "test" + testFile.getName().substring(5)).toString();
+
+                    try {
+                        rewriteFile rf = new rewriteFile(inputFilePath, outputFilePath);
+                        System.out.println("文件改写完成，结果已保存到：" + outputFilePath);
+                    } catch (IOException e) {
+                        System.err.println("Error rewriting file " + testFile.getName() + ": " + e.getMessage());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error creating directories: " + e.getMessage());
+        }
+
+        // 6. 执行测试文件
+        File outputDirectory = new File(outputDir);
+        File[] rewrittenTestFiles = outputDirectory
+                .listFiles((dir, name) -> name.startsWith("test") && name.endsWith(".java"));
+
+        if (rewrittenTestFiles != null) {
+            for (File testFile : rewrittenTestFiles) {
+                try {
+                    ExecuteJavaCodeFromFile ejf = new ExecuteJavaCodeFromFile();
+                    ejf.executeFile(testFile.getAbsolutePath());
+                } catch (Exception e) {
+                    System.err.println("Error executing test file " + testFile.getName() + ": " + e.getMessage());
+                }
+            }
+        }
 
             // 7. 对比结果 这里对比OceanBase和Mysql的结果，但是现在只需要写Mysql的就好了，OB的可以把代码重新运行一下，改成OB的URL就好了
             // OutputFileComparator.compare();
 
-            condb.addDbId();
+            //condb.addDbId();
         }
     }
 

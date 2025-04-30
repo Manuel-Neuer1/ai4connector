@@ -38,8 +38,6 @@ public class PromptGenerator {
             writer.println(URL);
             writer.println();
             writer.println("已知当前我的数据库中表结构为：");
-            // Assuming meta.getTable().toString() provides the desired table format
-            // including 'Table Name:', 'Key Column:', 'Value Columns:' etc.
             writer.println(meta.getTable().toString());
             writer.println();
             writer.println("你的任务是为我生成一段 Java 代码，该代码需要满足以下要求：");
@@ -94,7 +92,7 @@ public class PromptGenerator {
             writer.println("       - 连接属性：isReadOnly(), getHoldability()");
             writer.println("       - 语句创建：createStatement(int, int, int)");
             writer.println(
-                    "       - 预处理语句：prepareStatement(String), prepareStatement(String, int), prepareStatement(String, int[]), prepareStatement(String, String[]) //");
+                    "       - 预处理语句：prepareStatement(String)//");
             writer.println("       - 资源管理：close()");
             writer.println();
             writer.println("   4.3 Statement类：");

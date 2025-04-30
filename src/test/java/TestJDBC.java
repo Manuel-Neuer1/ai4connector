@@ -140,7 +140,7 @@ public class TestJDBC {
         stmt.setMaxRows(200);
         System.out.println(stmt.getFetchSize());
         //try {
-            //stmt.setFetchSize(-2147483648);
+            stmt.setFetchSize(-2147483648);
         //} catch (SQLException e) {
         //    System.out.println("ERROR2!!!!!!!!!");
         //    System.out.println(e);
@@ -211,12 +211,12 @@ public class TestJDBC {
         }
 
         rs = stmt.executeQuery("SELECT * FROM table0_0 WHERE Value0 > 1 OR Id != 'ID2';");
-        //try{
+        try{
             rs.setFetchSize(-2147483648);
-        //} catch (Exception e){
-        //    System.out.println("ERROR3!!!!!!!!!!!!!!!!!");
-        //    System.out.println(e);
-        //}
+        } catch (Exception e){
+            System.out.println("ERROR3!!!!!!!!!!!!!!!!!");
+            System.out.println(e);
+        }
         System.out.println(rs.next());
         System.out.println(rs.getObject("Id"));
         System.out.println(rs.getObject("Value0"));
@@ -258,10 +258,10 @@ public class TestJDBC {
         System.out.println(stmt.getQueryTimeout());
         stmt.setQueryTimeout(120);
         System.out.println(stmt.getMaxRows());
-        stmt.setMaxRows(500);
+        stmt.setMaxRows(-2147483648);
         System.out.println(stmt.getFetchSize());
         try {
-            //stmt.setFetchSize(2147483647);
+            stmt.setFetchSize(2147483647);
             int i = 1;
         } catch (Exception e){
             System.out.println("ERROR BIG !!!!!!!!!!!!!!!!!" + e);
