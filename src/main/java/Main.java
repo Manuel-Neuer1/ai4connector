@@ -22,12 +22,13 @@ public class Main {
     static int maxColumnCount = 2;
     static int maxTableCount = 10; // 每个数据库db中能够被允许创建的表的数量
     static int roundCount = 1;     // 总共生成 5 个 testdb，分别编号 0 ~ 4
+    static int MAX_ROUNDS = 50;
 
     public static AtomicLong promptFileNum = new AtomicLong(0);
 
     public static void main(String[] args) throws InterruptedException {
         Random r = new Random();
-        ConnectMysqlDB condb = null;
+        ConnectMysqlDB condb;
 
         for(int cycle = 1; cycle <= roundCount; cycle++) {
             String folderPath = baseFolderPath;

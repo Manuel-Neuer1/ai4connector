@@ -4,9 +4,9 @@ import static com.oceanbase.jdbc.internal.com.send.authentication.ed25519.Utils.
 
 public class test115893 {
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/test?user=root&password=1234";
-        String oburl = "jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234";
-        try (Connection conn = DriverManager.getConnection(oburl)) {
+        String url1 = "jdbc:mysql://localhost:3306/test?user=root&password=1234";
+        String url2 = "jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234";
+        try (Connection conn = DriverManager.getConnection(url2)) {
 
             try (Statement stmt = conn.createStatement()) {
                 // 清理环境
@@ -14,8 +14,8 @@ public class test115893 {
                 stmt.execute("DROP TABLE IF EXISTS t1");
 
                 // 创建表并插入数据
-                stmt.execute("CREATE TABLE t0 (c0 TINYINT)");
-                stmt.execute("INSERT INTO t0 VALUES (100)");
+                stmt.execute("CREATE TABLE t0 (c0 int)");
+                stmt.execute("INSERT INTO t0 VALUES (0)");
 
                 //stmt.execute("SELECT COALESCE(t0.c0, t0.c1)  FROM t0");
 
@@ -24,8 +24,15 @@ public class test115893 {
                 try (ResultSet rs = stmt.executeQuery("SELECT (COALESCE(t0.c0)) AS c0 FROM t0")) {
                     while (rs.next()) {
                         byte[] result = rs.getBytes("c0");
+                        //int result = rs.getInt("c0");
+                        //System.out.println(result);
                         System.out.println("c0 = 0x" + bytesToHex(result));
+
+
+                        System.out.println();
                     }
+
+
                 }
 
                 // 创建 t1 表保存 COALESCE 结果
@@ -35,14 +42,17 @@ public class test115893 {
                 System.out.println("Result from t1:");
                 try (ResultSet rs = stmt.executeQuery("SELECT * FROM t1")) {
                     while (rs.next()) {
-                        byte[] result = rs.getBytes("c0");
-                        System.out.println("c0 = 0x" + bytesToHex(result));
+                        byte result = rs.getByte("c0");
+                        //System.out.println("c0 = 0x" + bytesToHex(result));
+                        System.out.println(result);
                     }
                 }
-            }
 
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

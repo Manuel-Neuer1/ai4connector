@@ -2,10 +2,10 @@ import java.sql.*;
 
 public class test110357MObug {
     public static void main(String[] args) throws SQLException {
-        String url1 = "jdbc:mysql://localhost:3306/test?user=root&password=1234&allowMultiQueries=true";
+        String url1 = "jdbc:mysql://localhost:3306/test?user=root&password=1234&allowMultiQueries=false";
         String url2 = "jdbc:oceanbase://49.52.27.61:2881/test?user=root@test&password=1234&allowMultiQueries=false";
 
-        Connection con1 = DriverManager.getConnection(url1);
+        Connection con1 = DriverManager.getConnection(url2);
 
         execute(con1, "DROP DATABASE IF EXISTS test");
         execute(con1, "CREATE DATABASE test");
@@ -18,6 +18,10 @@ public class test110357MObug {
         });
         executeAndPrint(con1, "SELECT * FROM t0");
 
+        /*
+        *  OB在这里应该是有问题的，因为违法了主键约束，但是OB输出的结果依然为上面两个数据，而MYSQL只返回了1670697762
+        * 但是当将allowMultiQueries设置为false时，MYSQL输出的结果变成了两个
+        * */
         con1.close();
     }
 
