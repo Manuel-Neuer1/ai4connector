@@ -65,7 +65,7 @@ public class PromptGenerator {
             writer.println("     stmt.executeUpdate(\"DROP TABLE IF EXISTS table_name;\");");
             writer.println();
             writer.println("2. 代码量要求：");
-            writer.println("   - 生成的代码应该包含至少 150 行有效代码");
+            writer.println("   - 生成的代码应该包含至少 50 行有效代码");
             writer.println("   - 每个重要的 JDBC 方法应该被调用多次，使用不同的参数");
             writer.println("   - 应该包含多个完整的测试流程");
             writer.println();

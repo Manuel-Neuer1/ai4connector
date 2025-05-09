@@ -2,6 +2,7 @@ package mcp;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -86,6 +87,61 @@ public class DashScopeMCPClient {
             throw new RuntimeException("Failed to generate test cases", e);
         }
     }
+
+    public void signalGenerateTestCases(String promptFilePath) {
+        Path promptPath = Paths.get(promptFilePath);
+
+        // 1. 检查 prompt 文件是否存在
+        if (!Files.exists(promptPath) || !Files.isRegularFile(promptPath)) {
+            throw new IllegalArgumentException("Prompt file not found: " + promptFilePath);
+        }
+
+        try {
+            // 2. 加载提示内容
+            String basePrompt = promptManager.loadPrompt(promptFilePath);
+
+            // 可选：加载资源并丰富 prompt
+            // Map<String, Object> resources = resourceManager.getJDBCResources();
+            // String enrichedPrompt = promptManager.enrichPrompt(basePrompt, resources);
+
+            // 3. 创建输出目录（如不存在）
+            Path outputPath = Paths.get(outputDir);
+            Files.createDirectories(outputPath);
+
+            // 4. 生成测试用例
+            String testCase = generateWithDashScope(basePrompt);
+
+            // 5. 构造输出文件名（根据 prompt 文件名生成）
+//            String promptFileName = promptPath.getFileName().toString();
+//            String baseName = promptFileName.contains(".")
+//                    ? promptFileName.substring(0, promptFileName.lastIndexOf('.'))
+//                    : promptFileName;
+//            String fileName = baseName + "_test.java";
+//            Path filePath = outputPath.resolve(fileName);
+            // 5. 构造输出文件名（根据 prompt 文件名中的数字后缀生成）
+            String promptFileName = promptPath.getFileName().toString();
+            String index = "0"; // 默认索引
+
+            // 用正则匹配文件名中的数字
+            Matcher matcher = Pattern.compile("(\\d+)").matcher(promptFileName);
+            if (matcher.find()) {
+                index = matcher.group(1);  // 提取文件索引的数字
+            }
+
+            String fileName = String.format("test_%s.java", index);
+            Path filePath = outputPath.resolve(fileName);
+
+            // 6. 写入文件
+            Files.writeString(filePath, testCase, StandardCharsets.UTF_8);
+            System.out.println("Generated test case: " + filePath);
+
+        } catch (IOException e) {
+            throw new RuntimeException("I/O error while generating test case", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate test case", e);
+        }
+    }
+
 
     private String generateWithDashScope(String prompt) {
         // 构建请求给DashScope

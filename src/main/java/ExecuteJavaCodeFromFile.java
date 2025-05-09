@@ -12,8 +12,27 @@ public class ExecuteJavaCodeFromFile {
         String fileNameWithoutExt = file.getName().replaceFirst("[.][^.]+$", ""); // 去掉扩展名
         String javaCode = readJavaCodeFromFile(codeFilePath);
         if (javaCode != null) {
-            executeJavaCode(javaCode, fileNameWithoutExt); // 使用固定 ID
+            String outputPath = outputFilePath(fileNameWithoutExt);
+            executeJavaCode(javaCode, fileNameWithoutExt, outputPath);
         }
+    }
+
+    public void executeFileWithConnector(String codeFilePath, String connectorId, String jdbcUrl) {
+        File file = new File(codeFilePath);
+        String fileNameWithoutExt = file.getName().replaceFirst("[.][^.]+$", "");
+        String outputPath = "ResultComparison/" + connectorId + "/output_" + fileNameWithoutExt + ".txt";
+
+        try {
+            Files.createDirectories(Paths.get("ResultComparison", connectorId));
+        } catch (IOException e) {
+            System.err.println("无法创建输出目录: " + e.getMessage());
+        }
+
+        String rawCode = readJavaCodeFromFile(codeFilePath);
+        if (rawCode == null) return;
+
+        String modifiedCode = rawCode.replace("jdbc:mysql://localhost:3306", jdbcUrl);
+        executeJavaCode(modifiedCode, fileNameWithoutExt, outputPath);
     }
 
     public String outputFilePath(String uniqueId) {
@@ -41,7 +60,7 @@ public class ExecuteJavaCodeFromFile {
         return javaCode.toString();
     }
 
-    public void executeJavaCode(String javaCode, String uniqueId) {
+    public void executeJavaCode(String javaCode, String uniqueId, String outputPath) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         if (compiler == null) {
             System.err.println("无法获取Java编译器。请使用 JDK 运行而不是 JRE。");
@@ -49,9 +68,10 @@ public class ExecuteJavaCodeFromFile {
         }
 
         String className = "DynamicJDBCClass_" + uniqueId;
-        String outputPath = outputFilePath(uniqueId);
+        //String outputPath = outputFilePath(uniqueId);
 
         // 拼接完整 Java 源码
+
         String fullJavaCode = ""
                 + "import java.sql.*;\n"
                 + "import java.util.*;\n"

@@ -1,3 +1,5 @@
+package prompt;
+
 import java.nio.file.Path;
 
 public class PromptArm {
